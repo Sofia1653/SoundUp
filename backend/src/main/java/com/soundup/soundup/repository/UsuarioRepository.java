@@ -1,4 +1,5 @@
 package com.soundup.soundup.repository;
+
 import com.soundup.soundup.model.Usuario;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
