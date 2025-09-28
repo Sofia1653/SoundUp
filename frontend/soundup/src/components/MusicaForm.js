@@ -3,103 +3,97 @@ import { createMusica, updateMusica, createMusicaComArtista, getAvailableArtista
 import MusicaFormTemplate from "./templates/MusicaFormTemplate";
 
 export default function MusicaForm({ onCreated, editingMusica, onCancelEdit }) {
-    const [musica, setMusica] = useState({
-        id_versao: 0,
-        nome: "",
-        duracao: 0
-    });
+  const [musica, setMusica] = useState({ id: 0, nome: "", duracao: 0 });
+  const [artistas, setArtistas] = useState([]);
+  const [selectedArtistaId, setSelectedArtistaId] = useState("");
+  const [loading, setLoading] = useState(false);
 
-    const [artistas, setArtistas] = useState([]);
-    const [selectedArtistaId, setSelectedArtistaId] = useState("");
-    const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    const fetchArtistas = async () => {
+      try {
+        const artistasList = await getAvailableArtistas();
+        setArtistas(artistasList || []);
+      } catch (error) {
+        console.error("Erro ao buscar artistas:", error);
+        setArtistas([]);
+      }
+    };
+    fetchArtistas();
+  }, []);
 
-    // Load available artists on component mount
-    useEffect(() => {
-        const fetchArtistas = async () => {
-            try {
-                const artistasList = await getAvailableArtistas();
-                setArtistas(artistasList || []);
-            } catch (error) {
-                console.error("Error fetching artists:", error);
-                setArtistas([]);
-            }
-        };
+  useEffect(() => {
+    if (editingMusica) {
+      setMusica({
+        id: Number(editingMusica.id) || 0,
+        nome: editingMusica.nome || "",
+        duracao: Number(editingMusica.duracao) || 0
+      });
 
-        fetchArtistas();
-    }, []);
+      if (editingMusica.artistas && editingMusica.artistas.length > 0) {
+        setSelectedArtistaId(editingMusica.artistas[0].id.toString());
+      } else {
+        setSelectedArtistaId("");
+      }
+    } else {
+      setMusica({ id: 0, nome: "", duracao: 0 });
+      setSelectedArtistaId("");
+    }
+  }, [editingMusica]);
 
-    // Preenche quando for edição
-    useEffect(() => {
-        if (editingMusica) {
-            setMusica({
-                ...editingMusica,
-                id_versao: Number(editingMusica.id_versao) || 0,
-                duracao: Number(editingMusica.duracao) || 0
-            });
-            // For editing, you might want to set the current artist
-            // This would require additional API call to get current artist of the music
+  const handleChange = (e) => {
+    const { name, value, type } = e.target;
+    setMusica(prev => ({
+      ...prev,
+      [name]: type === "number" ? Number(value) : value
+    }));
+  };
+
+  const handleArtistaChange = (e) => {
+    setSelectedArtistaId(e.target.value);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      if (editingMusica) {
+        // Atualiza música
+        await updateMusica(musica.id, musica);
+      } else {
+        // Cria nova música
+        if (selectedArtistaId) {
+          await createMusicaComArtista(musica, selectedArtistaId);
+        } else {
+          await createMusica(musica);
         }
-    }, [editingMusica]);
+      }
 
-    const handleChange = (e) => {
-        const { name, value, type } = e.target;
-        setMusica((prev) => ({
-            ...prev,
-            [name]: type === "number" ? Number(value) : value
-        }));
-    };
+      if (onCreated) onCreated();
+      if (editingMusica && onCancelEdit) onCancelEdit();
 
-    const handleArtistaChange = (e) => {
-        setSelectedArtistaId(e.target.value);
-    };
+      // Reset form para criação futura
+      if (!editingMusica) {
+        setMusica({ id: 0, nome: "", duracao: 0 });
+        setSelectedArtistaId("");
+      }
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setLoading(true);
+    } catch (error) {
+      console.error("Erro ao salvar música:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-        try {
-            if (editingMusica) {
-                // For editing, use the original update method
-                await updateMusica(musica.id, musica);
-                onCreated();
-                if (onCancelEdit) onCancelEdit();
-            } else {
-                // For creating new music
-                if (selectedArtistaId) {
-                    // Create music with selected artist
-                    const createdMusica = await createMusicaComArtista(musica, parseInt(selectedArtistaId));
-                    onCreated(createdMusica);
-                } else {
-                    // Create music without artist (original method)
-                    const createdMusica = await createMusica(musica);
-                    onCreated(createdMusica);
-                }
-
-                // Reset form
-                setMusica({
-                    id_versao: 0,
-                    nome: "",
-                    duracao: 0
-                });
-                setSelectedArtistaId("");
-            }
-        } catch (err) {
-            console.error("Falha ao salvar música:", err);
-            alert("Erro ao salvar música: " + err.message);
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    return React.createElement(MusicaFormTemplate, {
-        musica,
-        artistas,
-        selectedArtistaId,
-        handleChange,
-        handleArtistaChange,
-        handleSubmit,
-        editingMusica,
-        onCancelEdit,
-        loading
-    });
+  return React.createElement(MusicaFormTemplate, {
+    musica,
+    artistas,
+    selectedArtistaId,
+    handleChange,
+    handleArtistaChange,
+    handleSubmit,
+    editingMusica,
+    onCancelEdit,
+    loading
+  });
 }
