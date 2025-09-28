@@ -1,7 +1,9 @@
 package com.soundup.soundup.controller;
 
+import com.soundup.soundup.model.Artista;
 import com.soundup.soundup.model.Usuario;
 import com.soundup.soundup.service.UsuarioService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,8 +32,9 @@ public class UsuarioController {
 
     // POST create
     @PostMapping
-    public void addUsuario(@RequestBody Usuario usuario) {
-        UsuarioService.createUsuario(usuario);
+    public ResponseEntity<Usuario> createUsuario(@RequestBody Usuario usuario) {
+        Usuario saved = UsuarioService.save(usuario);
+        return ResponseEntity.ok(saved);
     }
 
     // PUT update

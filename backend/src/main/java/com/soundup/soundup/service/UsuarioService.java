@@ -1,5 +1,6 @@
 package com.soundup.soundup.service;
 
+import com.soundup.soundup.model.Artista;
 import com.soundup.soundup.model.Usuario;
 import com.soundup.soundup.repository.UsuarioRepository;
 import org.springframework.stereotype.Service;
@@ -26,8 +27,9 @@ public class UsuarioService {
         return UsuarioRepository.findById(id);
     }
 
-    public void createUsuario(Usuario usuario) {
-        UsuarioRepository.save(usuario);
+    public Usuario save(Usuario usuario) {
+        // salva e já retorna o objeto com ID preenchido
+        return UsuarioRepository.save(usuario);
     }
 
     public void updateUsuario(Usuario usuario) {
