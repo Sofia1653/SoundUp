@@ -9,7 +9,7 @@ export default function UsuarioForm({ onCreated }) {
     pais: "",
     estado: "",
     cidade: "",
-    quantSeguidores: "", // keep as string for input
+    quantSeguidores: "",
     telefone: ""
   });
 
