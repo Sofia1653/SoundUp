@@ -22,6 +22,11 @@ public class Usuario {
         this.quantSeguidores = quantSeguidores;
         this.telefone = telefone;
     }
+
+    public Usuario() {
+
+    }
+
     public int getId(){
         return id;
     }
