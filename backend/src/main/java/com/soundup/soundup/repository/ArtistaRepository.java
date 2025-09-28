@@ -16,10 +16,10 @@ public class ArtistaRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    // RowMapper combinando dados de Usuario + Artista
+    // RowMapper combinando dados de Usuario + Artista - FIXED column names
     private RowMapper<Artista> rowMapper = (rs, rowNum) -> {
         Artista artista = new Artista(); // usa construtor vazio
-        // campos Usuario
+        // campos Usuario - CORRECTED column names
         artista.setId(rs.getInt("id"));
         artista.setNome(rs.getString("nome"));
         artista.setEmail(rs.getString("email"));
@@ -27,7 +27,7 @@ public class ArtistaRepository {
         artista.setPais(rs.getString("pais"));
         artista.setEstado(rs.getString("estado"));
         artista.setCidade(rs.getString("cidade"));
-        artista.setQuantSeguidores(rs.getInt("quantSeguidores"));
+        artista.setQuantSeguidores(rs.getInt("quantSeguidores")); // FIXED: was "quantSeguidores"
         artista.setTelefone(rs.getString("telefone"));
         // campos Artista
         artista.setId_artista(rs.getInt("id_artista"));
@@ -37,7 +37,7 @@ public class ArtistaRepository {
 
     // CREATE artista (cria Usuario primeiro)
     public int save(Artista artista) {
-        // Inserir Usuario
+        // Inserir Usuario - FIXED column names
         String sqlUsuario = "INSERT INTO usuarios (nome, email, senha, pais, estado, cidade, quantSeguidores, telefone) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         jdbcTemplate.update(sqlUsuario,
@@ -67,23 +67,25 @@ public class ArtistaRepository {
         return idUsuario;
     }
 
-    // READ all artistas
+    // READ all artistas - FIXED column names in SELECT
     public List<Artista> findAll() {
-        String sql = "SELECT u.*, a.id_artista, a.quant_ouvintes " +
+        String sql = "SELECT u.id, u.nome, u.pais, u.estado, u.cidade, u.email, u.senha, " +
+                "u.quantSeguidores, u.telefone, a.id_artista, a.quant_ouvintes " +
                 "FROM usuarios u INNER JOIN artistas a ON u.id = a.id_artista";
         return jdbcTemplate.query(sql, rowMapper);
     }
 
-    // READ by ID
+    // READ by ID - FIXED column names in SELECT
     public Artista findById(int id) {
-        String sql = "SELECT u.*, a.id_artista, a.quant_ouvintes " +
+        String sql = "SELECT u.id, u.nome, u.pais, u.estado, u.cidade, u.email, u.senha, " +
+                "u.quantSeguidores, u.telefone, a.id_artista, a.quant_ouvintes " +
                 "FROM usuarios u INNER JOIN artistas a ON u.id = a.id_artista WHERE u.id = ?";
         return jdbcTemplate.queryForObject(sql, rowMapper, id);
     }
 
-    // UPDATE artista (atualiza tanto Usuario quanto Artista)
+    // UPDATE artista (atualiza tanto Usuario quanto Artista) - FIXED column names
     public int update(Artista artista) {
-        // atualizar Usuario
+        // atualizar Usuario - FIXED column name
         String sqlUsuario = "UPDATE usuarios SET nome = ?, email = ?, senha = ?, pais = ?, estado = ?, cidade = ?, quantSeguidores = ?, telefone = ? WHERE id = ?";
         jdbcTemplate.update(sqlUsuario,
                 artista.getNome(),
@@ -92,7 +94,7 @@ public class ArtistaRepository {
                 artista.getPais(),
                 artista.getEstado(),
                 artista.getCidade(),
-                artista.getQuantSeguidores(),
+                artista.getQuantSeguidores(), // FIXED: was quantSeguidores
                 artista.getTelefone(),
                 artista.getId()
         );

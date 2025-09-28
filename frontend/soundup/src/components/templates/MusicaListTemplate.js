@@ -1,7 +1,7 @@
 import React from "react";
 import {
     Table, TableBody, TableCell, TableContainer,
-    TableHead, TableRow, Paper, Button, Box, Typography
+    TableHead, TableRow, Paper, Button, Box, Typography, Chip
 } from "@mui/material";
 
 export default function MusicaListTemplate({ musicas, handleDelete, handleEditClick }) {
@@ -15,14 +15,21 @@ export default function MusicaListTemplate({ musicas, handleDelete, handleEditCl
         );
     }
 
+    const formatDuration = (seconds) => {
+        if (!seconds) return '-';
+        const minutes = Math.floor(seconds / 60);
+        const remainingSeconds = seconds % 60;
+        return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+    };
+
     return (
         <TableContainer component={Paper} sx={{ mt: 2 }}>
             <Table>
                 <TableHead>
                     <TableRow sx={{ backgroundColor: 'grey.50' }}>
                         <TableCell sx={{ fontWeight: 'bold' }}>Nome</TableCell>
-                        <TableCell sx={{ fontWeight: 'bold' }}>Duração (s)</TableCell>
-                        <TableCell sx={{ fontWeight: 'bold' }}>ID Versão</TableCell>
+                        <TableCell sx={{ fontWeight: 'bold' }}>Duração</TableCell>
+                        <TableCell sx={{ fontWeight: 'bold' }}>Artistas</TableCell>
                         <TableCell sx={{ fontWeight: 'bold' }} align="center">Ações</TableCell>
                     </TableRow>
                 </TableHead>
@@ -32,14 +39,38 @@ export default function MusicaListTemplate({ musicas, handleDelete, handleEditCl
                             key={m.id}
                             sx={{ '&:hover': { backgroundColor: 'grey.50' } }}
                         >
-                            <TableCell>{m.nome || '-'}</TableCell>
                             <TableCell>
-                                {m.duracao !== null && m.duracao !== undefined
-                                    ? m.duracao
-                                    : '-'
-                                }
+                                <Typography variant="body2" fontWeight="medium">
+                                    {m.nome || '-'}
+                                </Typography>
                             </TableCell>
-                            <TableCell>{m.id_versao || '-'}</TableCell>
+                            <TableCell>
+                                <Typography variant="body2">
+                                    {formatDuration(m.duracao)}
+                                </Typography>
+                                <Typography variant="caption" color="text.secondary">
+                                    ({m.duracao}s)
+                                </Typography>
+                            </TableCell>
+                            <TableCell>
+                                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                                    {m.artistas && m.artistas.length > 0 ? (
+                                        m.artistas.map((artista, index) => (
+                                            <Chip
+                                                key={index}
+                                                label={artista.nome}
+                                                size="small"
+                                                color="primary"
+                                                variant="outlined"
+                                            />
+                                        ))
+                                    ) : (
+                                        <Typography variant="body2" color="text.secondary">
+                                            Nenhum artista
+                                        </Typography>
+                                    )}
+                                </Box>
+                            </TableCell>
                             <TableCell align="center">
                                 <Box sx={{ display: 'flex', gap: 1, justifyContent: 'center' }}>
                                     <Button

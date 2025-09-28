@@ -1,45 +1,93 @@
 package com.soundup.soundup.controller;
 
 import com.soundup.soundup.model.Musica;
-import com.soundup.soundup.model.Usuario;
+import com.soundup.soundup.model.Artista;
 import com.soundup.soundup.service.MusicaService;
-import com.soundup.soundup.service.UsuarioService;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import java.util.List;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/musicas")
 public class MusicaController {
-    private final MusicaService MusicaService;
-    public MusicaController(MusicaService MusicaService) {
-        this.MusicaService = MusicaService;
+
+    private final MusicaService musicaService;
+
+    public MusicaController(MusicaService musicaService) {
+        this.musicaService = musicaService;
     }
 
     @GetMapping
     public List<Musica> getMusicas() {
-        return MusicaService.getAllMusicas();
+        return musicaService.getAllMusicas();
     }
 
     @GetMapping("/{id}")
     public Musica getMusica(@PathVariable int id) {
-        return MusicaService.getMusicaById(id);
+        return musicaService.getMusicaById(id);
     }
 
+    // NEW: Create music with artist selection
+    @PostMapping("/com-artista")
+    public ResponseEntity<Musica> createMusicaComArtista(
+            @RequestBody Musica musica,
+            @RequestParam int artistaId) {
+        try {
+            Musica musicaCriada = musicaService.createMusicaComArtista(musica, artistaId);
+            return ResponseEntity.ok(musicaCriada);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    // Original create method (without artist) - kept for backward compatibility
     @PostMapping
     public void createMusica(@RequestBody Musica musica) {
-        MusicaService.createMusica(musica);
+        musicaService.createMusica(musica);
+    }
+
+    // NEW: Get all artists for selection dropdown
+    @GetMapping("/artistas/select")
+    public ResponseEntity<List<Artista>> getArtistasForSelection() {
+        List<Artista> artistas = musicaService.getAvailableArtistas();
+        return ResponseEntity.ok(artistas);
+    }
+
+    // NEW: Associate an existing music with an artist
+    @PostMapping("/{musicaId}/artistas/{artistaId}")
+    public ResponseEntity<String> associarMusicaComArtista(
+            @PathVariable int musicaId,
+            @PathVariable int artistaId) {
+        try {
+            musicaService.associarMusicaComArtista(musicaId, artistaId);
+            return ResponseEntity.ok("Music associated with artist successfully");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error: " + e.getMessage());
+        }
+    }
+
+    // NEW: Remove association between music and artist
+    @DeleteMapping("/{musicaId}/artistas/{artistaId}")
+    public ResponseEntity<String> removerAssociacaoMusicaArtista(
+            @PathVariable int musicaId,
+            @PathVariable int artistaId) {
+        try {
+            musicaService.removerAssociacaoMusicaArtista(musicaId, artistaId);
+            return ResponseEntity.ok("Association removed successfully");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error: " + e.getMessage());
+        }
     }
 
     @DeleteMapping("/{id}")
     public void deleteMusica(@PathVariable int id) {
-        MusicaService.deleteMusica(id);
+        musicaService.deleteMusica(id);
     }
 
     @PutMapping("/{id}")
     public void updateMusica(@PathVariable int id, @RequestBody Musica musica) {
         musica.setId(id);
-        MusicaService.updateMusica(musica);
+        musicaService.updateMusica(musica);
     }
 }
