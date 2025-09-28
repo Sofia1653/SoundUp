@@ -13,7 +13,6 @@ export default function UsuarioForm({ onCreated }) {
     telefone: ""
   });
 
-  // Update state on input change
   const handleChange = (e) => {
     const { name, value } = e.target;
     setUsuario(prev => ({ ...prev, [name]: value }));
@@ -22,28 +21,22 @@ export default function UsuarioForm({ onCreated }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Convert quantSeguidores to number before sending
     const payload = {
       ...usuario,
       quantSeguidores: usuario.quantSeguidores ? Number(usuario.quantSeguidores) : 0
     };
 
     try {
-      await createUsuario(payload);
+      const createdUsuario = await createUsuario(payload);
+      console.log("Usuario criado:", createdUsuario);
 
-      // Reset form
+      // limpa form
       setUsuario({
-        nome: "",
-        email: "",
-        senha: "",
-        pais: "",
-        estado: "",
-        cidade: "",
-        quantSeguidores: "",
-        telefone: ""
+        nome: "", email: "", senha: "", pais: "", estado: "",
+        cidade: "", quantSeguidores: "", telefone: ""
       });
 
-      if (onCreated) onCreated(); // refresh list in parent
+      if (onCreated) onCreated(createdUsuario); // atualiza lista no parent
     } catch (err) {
       console.error("Failed to create usuario:", err);
     }
@@ -53,62 +46,14 @@ export default function UsuarioForm({ onCreated }) {
     <form onSubmit={handleSubmit}>
       <h2>Add Usuario</h2>
 
-      {/* Required fields */}
-      <input
-        name="nome"
-        placeholder="Nome"
-        value={usuario.nome}
-        onChange={handleChange}
-        required
-      />
-      <input
-        name="email"
-        type="email"
-        placeholder="Email"
-        value={usuario.email}
-        onChange={handleChange}
-        required
-      />
-      <input
-        name="senha"
-        placeholder="Senha"
-        value={usuario.senha}
-        onChange={handleChange}
-        required
-      />
-
-      {/* Optional fields */}
-      <input
-        name="pais"
-        placeholder="Pais"
-        value={usuario.pais}
-        onChange={handleChange}
-      />
-      <input
-        name="estado"
-        placeholder="Estado"
-        value={usuario.estado}
-        onChange={handleChange}
-      />
-      <input
-        name="cidade"
-        placeholder="Cidade"
-        value={usuario.cidade}
-        onChange={handleChange}
-      />
-      <input
-        name="quantSeguidores"
-        type="number"
-        placeholder="Quant Seguidores"
-        value={usuario.quantSeguidores}
-        onChange={handleChange}
-      />
-      <input
-        name="telefone"
-        placeholder="Telefone"
-        value={usuario.telefone}
-        onChange={handleChange}
-      />
+      <input name="nome" placeholder="Nome" value={usuario.nome} onChange={handleChange} required />
+      <input name="email" type="email" placeholder="Email" value={usuario.email} onChange={handleChange} required />
+      <input name="senha" placeholder="Senha" value={usuario.senha} onChange={handleChange} required />
+      <input name="pais" placeholder="Pais" value={usuario.pais} onChange={handleChange} />
+      <input name="estado" placeholder="Estado" value={usuario.estado} onChange={handleChange} />
+      <input name="cidade" placeholder="Cidade" value={usuario.cidade} onChange={handleChange} />
+      <input name="quantSeguidores" type="number" placeholder="Quant Seguidores" value={usuario.quantSeguidores} onChange={handleChange} />
+      <input name="telefone" placeholder="Telefone" value={usuario.telefone} onChange={handleChange} />
 
       <button type="submit">Add Usuario</button>
     </form>

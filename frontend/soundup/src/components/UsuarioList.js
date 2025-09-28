@@ -5,7 +5,7 @@ import UsuarioForm from "./UsuarioForm";
 export default function UsuarioList() {
   const [usuarios, setUsuarios] = useState([]);
 
-  const fetchUsuarios = () => getUsuarios().then(setUsuarios);
+  const fetchUsuarios = () => getUsuarios().then(data => setUsuarios(data));
 
   useEffect(() => {
     getUsuarios()
@@ -25,24 +25,25 @@ export default function UsuarioList() {
         });
     }, []);
 
-
-
   const handleDelete = (id) => {
     deleteUsuario(id).then(fetchUsuarios);
   };
 
+  const handleCreated = (createdUsuario) => {
+    setUsuarios(prev => [...prev, createdUsuario]);
+  };
+
   return (
     <div>
-      <UsuarioForm onCreated={fetchUsuarios} />
-
-      <h2>Usuarios</h2>
+      <UsuarioForm onCreated={handleCreated} />
+      <h2>Usuários</h2>
       <ul>
-            {(Array.isArray(usuarios) ? usuarios : []).map(u => (
-                <li key={u.id}>
-                {u.nome} ({u.email})
-                <button onClick={() => handleDelete(u.id)}>Delete</button>
-                </li>
-            ))}
+          {(Array.isArray(usuarios) ? usuarios : []).map(u => (
+              <li key={u.id}>
+              {u.nome} ({u.estado})
+              <button onClick={() => handleDelete(u.id)}>Delete</button>
+              </li>
+          ))}
         </ul>
     </div>
   );
