@@ -15,6 +15,14 @@ public class ArtistaService {
         this.artistaRepository = artistaRepository;
     }
 
+    public Artista save(Artista artista) {
+        int idGerado = artistaRepository.save(artista);
+        artista.setId_artista(idGerado); // atualiza objeto
+        artista.setId(idGerado); // se id do Usuario = id_artista
+        return artistaRepository.findById(idGerado);
+    }
+
+
     // GET all
     public List<Artista> getAllArtistas() {
         return artistaRepository.findAll();

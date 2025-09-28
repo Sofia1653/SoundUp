@@ -2,6 +2,7 @@ package com.soundup.soundup.controller;
 
 import com.soundup.soundup.model.Artista;
 import com.soundup.soundup.service.ArtistaService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,6 +17,12 @@ public class ArtistaController {
         this.artistaService = artistaService;
     }
 
+    @PostMapping
+    public ResponseEntity<Artista> createArtista(@RequestBody Artista artista) {
+        Artista saved = artistaService.save(artista);
+        return ResponseEntity.ok(saved);
+    }
+
     // GET all
     @GetMapping
     public List<Artista> getArtistas() {
@@ -26,12 +33,6 @@ public class ArtistaController {
     @GetMapping("/{id}")
     public Artista getArtista(@PathVariable int id) {
         return artistaService.getArtistaById(id);
-    }
-
-    // POST create
-    @PostMapping
-    public void addArtista(@RequestBody Artista artista) {
-        artistaService.createArtista(artista);
     }
 
     // PUT update

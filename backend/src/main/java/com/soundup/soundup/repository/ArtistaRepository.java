@@ -54,12 +54,17 @@ public class ArtistaRepository {
         // Pegar ID gerado
         Integer idUsuario = jdbcTemplate.queryForObject("SELECT LAST_INSERT_ID()", Integer.class);
 
+        if (idUsuario == null) {
+            throw new RuntimeException("Falha ao recuperar ID do usuário inserido.");
+        }
+
         // Inserir Artista usando idUsuario
         String sqlArtista = "INSERT INTO artistas (id_artista, quant_ouvintes) VALUES (?, ?)";
-        return jdbcTemplate.update(sqlArtista,
+        jdbcTemplate.update(sqlArtista,
                 idUsuario,
                 artista.getQuant_ouvintes()
         );
+        return idUsuario;
     }
 
     // READ all artistas
