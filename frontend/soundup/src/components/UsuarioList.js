@@ -1,7 +1,9 @@
+// UsuarioList.js
 import React, { useEffect, useState } from "react";
+import { Box, Typography } from "@mui/material"; // Updated imports
 import { getUsuarios, deleteUsuario } from "../services/usuarioService";
 import UsuarioForm from "./UsuarioForm";
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button } from "@mui/material";
+import UsuarioListTemplate from "./templates/UsuarioListTemplate";
 
 export default function UsuarioList() {
   const [usuarios, setUsuarios] = useState([]);
@@ -46,44 +48,28 @@ export default function UsuarioList() {
   };
 
   return (
-    <div>
-      <UsuarioForm 
-        onCreated={handleCreatedOrUpdated} 
-        editingUsuario={editingUsuario} 
-        onCancelEdit={handleCancelEdit} 
+    <Box sx={{ p: 3 }}>
+      <Typography variant="h4" component="h1" gutterBottom>
+        Gerenciar Usuários
+      </Typography>
+      
+      <Box sx={{ mb: 4 }}>
+        <UsuarioForm
+          onCreated={handleCreatedOrUpdated}
+          editingUsuario={editingUsuario}
+          onCancelEdit={handleCancelEdit}
+        />
+      </Box>
+
+      <Typography variant="h5" component="h2" gutterBottom>
+        Lista de Usuários
+      </Typography>
+      
+      <UsuarioListTemplate
+        usuarios={usuarios}
+        handleDelete={handleDelete}
+        handleEditClick={handleEditClick}
       />
-      <h2>Usuarios</h2>
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Nome</TableCell>
-              <TableCell>Email</TableCell>
-              <TableCell>Estado</TableCell>
-              <TableCell>Cidade</TableCell>
-              <TableCell>Quant Seguidores</TableCell>
-              <TableCell>Telefone</TableCell>
-              <TableCell>Ações</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {usuarios.map(u => (
-              <TableRow key={u.id}>
-                <TableCell>{u.nome}</TableCell>
-                <TableCell>{u.email}</TableCell>
-                <TableCell>{u.estado}</TableCell>
-                <TableCell>{u.cidade}</TableCell>
-                <TableCell>{u.quantSeguidores}</TableCell>
-                <TableCell>{u.telefone}</TableCell>
-                <TableCell>
-                  <Button variant="outlined" onClick={() => handleEditClick(u)}>Editar</Button>
-                  <Button variant="outlined" color="error" onClick={() => handleDelete(u.id)} style={{ marginLeft: 8 }}>Excluir</Button>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </div>
+    </Box>
   );
 }

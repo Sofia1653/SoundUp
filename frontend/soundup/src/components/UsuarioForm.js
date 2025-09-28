@@ -1,6 +1,7 @@
+// UsuarioForm.js
 import React, { useEffect, useState } from "react";
-import { TextField, Button, Grid } from "@mui/material";
 import { createUsuario, updateUsuario } from "../services/usuarioService";
+import UsuarioFormTemplate from "./templates/UsuarioFormTemplate";
 
 export default function UsuarioForm({ onCreated, editingUsuario, onCancelEdit }) {
   const [usuario, setUsuario] = useState({
@@ -43,61 +44,32 @@ export default function UsuarioForm({ onCreated, editingUsuario, onCancelEdit })
         const createdUsuario = await createUsuario(usuario);
         onCreated(createdUsuario);
       }
-
-      setUsuario({
-        nome: "",
-        email: "",
-        senha: "",
-        pais: "",
-        estado: "",
-        cidade: "",
-        quantSeguidores: 0,
-        telefone: ""
-      });
+      
+      // Reset form only if not editing
+      if (!editingUsuario) {
+        setUsuario({
+          nome: "",
+          email: "",
+          senha: "",
+          pais: "",
+          estado: "",
+          cidade: "",
+          quantSeguidores: 0,
+          telefone: ""
+        });
+      }
     } catch (err) {
       console.error("Falha ao salvar usuário:", err);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <Grid container spacing={2}>
-        <Grid item xs={12} sm={6}>
-          <TextField label="Nome" name="nome" value={usuario.nome} onChange={handleChange} fullWidth required />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <TextField label="Email" name="email" type="email" value={usuario.email} onChange={handleChange} fullWidth required />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <TextField label="Senha" name="senha" type="password" value={usuario.senha} onChange={handleChange} fullWidth required={!editingUsuario} />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <TextField label="Pais" name="pais" value={usuario.pais} onChange={handleChange} fullWidth />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <TextField label="Estado" name="estado" value={usuario.estado} onChange={handleChange} fullWidth />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <TextField label="Cidade" name="cidade" value={usuario.cidade} onChange={handleChange} fullWidth />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <TextField label="Quant Seguidores" name="quantSeguidores" type="number" value={usuario.quantSeguidores ?? 0} onChange={handleChange} fullWidth />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <TextField label="Telefone" name="telefone" value={usuario.telefone} onChange={handleChange} fullWidth />
-        </Grid>
-
-        <Grid item xs={12}>
-          <Button variant="contained" color="primary" type="submit">
-            {editingUsuario ? "Atualizar" : "Adicionar"}
-          </Button>
-          {editingUsuario && onCancelEdit && (
-            <Button variant="outlined" color="secondary" onClick={onCancelEdit} style={{ marginLeft: 8 }}>
-              Cancelar
-            </Button>
-          )}
-        </Grid>
-      </Grid>
-    </form>
+    <UsuarioFormTemplate
+      usuario={usuario}
+      handleChange={handleChange}
+      handleSubmit={handleSubmit}
+      editingUsuario={editingUsuario}
+      onCancelEdit={onCancelEdit}
+    />
   );
 }

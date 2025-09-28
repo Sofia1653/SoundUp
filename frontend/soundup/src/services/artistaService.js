@@ -27,15 +27,20 @@ export async function createArtista(artista) {
 }
 
 // PUT - atualizar artista
-export async function updateArtista(id, artista) {
-  const res = await fetch(`${API_URL}/${id}`, {
+export const updateArtista = async (id, artista) => {
+  const response = await fetch(`${API_URL}/${id}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(artista),
   });
-  if (!res.ok) throw new Error("Erro ao atualizar artista");
-  return res.json();
-}
+  
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+  
+  // Don't parse JSON from void response (same fix as usuario service)
+  return { success: true };
+};
 
 // DELETE - remover artista
 export async function deleteArtista(id) {
