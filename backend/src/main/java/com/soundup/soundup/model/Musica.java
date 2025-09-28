@@ -2,13 +2,11 @@ package com.soundup.soundup.model;
 
 public class Musica {
     private int id;
-    private int id_versao;
     private String nome;
     private int duracao;
 
-    public Musica(int id, int id_versao, String nome, int duracao){
+    public Musica(int id, String nome, int duracao){
         this.id = id;
-        this.id_versao = id_versao;
         this.nome = nome;
         this.duracao = duracao;
     }
@@ -19,16 +17,10 @@ public class Musica {
     public void setId(int id){
         this.id = id;
     }
-    public int getIdVersao(){
-        return id_versao;
-    }
-    public void setIdVersao(int id_versao){
-        this.id_versao = id_versao;
-    }
     public String getNome(){
         return nome;
     }
-    public void setNome(){
+    public void setNome(String nome){
         this.nome = nome;
     }
     public int getDuracao(){

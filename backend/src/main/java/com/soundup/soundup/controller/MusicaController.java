@@ -28,7 +28,7 @@ public class MusicaController {
     }
 
     @PostMapping
-    public void addMusica(@RequestBody Musica musica) {
+    public void createMusica(@RequestBody Musica musica) {
         MusicaService.createMusica(musica);
     }
 
