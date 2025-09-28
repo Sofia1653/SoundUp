@@ -20,7 +20,13 @@ export const updateUsuario = async (id, usuario) => {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(usuario),
   });
-  return response.json();
+  
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+  
+  // Don't try to parse JSON from empty response
+  return { success: true };
 };
 
 export const deleteUsuario = async (id) => {
