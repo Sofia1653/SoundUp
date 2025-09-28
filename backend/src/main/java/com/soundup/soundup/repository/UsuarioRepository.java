@@ -3,8 +3,12 @@ package com.soundup.soundup.repository;
 import com.soundup.soundup.model.Usuario;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.util.List;
 
 @Repository
@@ -16,31 +20,39 @@ public class UsuarioRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    private RowMapper<Usuario> usuarioRowMapper = (rs, rowNum) -> new Usuario(
-            rs.getInt("id"),
-            rs.getString("nome"),
-            rs.getString("email"),
-            rs.getString("senha"),
-            rs.getString("pais"),
-            rs.getString("estado"),
-            rs.getString("cidade"),
-            rs.getInt("quantSeguidores"),
-            rs.getString("telefone")
-    );
+    private RowMapper<Usuario> usuarioRowMapper = (rs, rowNum) -> {
+        Usuario u = new Usuario();
+        u.setId(rs.getInt("id"));
+        u.setNome(rs.getString("nome"));
+        u.setEmail(rs.getString("email"));
+        u.setSenha(rs.getString("senha"));
+        u.setPais(rs.getString("pais"));
+        u.setEstado(rs.getString("estado"));
+        u.setCidade(rs.getString("cidade"));
+        u.setQuantSeguidores(rs.getInt("quantSeguidores"));
+        u.setTelefone(rs.getString("telefone"));
+        return u;
+    };
 
-    public int save(Usuario usuario) {
-        String sql = "INSERT INTO usuarios (nome, email, senha, pais, estado, cidade, quantSeguidores, telefone) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-        return jdbcTemplate.update(sql,
-                usuario.getNome(),
-                usuario.getEmail(),
-                usuario.getSenha(),
-                usuario.getPais(),
-                usuario.getEstado(),
-                usuario.getCidade(),
-                usuario.getQuantSeguidores(),
-                usuario.getTelefone()
-        );
+    public Usuario save(Usuario usuario) {
+        String sql = "INSERT INTO usuarios (nome, email, senha, pais, estado, cidade, quantSeguidores, telefone) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        jdbcTemplate.update(connection -> {
+            PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, usuario.getNome());
+            ps.setString(2, usuario.getEmail());
+            ps.setString(3, usuario.getSenha());
+            ps.setString(4, usuario.getPais());
+            ps.setString(5, usuario.getEstado());
+            ps.setString(6, usuario.getCidade());
+            ps.setInt(7, usuario.getQuantSeguidores());
+            ps.setString(8, usuario.getTelefone());
+            return ps;
+        }, keyHolder);
+
+        usuario.setId(keyHolder.getKey().intValue());
+        return usuario;
     }
 
     public List<Usuario> findAll() {
