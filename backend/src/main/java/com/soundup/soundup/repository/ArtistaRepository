@@ -1,0 +1,93 @@
+package com.soundup.soundup.repository;
+
+import com.soundup.soundup.model.Artista;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+
+@Repository
+public class ArtistaRepository {
+
+    private final JdbcTemplate jdbcTemplate;
+
+    public ArtistaRepository(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
+    private RowMapper<Artista> rowMapper = (rs, rowNum) -> new Artista(
+            rs.getInt("id"),
+            rs.getString("nome"),
+            rs.getString("pais"),
+            rs.getString("estado"),
+            rs.getString("cidade"),
+            rs.getString("email"),
+            rs.getString("senha"),
+            rs.getInt("quantSeguidores"),
+            rs.getString("telefone"),
+            rs.getInt("id_artista"),
+            rs.getInt("quant_ouvintes")
+    );
+
+    public int save(Artista artista) {
+        String sqlUsuario = "INSERT INTO usuarios (nome, email, senha, pais, estado, cidade, quantSeguidores, telefone) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        jdbcTemplate.update(sqlUsuario,
+                artista.getNome(),
+                artista.getEmail(),
+                artista.getSenha(),
+                artista.getPais(),
+                artista.getEstado(),
+                artista.getCidade(),
+                artista.getQuantSeguidores(),
+                artista.getTelefone()
+        );
+
+        Integer idUsuario = jdbcTemplate.queryForObject("SELECT LAST_INSERT_ID()", Integer.class);
+
+        String sqlArtista = "INSERT INTO artistas (id, id_artista, quant_ouvintes) VALUES (?, ?, ?)";
+        return jdbcTemplate.update(sqlArtista,
+                idUsuario,
+                artista.getId_artista(),
+                artista.getQuant_ouvintes()
+        );
+    }
+
+    public List<Artista> findAll() {
+        String sql = "SELECT u.*, a.id_artista, a.quant_ouvintes " +
+                "FROM usuarios u INNER JOIN artistas a ON u.id = a.id";
+        return jdbcTemplate.query(sql, rowMapper);
+    }
+
+    public Artista findById(int id) {
+        String sql = "SELECT u.*, a.id_artista, a.quant_ouvintes " +
+                "FROM usuarios u INNER JOIN artistas a ON u.id = a.id WHERE u.id = ?";
+        return jdbcTemplate.queryForObject(sql, rowMapper, id);
+    }
+
+    public int update(Artista artista) {
+        String sqlUsuario = "UPDATE usuarios SET nome = ?, email = ?, senha = ?, pais = ?, estado = ?, cidade = ?, quantSeguidores = ?, telefone = ? WHERE id = ?";
+        jdbcTemplate.update(sqlUsuario,
+                artista.getNome(),
+                artista.getEmail(),
+                artista.getSenha(),
+                artista.getPais(),
+                artista.getEstado(),
+                artista.getCidade(),
+                artista.getQuantSeguidores(),
+                artista.getTelefone(),
+                artista.getId()
+        );
+
+        String sqlArtista = "UPDATE artistas SET quant_ouvintes = ? WHERE id = ?";
+        return jdbcTemplate.update(sqlArtista,
+                artista.getQuant_ouvintes(),
+                artista.getId()
+        );
+    }
+
+    public int delete(int id) {
+        return jdbcTemplate.update("DELETE FROM usuarios WHERE id = ?", id);
+    }
+}
