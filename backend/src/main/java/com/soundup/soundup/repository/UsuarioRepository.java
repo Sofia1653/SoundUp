@@ -1,4 +1,5 @@
 package com.soundup.soundup.repository;
+
 import com.soundup.soundup.model.Usuario;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -15,7 +16,7 @@ public class UsuarioRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    private RowMapper<Usuario> rowMapper = (rs, rowNum) -> new Usuario(
+    private RowMapper<Usuario> usuarioRowMapper = (rs, rowNum) -> new Usuario(
             rs.getInt("id"),
             rs.getString("nome"),
             rs.getString("email"),
@@ -43,11 +44,13 @@ public class UsuarioRepository {
     }
 
     public List<Usuario> findAll() {
-        return jdbcTemplate.query("SELECT * FROM usuarios", rowMapper);
+        String sql = "SELECT * FROM usuarios";
+        return jdbcTemplate.query(sql, usuarioRowMapper);
     }
 
     public Usuario findById(int id) {
-        return jdbcTemplate.queryForObject("SELECT * FROM usuarios WHERE id = ?", rowMapper, id);
+        String sql = "SELECT * FROM usuarios WHERE id = ?";
+        return jdbcTemplate.queryForObject(sql, usuarioRowMapper, id);
     }
 
     public int update(Usuario usuario) {
@@ -66,6 +69,7 @@ public class UsuarioRepository {
     }
 
     public int delete(int id) {
-        return jdbcTemplate.update("DELETE FROM usuarios WHERE id = ?", id);
+        String sql = "DELETE FROM usuarios WHERE id = ?";
+        return jdbcTemplate.update(sql, id);
     }
 }
