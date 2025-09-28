@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { createArtista, updateArtista } from "../services/artistaService";
 import ArtistaFormTemplate from "./templates/ArtistaFormTemplate";
-import { createArtista } from "../services/artistaService";
 
-export default function ArtistaForm({ onCreated }) {
+export default function ArtistaForm({ onCreated, editingArtista, onCancelEdit }) {
   const [artista, setArtista] = useState({
     nome: "",
     email: "",
@@ -10,46 +10,68 @@ export default function ArtistaForm({ onCreated }) {
     pais: "",
     estado: "",
     cidade: "",
-    quantSeguidores: "",
+    quantSeguidores: 0,
     telefone: "",
-    quant_ouvintes: ""
+    quant_ouvintes: 0
   });
 
+  // Se estiver editando, popula o form
+  useEffect(() => {
+    if (editingArtista) {
+      setArtista({
+        ...editingArtista,
+        quantSeguidores: Number(editingArtista.quantSeguidores) || 0,
+        quant_ouvintes: Number(editingArtista.quant_ouvintes) || 0
+      });
+    }
+  }, [editingArtista]);
+
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setArtista((prev) => ({ ...prev, [name]: value }));
+    const { name, value, type } = e.target;
+    setArtista(prev => ({
+      ...prev,
+      [name]: type === "number" ? Number(value) : value
+    }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const payload = {
-      ...artista,
-      quantSeguidores: artista.quantSeguidores ? Number(artista.quantSeguidores) : 0,
-      quant_ouvintes: artista.quant_ouvintes ? Number(artista.quant_ouvintes) : 0
-    };
-
     try {
-      const createdArtista = await createArtista(payload);
-      if (onCreated) onCreated(createdArtista);
-
-      setArtista({
-        nome: "",
-        email: "",
-        senha: "",
-        pais: "",
-        estado: "",
-        cidade: "",
-        quantSeguidores: "",
-        telefone: "",
-        quant_ouvintes: ""
-      });
+      if (editingArtista) {
+        await updateArtista(artista.id, artista);
+        onCreated(); // atualiza lista
+        if (onCancelEdit) onCancelEdit();
+      } else {
+        const createdArtista = await createArtista(artista);
+        onCreated(createdArtista);
+      }
+      
+      // Reset form only if not editing
+      if (!editingArtista) {
+        setArtista({
+          nome: "",
+          email: "",
+          senha: "",
+          pais: "",
+          estado: "",
+          cidade: "",
+          quantSeguidores: 0,
+          telefone: "",
+          quant_ouvintes: 0
+        });
+      }
     } catch (err) {
-      console.error("Failed to create artista:", err);
+      console.error("Falha ao salvar artista:", err);
     }
   };
 
   return (
-    <ArtistaFormTemplate artista={artista} handleChange={handleChange} handleSubmit={handleSubmit} />
+    <ArtistaFormTemplate
+      artista={artista}
+      handleChange={handleChange}
+      handleSubmit={handleSubmit}
+      editingArtista={editingArtista}
+      onCancelEdit={onCancelEdit}
+    />
   );
 }

@@ -7,7 +7,7 @@ function App() {
     <div className="App">
       <h1>SoundUp</h1>
       <UsuarioList />
-
+      <br></br>
       <ArtistaList />
     </div>
   );

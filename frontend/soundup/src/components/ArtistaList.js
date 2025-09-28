@@ -1,19 +1,28 @@
 import React, { useEffect, useState } from "react";
-import ArtistaListTemplate from "./templates/ArtistaListTemplate";
+import { Box, Typography } from "@mui/material"; // Updated imports
 import { getArtistas, deleteArtista } from "../services/artistaService";
 import ArtistaForm from "./ArtistaForm";
+import ArtistaListTemplate from "./templates/ArtistaListTemplate";
 
 export default function ArtistaList() {
   const [artistas, setArtistas] = useState([]);
+  const [editingArtista, setEditingArtista] = useState(null);
 
-  const fetchArtistas = async () => {
-    try {
-      const data = await getArtistas();
-      setArtistas(Array.isArray(data) ? data : data.content || []);
-    } catch (err) {
-      console.error("Failed to fetch artistas:", err);
-      setArtistas([]);
-    }
+  const fetchArtistas = () => {
+    getArtistas()
+      .then(data => {
+        if (Array.isArray(data)) {
+          setArtistas(data);
+        } else if (data && data.content) {
+          setArtistas(data.content);
+        } else {
+          setArtistas([]);
+        }
+      })
+      .catch(err => {
+        console.error("Erro ao buscar artistas:", err);
+        setArtistas([]);
+      });
   };
 
   useEffect(() => {
@@ -24,16 +33,42 @@ export default function ArtistaList() {
     deleteArtista(id).then(fetchArtistas);
   };
 
-  const handleCreated = (createdArtista) => {
-    if (!createdArtista) return;
-    setArtistas((prev) => [...prev, createdArtista]);
+  const handleCreatedOrUpdated = () => {
+    fetchArtistas();
+    setEditingArtista(null);
+  };
+
+  const handleEditClick = (artista) => {
+    setEditingArtista(artista);
+  };
+
+  const handleCancelEdit = () => {
+    setEditingArtista(null);
   };
 
   return (
-    <div>
+    <Box sx={{ p: 3 }}>
+      <Typography variant="h4" component="h1" gutterBottom>
+        Gerenciar Artistas
+      </Typography>
       
-      <ArtistaForm onCreated={handleCreated} />
-      <ArtistaListTemplate artistas={artistas} handleDelete={handleDelete} />
-    </div>
+      <Box sx={{ mb: 4 }}>
+        <ArtistaForm
+          onCreated={handleCreatedOrUpdated}
+          editingArtista={editingArtista}
+          onCancelEdit={handleCancelEdit}
+        />
+      </Box>
+
+      <Typography variant="h5" component="h2" gutterBottom>
+        Lista de Artistas
+      </Typography>
+      
+      <ArtistaListTemplate
+        artistas={artistas}
+        handleDelete={handleDelete}
+        handleEditClick={handleEditClick}
+      />
+    </Box>
   );
 }
