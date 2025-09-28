@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { createUsuario } from "../services/usuarioService";
-import UsuarioFormTemplate from "./UsuarioFormTemplate";
+import UsuarioFormTemplate from "./templates/UsuarioFormTemplate";
 
 export default function UsuarioForm({ onCreated }) {
   const [usuario, setUsuario] = useState({

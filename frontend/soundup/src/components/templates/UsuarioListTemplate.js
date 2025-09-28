@@ -1,4 +1,3 @@
-// src/templates/UsuarioListTemplate.js
 import React from "react";
 import {
   Table, TableBody, TableCell, TableContainer,
@@ -16,7 +15,7 @@ export default function UsuarioListTemplate({ usuarios, handleDelete }) {
           <TableRow>
             <TableCell>Nome</TableCell>
             <TableCell>Email</TableCell>
-            <TableCell>Pais</TableCell>
+            <TableCell>País</TableCell>
             <TableCell>Estado</TableCell>
             <TableCell>Cidade</TableCell>
             <TableCell>Seguidores</TableCell>

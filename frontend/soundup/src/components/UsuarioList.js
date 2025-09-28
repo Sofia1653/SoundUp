@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getUsuarios, deleteUsuario } from "../services/usuarioService";
 import UsuarioForm from "./UsuarioForm";
-import UsuarioListTemplate from "./UsuarioListTemplate";
+import UsuarioListTemplate from "./templates/UsuarioListTemplate";
 
 export default function UsuarioList() {
   const [usuarios, setUsuarios] = useState([]);

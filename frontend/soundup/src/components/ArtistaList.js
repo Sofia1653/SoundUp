@@ -1,46 +1,39 @@
 import React, { useEffect, useState } from "react";
+import ArtistaListTemplate from "./templates/ArtistaListTemplate";
 import { getArtistas, deleteArtista } from "../services/artistaService";
 import ArtistaForm from "./ArtistaForm";
 
 export default function ArtistaList() {
   const [artistas, setArtistas] = useState([]);
 
-  const fetchArtistas = () => getArtistas().then(setArtistas);
+  const fetchArtistas = async () => {
+    try {
+      const data = await getArtistas();
+      setArtistas(Array.isArray(data) ? data : data.content || []);
+    } catch (err) {
+      console.error("Failed to fetch artistas:", err);
+      setArtistas([]);
+    }
+  };
 
   useEffect(() => {
-    getArtistas()
-        .then(data => {
-        console.log("Fetched data:", data);
-        if (Array.isArray(data)) {
-            setArtistas(data);
-        } else if (data && data.content) {
-            setArtistas(data.content);
-        } else {
-            setArtistas([]); // fallback
-        }
-        })
-        .catch(err => {
-        console.error("Failed to fetch Artistas:", err);
-        setArtistas([]);
-        });
-    }, []);
+    fetchArtistas();
+  }, []);
 
   const handleDelete = (id) => {
     deleteArtista(id).then(fetchArtistas);
   };
 
+  const handleCreated = (createdArtista) => {
+    if (!createdArtista) return;
+    setArtistas((prev) => [...prev, createdArtista]);
+  };
+
   return (
     <div>
-      <ArtistaForm onCreated={fetchArtistas} />
-      <h2>Artistas</h2>
-      <ul>
-        {artistas.map(a => (
-          <li key={a.id}>
-            {a.nome} ({a.email}) - Ouvintes: {a.quant_ouvintes}
-            <button onClick={() => handleDelete(a.id)}>Delete</button>
-          </li>
-        ))}
-      </ul>
+      
+      <ArtistaForm onCreated={handleCreated} />
+      <ArtistaListTemplate artistas={artistas} handleDelete={handleDelete} />
     </div>
   );
 }
