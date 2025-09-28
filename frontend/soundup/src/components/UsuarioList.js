@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getUsuarios, deleteUsuario } from "../services/usuarioService";
 import UsuarioForm from "./UsuarioForm";
+import UsuarioListTemplate from "./UsuarioListTemplate";
 
 export default function UsuarioList() {
   const [usuarios, setUsuarios] = useState([]);
@@ -36,15 +37,7 @@ export default function UsuarioList() {
   return (
     <div>
       <UsuarioForm onCreated={handleCreated} />
-      <h2>Usuários</h2>
-      <ul>
-          {(Array.isArray(usuarios) ? usuarios : []).map(u => (
-              <li key={u.id}>
-              {u.nome} ({u.estado})
-              <button onClick={() => handleDelete(u.id)}>Delete</button>
-              </li>
-          ))}
-        </ul>
+      <UsuarioListTemplate usuarios={usuarios} handleDelete={handleDelete} />
     </div>
   );
 }

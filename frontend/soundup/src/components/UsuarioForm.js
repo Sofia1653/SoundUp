@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { createUsuario } from "../services/usuarioService";
+import UsuarioFormTemplate from "./UsuarioFormTemplate";
 
 export default function UsuarioForm({ onCreated }) {
   const [usuario, setUsuario] = useState({
@@ -42,20 +43,5 @@ export default function UsuarioForm({ onCreated }) {
     }
   };
 
-  return (
-    <form onSubmit={handleSubmit}>
-      <h2>Add Usuario</h2>
-
-      <input name="nome" placeholder="Nome" value={usuario.nome} onChange={handleChange} required />
-      <input name="email" type="email" placeholder="Email" value={usuario.email} onChange={handleChange} required />
-      <input name="senha" placeholder="Senha" value={usuario.senha} onChange={handleChange} required />
-      <input name="pais" placeholder="Pais" value={usuario.pais} onChange={handleChange} />
-      <input name="estado" placeholder="Estado" value={usuario.estado} onChange={handleChange} />
-      <input name="cidade" placeholder="Cidade" value={usuario.cidade} onChange={handleChange} />
-      <input name="quantSeguidores" type="number" placeholder="Quant Seguidores" value={usuario.quantSeguidores} onChange={handleChange} />
-      <input name="telefone" placeholder="Telefone" value={usuario.telefone} onChange={handleChange} />
-
-      <button type="submit">Add Usuario</button>
-    </form>
-  );
+  return <UsuarioFormTemplate usuario={usuario} handleChange={handleChange} handleSubmit={handleSubmit} />;
 }
