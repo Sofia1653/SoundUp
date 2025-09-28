@@ -15,14 +15,8 @@ export default function MusicaFormTemplate({
     return (
         <form onSubmit={handleSubmit}>
             <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-                {/* First row - Nome and Duração */}
-                <Box
-                    sx={{
-                        display: "flex",
-                        flexDirection: { xs: "column", sm: "row" },
-                        gap: 2
-                    }}
-                >
+                {/* Nome e Duração */}
+                <Box sx={{ display: "flex", flexDirection: { xs: "column", sm: "row" }, gap: 2 }}>
                     <TextField
                         label="Nome"
                         name="nome"
@@ -44,8 +38,8 @@ export default function MusicaFormTemplate({
                     />
                 </Box>
 
-                {/* Artist selection row - Only show when creating new music */}
-                {!editingMusica && (
+                {/* Seletor de Artista - agora sempre visível */}
+                {artistas.length > 0 && (
                     <Box sx={{ display: "flex", flexDirection: { xs: "column", sm: "row" }, gap: 2 }}>
                         <FormControl fullWidth>
                             <InputLabel id="artista-select-label">Artista (Opcional)</InputLabel>
@@ -69,7 +63,7 @@ export default function MusicaFormTemplate({
                     </Box>
                 )}
 
-                {/* Buttons row */}
+                {/* Botões */}
                 <Box sx={{ display: "flex", gap: 1, mt: 1 }}>
                     <Button
                         variant="contained"
