@@ -4,6 +4,10 @@ public class Artista extends Usuario{
     private int id_artista;
     private int quant_ouvintes = 0;
 
+    public Artista() {
+        super();
+    }
+
     public Artista (int id, String nome, String pais, String estado, String cidade, String email, String senha,
                     int quantSeguidores, String telefone, int id_artista, int quant_ouvintes) {
         super(id, nome, pais, estado, cidade, email, senha, quantSeguidores, telefone);

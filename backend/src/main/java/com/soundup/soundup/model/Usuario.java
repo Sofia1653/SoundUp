@@ -22,6 +22,11 @@ public class Usuario {
         this.quantSeguidores = quantSeguidores;
         this.telefone = telefone;
     }
+
+    public Usuario() {
+
+    }
+
     public int getId(){
         return id;
     }
@@ -43,7 +48,7 @@ public class Usuario {
     public String getEstado(){
         return estado;
     }
-    public void setEstado(){
+    public void setEstado(String estado){
         this.estado = estado;
     }
     public String getCidade(){
