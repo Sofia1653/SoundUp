@@ -1,6 +1,7 @@
 import React from "react";
 import UsuarioList from "./components/UsuarioList";
 import ArtistaList from "./components/ArtistaList";
+import MusicaList from "./components/MusicaList";
 
 function App() {
   return (
@@ -9,6 +10,8 @@ function App() {
       <UsuarioList />
       <br></br>
       <ArtistaList />
+        <br></br>
+        <MusicaList />
     </div>
   );
 }
