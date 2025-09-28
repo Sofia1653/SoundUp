@@ -31,7 +31,7 @@ export default function MusicaFormTemplate({
                         label="Duração (segundos)"
                         name="duracao"
                         type="number"
-                        value={musica.duracao ?? 0}
+                        value={musica.duracao ?? ""}
                         onChange={handleChange}
                         fullWidth
                         required

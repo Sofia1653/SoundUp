@@ -23,7 +23,7 @@ public class MusicaRepository {
     );
 
     public int save(Musica musicas) {
-        String sql = "INSERT INTO musicas (nome, duracao) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO musicas (nome, duracao) VALUES (?, ?)";
         return jdbcTemplate.update(sql,
                 musicas.getNome(),
                 musicas.getDuracao()
