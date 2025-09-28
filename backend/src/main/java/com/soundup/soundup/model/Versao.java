@@ -1,21 +1,21 @@
 package com.soundup.soundup.model;
 
 public class Versao {
-    private int idVersao;
+    private int id_versao;
     private int versao;
 
-    public Versao(int idVersao, int versao){
-        this.idVersao = idVersao;
+    public Versao(int id_versao, int versao){
+        this.id_versao = id_versao;
         this.versao = versao;
     }
     public int getIdVersao(){
-        return idVersao;
+        return id_versao;
     }
-    public void setIdVersao(int idVersao){
-        this.idVersao = idVersao;
+    public void setIdVersao(int id_versao){
+        this.id_versao = id_versao;
     }
     public int versao(){
-        return idVersao;
+        return id_versao;
     }
     public void setVersao(int versao){
         this.versao = versao;

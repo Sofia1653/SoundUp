@@ -18,15 +18,14 @@ public class MusicaRepository {
 
     private RowMapper<Musica> musicaRowMapper = (rs, rowNum) -> new Musica(
         rs.getInt("id"),
-        rs.getInt("idVersao"),
+        rs.getInt("id_versao"),
         rs.getString("nome"),
         rs.getInt("duracao")
     );
 
     public int save(Musica musicas) {
-        String sql = "INSERT INTO musicas (id, idVersao, nome, duracao) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO musicas (id_versao, nome, duracao) VALUES (?, ?, ?)";
         return jdbcTemplate.update(sql,
-                musicas.getId(),
                 musicas.getIdVersao(),
                 musicas.getNome(),
                 musicas.getDuracao()
