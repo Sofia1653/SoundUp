@@ -4,6 +4,7 @@ import UsuarioList from "./components/UsuarioList";
 import ArtistaList from "./components/ArtistaList";
 import MusicaList from "./components/MusicaList";
 import PreferenciasPage from "./components/PreferenciasPage";
+import Consultas from "./components/Consultas";
 
 function App() {
     return (
@@ -23,6 +24,8 @@ function App() {
                             <ArtistaList />
                             <br />
                             <MusicaList />
+                            <br/>
+                            <Consultas />
                         </>
                     } />
                     <Route path="/preferencias" element={<PreferenciasPage />} />
