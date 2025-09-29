@@ -41,7 +41,7 @@ export default function MusicaListTemplate({ musicas, handleDelete, handleEditCl
                 <TableBody>
                     {musicas.map(m => (
                         <TableRow
-                            key={a.id}
+                            key={m.id}
                             sx={{
                                 '&:hover': {
                                     backgroundColor: 'rgba(126, 87, 194, 0.2)', // 20% do roxo principal
