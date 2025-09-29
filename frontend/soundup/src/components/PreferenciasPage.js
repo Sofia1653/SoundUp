@@ -308,10 +308,8 @@ function PreferenciasPage() {
                                         value={formData.tipo_playlist}
                                         onChange={handleChange}
                                     >
-                                        <FormControlLabel value="Minhas favoritas" control={<Radio />} label="Minhas favoritas" />
+                                        <FormControlLabel value="Playlists pessoais" control={<Radio />} label="Minhas favoritas" />
                                         <FormControlLabel value="Playlists prontas" control={<Radio />} label="Playlists prontas" />
-                                        <FormControlLabel value="Álbuns completos" control={<Radio />} label="Álbuns completos" />
-                                        <FormControlLabel value="Mix aleatório" control={<Radio />} label="Mix aleatório" />
                                     </RadioGroup>
                                 </FormControl>
                             </Grid>
@@ -329,8 +327,8 @@ function PreferenciasPage() {
                                         onChange={handleChange}
                                     >
                                         <FormControlLabel value="Menos de 1 hora" control={<Radio />} label="Menos de 1 hora" />
-                                        <FormControlLabel value="1-2 horas" control={<Radio />} label="1-2 horas" />
-                                        <FormControlLabel value="2-4 horas" control={<Radio />} label="2-4 horas" />
+                                        <FormControlLabel value="De 1 a 2 horas" control={<Radio />} label="De 1 a 2 horas" />
+                                        <FormControlLabel value="De 2 a 3 horas" control={<Radio />} label="De 2 a 3 horas" />
                                         <FormControlLabel value="Mais de 4 horas" control={<Radio />} label="Mais de 4 horas" />
                                     </RadioGroup>
                                 </FormControl>
@@ -348,9 +346,11 @@ function PreferenciasPage() {
                                         value={formData.humor}
                                         onChange={handleChange}
                                     >
-                                        <FormControlLabel value="Muito" control={<Radio />} label="Muito" />
-                                        <FormControlLabel value="Pouco" control={<Radio />} label="Pouco" />
-                                        <FormControlLabel value="Nada" control={<Radio />} label="Nada" />
+                                        <FormControlLabel value="Com certeza sim" control={<Radio />} label="Com certeza sim" />
+                                        <FormControlLabel value="Provavelmente sim" control={<Radio />} label="Provavelmente sim" />
+                                        <FormControlLabel value="Talvez" control={<Radio />} label="Talvez" />
+                                        <FormControlLabel value="Provavelmente não" control={<Radio />} label="Provavelmente não" />
+                                        <FormControlLabel value="Com certeza não" control={<Radio />} label="Com certeza não" />
                                     </RadioGroup>
                                 </FormControl>
                             </Grid>
@@ -379,7 +379,7 @@ function PreferenciasPage() {
                             <Grid item xs={12}>
                                 <FormControl component="fieldset" fullWidth>
                                     <FormLabel component="legend" sx={{ fontWeight: 'bold' }}>
-                                        7. Música ajuda na sua concentração?
+                                        7. Você acha que música ajuda a melhorar a concentração?
                                     </FormLabel>
                                     <RadioGroup
                                         row
@@ -387,9 +387,8 @@ function PreferenciasPage() {
                                         value={formData.concentracao}
                                         onChange={handleChange}
                                     >
-                                        <FormControlLabel value="Sim, muito" control={<Radio />} label="Sim, muito" />
-                                        <FormControlLabel value="Às vezes" control={<Radio />} label="Às vezes" />
-                                        <FormControlLabel value="Não, me distrai" control={<Radio />} label="Não, me distrai" />
+                                        <FormControlLabel value="Sim" control={<Radio />} label="Sim" />
+                                        <FormControlLabel value="Não" control={<Radio />} label="Não" />
                                     </RadioGroup>
                                 </FormControl>
                             </Grid>
@@ -398,7 +397,7 @@ function PreferenciasPage() {
                             <Grid item xs={12}>
                                 <FormControl component="fieldset" fullWidth>
                                     <FormLabel component="legend" sx={{ fontWeight: 'bold' }}>
-                                        8. Quando você mais ouve música durante locomoção?
+                                        8. Você ouve músicas durante a locomoção diária?
                                     </FormLabel>
                                     <RadioGroup
                                         row
@@ -406,10 +405,8 @@ function PreferenciasPage() {
                                         value={formData.locomocao}
                                         onChange={handleChange}
                                     >
-                                        <FormControlLabel value="No carro" control={<Radio />} label="No carro" />
-                                        <FormControlLabel value="Transporte público" control={<Radio />} label="Transporte público" />
-                                        <FormControlLabel value="Caminhando" control={<Radio />} label="Caminhando" />
-                                        <FormControlLabel value="Não ouço durante locomoção" control={<Radio />} label="Não ouço" />
+                                        <FormControlLabel value="Sim" control={<Radio />} label="Sim" />
+                                        <FormControlLabel value="Não" control={<Radio />} label="Não" />
                                     </RadioGroup>
                                 </FormControl>
                             </Grid>
@@ -426,13 +423,8 @@ function PreferenciasPage() {
                                         value={formData.tipo_musica}
                                         onChange={handleChange}
                                     >
-                                        <FormControlLabel value="Pop" control={<Radio />} label="Pop" />
-                                        <FormControlLabel value="Rock" control={<Radio />} label="Rock" />
-                                        <FormControlLabel value="Sertanejo" control={<Radio />} label="Sertanejo" />
-                                        <FormControlLabel value="Funk" control={<Radio />} label="Funk" />
-                                        <FormControlLabel value="Eletrônica" control={<Radio />} label="Eletrônica" />
-                                        <FormControlLabel value="MPB" control={<Radio />} label="MPB" />
                                         <FormControlLabel value="Internacional" control={<Radio />} label="Internacional" />
+                                        <FormControlLabel value="Nacional" control={<Radio />} label="Nacional" />
                                     </RadioGroup>
                                 </FormControl>
                             </Grid>
@@ -449,9 +441,9 @@ function PreferenciasPage() {
                                         value={formData.musica_dormir}
                                         onChange={handleChange}
                                     >
-                                        <FormControlLabel value="Sempre" control={<Radio />} label="Sempre" />
-                                        <FormControlLabel value="Às vezes" control={<Radio />} label="Às vezes" />
-                                        <FormControlLabel value="Nunca" control={<Radio />} label="Nunca" />
+                                        <FormControlLabel value="Sim, uso todo dia" control={<Radio />} label="Sim, uso todo dia" />
+                                        <FormControlLabel value="Sim, algumas vezes" control={<Radio />} label="Sim, algumas vezes" />
+                                        <FormControlLabel value="Nunca usei" control={<Radio />} label="Nunca usei" />
                                     </RadioGroup>
                                 </FormControl>
                             </Grid>
@@ -460,7 +452,7 @@ function PreferenciasPage() {
                             <Grid item xs={12}>
                                 <FormControl component="fieldset" fullWidth>
                                     <FormLabel component="legend" sx={{ fontWeight: 'bold' }}>
-                                        11. Em quais momentos da vida a música é mais importante?
+                                        11. Você associa músicas a momentos da sua vida?
                                     </FormLabel>
                                     <RadioGroup
                                         row
@@ -468,10 +460,9 @@ function PreferenciasPage() {
                                         value={formData.momentos_vida}
                                         onChange={handleChange}
                                     >
-                                        <FormControlLabel value="Trabalho/Estudo" control={<Radio />} label="Trabalho/Estudo" />
-                                        <FormControlLabel value="Exercícios" control={<Radio />} label="Exercícios" />
-                                        <FormControlLabel value="Relaxamento" control={<Radio />} label="Relaxamento" />
-                                        <FormControlLabel value="Festas/Social" control={<Radio />} label="Festas/Social" />
+                                        <FormControlLabel value="Sim, muitas vezes" control={<Radio />} label="Sim, muitas vezes" />
+                                        <FormControlLabel value="Sim, algumas vezes" control={<Radio />} label="Sim, algumas vezes" />
+                                        <FormControlLabel value="Não" control={<Radio />} label="Não" />
                                     </RadioGroup>
                                 </FormControl>
                             </Grid>
@@ -480,7 +471,7 @@ function PreferenciasPage() {
                             <Grid item xs={12}>
                                 <FormControl component="fieldset" fullWidth>
                                     <FormLabel component="legend" sx={{ fontWeight: 'bold' }}>
-                                        12. Música serve como motivação para você?
+                                        12. Você costuma ouvir música para aumentar a motivação?
                                     </FormLabel>
                                     <RadioGroup
                                         row
@@ -488,9 +479,8 @@ function PreferenciasPage() {
                                         value={formData.motivacao}
                                         onChange={handleChange}
                                     >
-                                        <FormControlLabel value="Sim, muito motivadora" control={<Radio />} label="Sim, muito motivadora" />
-                                        <FormControlLabel value="Às vezes motiva" control={<Radio />} label="Às vezes motiva" />
-                                        <FormControlLabel value="Não influencia" control={<Radio />} label="Não influencia" />
+                                        <FormControlLabel value="Sim" control={<Radio />} label="Sim" />
+                                        <FormControlLabel value="Não" control={<Radio />} label="Não" />
                                     </RadioGroup>
                                 </FormControl>
                             </Grid>
@@ -499,7 +489,7 @@ function PreferenciasPage() {
                             <Grid item xs={12}>
                                 <FormControl component="fieldset" fullWidth>
                                     <FormLabel component="legend" sx={{ fontWeight: 'bold' }}>
-                                        13. Você evita músicas com conteúdo polêmico?
+                                        13. Você já parou de ouvir um artista por alguma polêmica?
                                     </FormLabel>
                                     <RadioGroup
                                         row
@@ -507,9 +497,8 @@ function PreferenciasPage() {
                                         value={formData.polemicas}
                                         onChange={handleChange}
                                     >
-                                        <FormControlLabel value="Sempre evito" control={<Radio />} label="Sempre evito" />
-                                        <FormControlLabel value="Às vezes evito" control={<Radio />} label="Às vezes evito" />
-                                        <FormControlLabel value="Não me importo" control={<Radio />} label="Não me importo" />
+                                        <FormControlLabel value="Sim" control={<Radio />} label="Sim" />
+                                        <FormControlLabel value="Não" control={<Radio />} label="Não" />
                                     </RadioGroup>
                                 </FormControl>
                             </Grid>
