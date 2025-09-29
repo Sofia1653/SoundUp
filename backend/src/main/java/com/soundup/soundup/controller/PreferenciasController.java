@@ -10,7 +10,6 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/preferencias")
-@CrossOrigin(origins = "http://localhost:3000") // Permite requisições do seu front-end
 public class PreferenciasController {
 
     private final PreferenciasService preferenciasService;
