@@ -2,16 +2,26 @@ import React from "react";
 import { Button, TextField, Box, FormControl, InputLabel, Select, MenuItem, CircularProgress } from "@mui/material";
 
 export default function MusicaFormTemplate({
-    musica,
-    artistas,
-    selectedArtistaId,
-    handleChange,
-    handleArtistaChange,
-    handleSubmit,
-    editingMusica,
-    onCancelEdit,
-    loading
-}) {
+                                               musica,
+                                               artistas,
+                                               selectedArtistaId,
+                                               handleChange,
+                                               handleArtistaChange,
+                                               handleSubmit,
+                                               editingMusica,
+                                               onCancelEdit,
+                                               loading
+                                           }) {
+    // Definindo os estilos para reutilização
+    const inputStyles = {
+        "& .MuiOutlinedInput-root": {
+            borderRadius: "8px",
+            "&:hover fieldset": {
+                borderColor: "#7E57C2",
+            },
+        },
+    };
+
     return (
         <form onSubmit={handleSubmit}>
             <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
@@ -25,6 +35,7 @@ export default function MusicaFormTemplate({
                         fullWidth
                         required
                         disabled={loading}
+                        sx={inputStyles}
                     />
                     <TextField
                         label="Duração (segundos)"
@@ -35,13 +46,14 @@ export default function MusicaFormTemplate({
                         fullWidth
                         required
                         disabled={loading}
+                        sx={inputStyles}
                     />
                 </Box>
 
                 {/* Seletor de Artista - agora sempre visível */}
                 {artistas.length > 0 && (
                     <Box sx={{ display: "flex", flexDirection: { xs: "column", sm: "row" }, gap: 2 }}>
-                        <FormControl fullWidth>
+                        <FormControl fullWidth sx={inputStyles}>
                             <InputLabel id="artista-select-label">Artista (Opcional)</InputLabel>
                             <Select
                                 labelId="artista-select-label"
