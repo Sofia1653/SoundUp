@@ -27,17 +27,26 @@ public class PreferenciasController {
 
     @GetMapping("/dados-grafico")
     public Map<String, Map<String, Long>> getDadosGrafico() {
-        // ... (código que você já tem)
         List<Preferencias> preferencias = preferenciasService.getAllPreferencias();
 
         Map<String, Long> plataformas = preferencias.stream()
                 .collect(Collectors.groupingBy(Preferencias::getPlataforma, Collectors.counting()));
+
         Map<String, Long> todosDias = preferencias.stream()
                 .collect(Collectors.groupingBy(Preferencias::getTodos_dias, Collectors.counting()));
 
+        // Novos agrupamentos para os gráficos de "media_horas" e "humor"
+        Map<String, Long> mediaHoras = preferencias.stream()
+                .collect(Collectors.groupingBy(Preferencias::getMedia_horas, Collectors.counting()));
+
+        Map<String, Long> humor = preferencias.stream()
+                .collect(Collectors.groupingBy(Preferencias::getHumor, Collectors.counting()));
+
         return Map.of(
                 "plataformas", plataformas,
-                "todos_dias", todosDias
+                "todos_dias", todosDias,
+                "media_horas", mediaHoras,
+                "humor", humor
         );
     }
 

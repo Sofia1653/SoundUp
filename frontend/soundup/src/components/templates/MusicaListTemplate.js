@@ -23,10 +23,15 @@ export default function MusicaListTemplate({ musicas, handleDelete, handleEditCl
     };
 
     return (
-        <TableContainer component={Paper} sx={{ mt: 2 }}>
+        <TableContainer component={Paper} sx={{
+            mt: 2,
+            borderRadius: '20px',
+            boxShadow: '0 4px 15px rgba(0, 0, 0, 0.5)',
+            backgroundColor: '#1E1E1E'
+        }}>
             <Table>
                 <TableHead>
-                    <TableRow sx={{ backgroundColor: 'grey.50' }}>
+                    <TableRow sx={{ backgroundColor: '#1E1E1E' }}>
                         <TableCell sx={{ fontWeight: 'bold' }}>Nome</TableCell>
                         <TableCell sx={{ fontWeight: 'bold' }}>Duração</TableCell>
                         <TableCell sx={{ fontWeight: 'bold' }}>Artistas</TableCell>
@@ -37,7 +42,12 @@ export default function MusicaListTemplate({ musicas, handleDelete, handleEditCl
                     {musicas.map(m => (
                         <TableRow
                             key={m.id}
-                            sx={{ '&:hover': { backgroundColor: 'grey.50' } }}
+                            sx={{
+                                '&:hover': {
+                                    backgroundColor: 'rgba(126, 87, 194, 0.2)', // 20% do roxo principal
+                                    cursor: 'pointer' // Opcional: para dar feedback visual de que o item é interativo
+                                }
+                            }}
                         >
                             <TableCell>
                                 <Typography variant="body2" fontWeight="medium">
