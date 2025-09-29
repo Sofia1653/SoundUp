@@ -650,18 +650,22 @@ function PreferenciasPage() {
 
           {/* Formulário de Preferências */}
 
-          <Card sx={{ mb: 6, bgcolor: PAPER_BACKGROUND, borderRadius: 3 }}>
+          {/* Formulário de Preferências */}
+          <Card sx={{
+            mb: 6,
+            bgcolor: PAPER_BACKGROUND,
+            borderRadius: '12px',
+            boxShadow: '0 4px 15px rgba(0, 0, 0, 0.5)'
+          }}>
             <CardContent>
               <form onSubmit={handleSubmit}>
-                <Grid container spacing={4}>
+                <Grid container spacing={2}>
                   {/* Pergunta 1 */}
-
                   <Grid item xs={12}>
                     <FormControl component="fieldset" fullWidth required>
                       <FormLabel>
                         1. Você costuma ouvir música todos os dias?
                       </FormLabel>
-
                       <RadioGroup
                           row
                           name="todos_dias"
@@ -673,7 +677,6 @@ function PreferenciasPage() {
                             control={<Radio />}
                             label="Sim"
                         />
-
                         <FormControlLabel
                             value="Não"
                             control={<Radio />}
@@ -682,17 +685,14 @@ function PreferenciasPage() {
                       </RadioGroup>
                     </FormControl>
                   </Grid>
-
                   <Grid item xs={12}>
                     <Divider sx={{ bgcolor: "#333" }} />
                   </Grid>
 
                   {/* Pergunta 2 */}
-
                   <Grid item xs={12}>
                     <FormControl component="fieldset" fullWidth required>
                       <FormLabel>2. Qual plataforma você mais utiliza?</FormLabel>
-
                       <RadioGroup
                           name="plataforma"
                           value={formData.plataforma}
@@ -720,99 +720,65 @@ function PreferenciasPage() {
                       </RadioGroup>
                     </FormControl>
                   </Grid>
-
                   <Grid item xs={12}>
                     <Divider sx={{ bgcolor: "#333" }} />
                   </Grid>
 
                   {/* Pergunta 3-13 */}
-
                   {[
                     {
                       name: "tipo_playlist",
                       label: "3. Que tipo de playlist você prefere?",
-                      options: [
-                        "Playlists pessoais (Minhas favoritas)",
-                        "Playlists prontas",
-                      ],
+                      options: ["Playlists pessoais (Minhas favoritas)", "Playlists prontas"],
                     },
-
                     {
                       name: "media_horas",
-                      label:
-                          "4. Em média, quantas horas por dia você ouve música?",
-                      options: [
-                        "Menos de 1 hora",
-                        "De 1 a 2 horas",
-                        "De 2 a 3 horas",
-                        "Mais de 4 horas",
-                      ],
+                      label: "4. Em média, quantas horas por dia você ouve música?",
+                      options: ["Menos de 1 hora", "De 1 a 2 horas", "De 2 a 3 horas", "Mais de 4 horas"],
                     },
-
                     {
                       name: "humor",
                       label: "5. A música influencia seu humor?",
-                      options: [
-                        "Com certeza sim",
-                        "Provavelmente sim",
-                        "Talvez",
-                        "Provavelmente não",
-                        "Com certeza não",
-                      ],
+                      options: ["Com certeza sim", "Provavelmente sim", "Talvez", "Provavelmente não", "Com certeza não"],
                     },
-
                     {
                       name: "horario_dia",
                       label: "6. Em qual horário do dia você mais ouve música?",
                       options: ["Manhã", "Tarde", "Noite", "Madrugada"],
                     },
-
                     {
                       name: "concentracao",
-                      label:
-                          "7. Você acha que música ajuda a melhorar a concentração?",
+                      label: "7. Você acha que música ajuda a melhorar a concentração?",
                       options: ["Sim", "Não"],
                     },
-
                     {
                       name: "locomocao",
                       label: "8. Você ouve músicas durante a locomoção diária?",
                       options: ["Sim", "Não"],
                     },
-
                     {
                       name: "tipo_musica",
                       label: "9. Qual tipo de música você mais ouve?",
                       options: ["Internacional", "Nacional"],
                     },
-
                     {
                       name: "musica_dormir",
                       label: "10. Você ouve música para dormir?",
-                      options: [
-                        "Sim, uso todo dia",
-                        "Sim, algumas vezes",
-                        "Nunca usei",
-                      ],
+                      options: ["Sim, uso todo dia", "Sim, algumas vezes", "Nunca usei"],
                     },
-
                     {
                       name: "momentos_vida",
                       label: "11. Você associa músicas a momentos da sua vida?",
                       options: ["Sim, muitas vezes", "Sim, algumas vezes", "Não"],
                     },
-
                     {
                       name: "motivacao",
-                      label:
-                          "12. Você costuma ouvir música para aumentar a motivação?",
+                      label: "12. Você costuma ouvir música para aumentar a motivação?",
                       options: ["Sim", "Não"],
                     },
-
                     {
                       name: "polemicas",
-                      label:
-                          "13. Você já parou de ouvir um artista por alguma polêmica?",
+                      label: "13. Você já parou de ouvir um artista por alguma polêmica?",
                       options: ["Sim", "Não"],
                     },
                   ].map((item, index) => (
@@ -820,7 +786,6 @@ function PreferenciasPage() {
                         <Grid item xs={12}>
                           <FormControl component="fieldset" fullWidth>
                             <FormLabel>{item.label}</FormLabel>
-
                             <RadioGroup
                                 row
                                 name={item.name}
@@ -830,7 +795,7 @@ function PreferenciasPage() {
                               {item.options.map((option) => (
                                   <FormControlLabel
                                       key={option}
-                                      value={option.replace(/ \(.*\)/, "")} // Remove parênteses para manter o valor original do form
+                                      value={option.replace(/ \(.*\)/, "")}
                                       control={<Radio />}
                                       label={option}
                                   />
@@ -838,7 +803,6 @@ function PreferenciasPage() {
                             </RadioGroup>
                           </FormControl>
                         </Grid>
-
                         {index < 10 && (
                             <Grid item xs={12}>
                               <Divider sx={{ bgcolor: "#333" }} />
@@ -848,7 +812,6 @@ function PreferenciasPage() {
                   ))}
 
                   {/* Botão de envio */}
-
                   <Grid item xs={12} sx={{ mt: 2 }}>
                     <Button
                         type="submit"
@@ -857,13 +820,11 @@ function PreferenciasPage() {
                         size="large"
                         fullWidth
                         disabled={submitting}
+                        // O estilo de hover já é herdado do tema, não precisa de SX aqui
                     >
                       {submitting ? (
-                          <Box display="flex" alignItems="center">
-                            <CircularProgress
-                                size={20}
-                                sx={{ mr: 1, color: "#fff" }}
-                            />
+                          <Box display="flex" alignItems="center" justifyContent="center">
+                            <CircularProgress size={20} sx={{ mr: 1, color: "#fff" }} />
                             Enviando...
                           </Box>
                       ) : (
@@ -898,14 +859,14 @@ function PreferenciasPage() {
                     color="text.secondary"
                 >
                   <CircularProgress color="primary" />
-
                   <Typography sx={{ ml: 2 }}>
                     Carregando dados dos gráficos...
                   </Typography>
                 </Box>
             ) : (
-                <Grid container spacing={4}>
-                  <Grid item xs={12} lg={6}>
+                <Grid container spacing={4} alignItems="stretch">
+                  {/* Gráfico 1: Plataformas Mais Utilizadas */}
+                  <Grid item xs={12} sm={6} md={6} lg={3}>
                     <Card sx={{ height: "100%", bgcolor: BACKGROUND_DEFAULT }}>
                       <CardContent>
                         <Typography
@@ -913,13 +874,13 @@ function PreferenciasPage() {
                             align="center"
                             gutterBottom
                             color="primary"
+                            sx={{ fontSize: '1.1rem' }}
                         >
                           🎵 Plataformas Mais Utilizadas
                         </Typography>
-
                         <Box
                             sx={{
-                              height: { xs: "300px", md: "400px" },
+                              height: "250px", // Altura reduzida
                               width: "100%",
                             }}
                         >
@@ -929,7 +890,8 @@ function PreferenciasPage() {
                     </Card>
                   </Grid>
 
-                  <Grid item xs={12} lg={6}>
+                  {/* Gráfico 2: Frequência Diária de Música */}
+                  <Grid item xs={12} sm={6} md={6} lg={3}>
                     <Card sx={{ height: "100%", bgcolor: BACKGROUND_DEFAULT }}>
                       <CardContent>
                         <Typography
@@ -937,13 +899,13 @@ function PreferenciasPage() {
                             align="center"
                             gutterBottom
                             color="primary"
+                            sx={{ fontSize: '1.1rem' }}
                         >
                           📅 Frequência Diária de Música
                         </Typography>
-
                         <Box
                             sx={{
-                              height: { xs: "300px", md: "400px" },
+                              height: "250px", // Altura reduzida
                               width: "100%",
                               display: "flex",
                               justifyContent: "center",
@@ -956,8 +918,8 @@ function PreferenciasPage() {
                     </Card>
                   </Grid>
 
-                  {/* Novo gráfico 1: Média de Horas por Dia */}
-                  <Grid item xs={12} lg={6}>
+                  {/* Gráfico 3: Média de Horas por Dia */}
+                  <Grid item xs={12} sm={6} md={6} lg={3}>
                     <Card sx={{ height: "100%", bgcolor: BACKGROUND_DEFAULT }}>
                       <CardContent>
                         <Typography
@@ -965,12 +927,13 @@ function PreferenciasPage() {
                             align="center"
                             gutterBottom
                             color="primary"
+                            sx={{ fontSize: '1.1rem' }}
                         >
                           ⏲️ Média de Horas de Música por Dia
                         </Typography>
                         <Box
                             sx={{
-                              height: { xs: "300px", md: "400px" },
+                              height: "250px", // Altura reduzida
                               width: "100%",
                             }}
                         >
@@ -980,8 +943,8 @@ function PreferenciasPage() {
                     </Card>
                   </Grid>
 
-                  {/* Novo gráfico 2: Influência da Música no Humor */}
-                  <Grid item xs={12} lg={6}>
+                  {/* Gráfico 4: Influência da Música no Humor */}
+                  <Grid item xs={12} sm={6} md={6} lg={3}>
                     <Card sx={{ height: "100%", bgcolor: BACKGROUND_DEFAULT }}>
                       <CardContent>
                         <Typography
@@ -989,12 +952,13 @@ function PreferenciasPage() {
                             align="center"
                             gutterBottom
                             color="primary"
+                            sx={{ fontSize: '1.1rem' }}
                         >
                           🧘 Influência da Música no Humor
                         </Typography>
                         <Box
                             sx={{
-                              height: { xs: "300px", md: "400px" },
+                              height: "250px", // Altura reduzida
                               width: "100%",
                               display: "flex",
                               justifyContent: "center",
