@@ -94,10 +94,7 @@ const Dashboard = () => (
             <Box sx={{
                 display: 'grid',
                 gap: 3,
-                gridTemplateColumns: {
-                    xs: '1fr',
-                    md: 'repeat(2, 1fr)'
-                }
+                gridTemplateColumns: '1fr'
             }}>
                 <UsuarioList />
                 <ArtistaList />
