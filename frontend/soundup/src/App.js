@@ -18,6 +18,7 @@ import ArtistaList from "./components/ArtistaList";
 import MusicaList from "./components/MusicaList";
 import PreferenciasPage from "./components/PreferenciasPage";
 import Consultas from "./components/Consultas";
+import GraficosPage from "./components/GraficosPage";
 
 // Cores e Tema (estilo da primeira página)
 const PRIMARY_PURPLE = '#7E57C2';
@@ -157,6 +158,21 @@ function App() {
                             >
                                 📊 Preferências Musicais
                             </Button>
+                            <Button
+                                component={RouterLink}
+                                to="/graficos"
+                                sx={{
+                                    color: 'white',
+                                    textDecoration: 'none',
+                                    fontWeight: 'bold',
+                                    '&:hover': {
+                                        color: PRIMARY_PURPLE,
+                                        backgroundColor: 'rgba(126, 87, 194, 0.1)'
+                                    }
+                                }}
+                            >
+                                📈 Gráficos
+                            </Button>
                         </Box>
                     </Container>
                 </Box>
@@ -164,6 +180,7 @@ function App() {
                 <Routes>
                     <Route path="/" element={<Dashboard />} />
                     <Route path="/preferencias" element={<PreferenciasPage />} />
+                    <Route path="/graficos" element={<GraficosPage />} />
                 </Routes>
             </Router>
         </ThemeProvider>
