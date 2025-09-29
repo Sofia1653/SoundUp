@@ -16,10 +16,15 @@ export default function ArtistaListTemplate({ artistas, handleDelete, handleEdit
   }
 
   return (
-    <TableContainer component={Paper} sx={{ mt: 2 }}>
+      <TableContainer component={Paper} sx={{
+        mt: 2,
+        borderRadius: '20px',
+        boxShadow: '0 4px 15px rgba(0, 0, 0, 0.5)',
+        backgroundColor: '#1E1E1E'
+      }}>
       <Table>
         <TableHead>
-          <TableRow sx={{ backgroundColor: 'grey.50' }}>
+          <TableRow sx={{ backgroundColor: '#1E1E1E' }}>
             <TableCell sx={{ fontWeight: 'bold' }}>Nome</TableCell>
             <TableCell sx={{ fontWeight: 'bold' }}>Email</TableCell>
             <TableCell sx={{ fontWeight: 'bold' }}>País</TableCell>
@@ -33,10 +38,15 @@ export default function ArtistaListTemplate({ artistas, handleDelete, handleEdit
         </TableHead>
         <TableBody>
           {artistas.map(a => (
-            <TableRow 
-              key={a.id} 
-              sx={{ '&:hover': { backgroundColor: 'grey.50' } }}
-            >
+              <TableRow
+                  key={a.id}
+                  sx={{
+                    '&:hover': {
+                      backgroundColor: 'rgba(126, 87, 194, 0.2)', // 20% do roxo principal
+                      cursor: 'pointer' // Opcional: para dar feedback visual de que o item é interativo
+                    }
+                  }}
+              >
               <TableCell>{a.nome || '-'}</TableCell>
               <TableCell>{a.email || '-'}</TableCell>
               <TableCell>{a.pais || '-'}</TableCell>

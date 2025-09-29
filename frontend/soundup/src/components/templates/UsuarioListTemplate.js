@@ -16,10 +16,15 @@ export default function UsuarioListTemplate({ usuarios, handleDelete, handleEdit
   }
 
   return (
-    <TableContainer component={Paper} sx={{ mt: 2 }}>
+      <TableContainer component={Paper} sx={{
+        mt: 2,
+        borderRadius: '20px',
+        boxShadow: '0 4px 15px rgba(0, 0, 0, 0.5)',
+        backgroundColor: '#1E1E1E'
+      }}>
       <Table>
         <TableHead>
-          <TableRow sx={{ backgroundColor: 'grey.50' }}>
+          <TableRow sx={{ backgroundColor: '#1E1E1E' }}>
             <TableCell sx={{ fontWeight: 'bold' }}>Nome</TableCell>
             <TableCell sx={{ fontWeight: 'bold' }}>Email</TableCell>
             <TableCell sx={{ fontWeight: 'bold' }}>País</TableCell>
@@ -32,10 +37,15 @@ export default function UsuarioListTemplate({ usuarios, handleDelete, handleEdit
         </TableHead>
         <TableBody>
           {usuarios.map(u => (
-            <TableRow 
-              key={u.id} 
-              sx={{ '&:hover': { backgroundColor: 'grey.50' } }}
-            >
+              <TableRow
+                  key={u.id}
+                  sx={{
+                    '&:hover': {
+                      backgroundColor: 'rgba(126, 87, 194, 0.2)', // 20% do roxo principal
+                      cursor: 'pointer' // Opcional: para dar feedback visual de que o item é interativo
+                    }
+                  }}
+              >
               <TableCell>{u.nome || '-'}</TableCell>
               <TableCell>{u.email || '-'}</TableCell>
               <TableCell>{u.pais || '-'}</TableCell>
