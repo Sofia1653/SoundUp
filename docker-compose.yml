@@ -1,0 +1,61 @@
+version: '3.8'
+
+services:
+
+  # 1. MySQL Database Service
+  mysql:
+    image: mysql:8.0
+    container_name: soundup-mysql
+    restart: always
+    environment:
+      # Credenciais usadas pelo Spring Boot
+      MYSQL_ROOT_PASSWORD: soundup@2025
+      MYSQL_DATABASE: soundup
+    ports:
+      - "3306:3306"
+    volumes:
+      # O script de inicialização do banco de dados (CRÍTICO)
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+      # Persistência de dados
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # 2. Spring Boot Backend Service (Java)
+  backend:
+    build:
+      context: ./backend # Pasta onde está o Dockerfile do Spring Boot
+      dockerfile: Dockerfile
+    container_name: soundup-backend
+    restart: always
+    ports:
+      - "8080:8080"
+    environment:
+      # O nome do host é 'mysql' (nome do serviço no Docker Compose)
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/soundup?useSSL=false&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: soundup@2025
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update # Opção comum em ambientes de desenvolvimento
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  # 3. React Frontend Service (Node.js/Nginx)
+  frontend:
+    build:
+      context: ./frontend # Pasta onde está o Dockerfile do React (frontend/)
+      dockerfile: Dockerfile
+    container_name: soundup-frontend
+    ports:
+      # Mapeia a porta do Nginx (80) para a porta 3000 do host
+      - "3000:80"
+    depends_on:
+      - backend
+
+# Volumes para persistência de dados
+volumes:
+  mysql_data:
+    driver: local
