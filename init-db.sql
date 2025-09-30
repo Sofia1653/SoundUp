@@ -40,8 +40,7 @@ CREATE TABLE usuarios (
     quantSeguidores INTEGER,
     telefone VARCHAR(15),
     UNIQUE (email),
-    CHECK (quantSeguidores >= 0),
-    CHECK(CHAR_LENGTH(senha) >= 6)
+    CHECK (quantSeguidores >= 0)
 );
 
 -- Create artistas table (assuming usuarios table already exists)
