@@ -86,3 +86,5 @@ Nina Henrique França Fernandes Bento de Sá - nhffbs@cesar.school
 Gabrielle Mastellari Velozo - gmv2@cesar.school   
 
 Sofia Gomes Tenório - sgt@cesar.school 
+
+GitHub: https://github.com/Sofia1653/SoundUp
