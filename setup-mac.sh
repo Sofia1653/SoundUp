@@ -1,214 +1,165 @@
-# SoundUp - Windows PowerShell Setup Script
-# Run this script as Administrator
+```bash
+#!/bin/bash
 
-# Colors for output
-function Write-Success { Write-Host "✅ $args" -ForegroundColor Green }
-function Write-Error-Custom { Write-Host "❌ $args" -ForegroundColor Red }
-function Write-Info { Write-Host "ℹ️  $args" -ForegroundColor Yellow }
+# =========================================
+# SoundUp - Setup Script for macOS/Linux
+# =========================================
 
-Write-Host "🎵 ==========================================" -ForegroundColor Cyan
-Write-Host "   SoundUp - Setup Script for Windows" -ForegroundColor Cyan
-Write-Host "=========================================== 🎵" -ForegroundColor Cyan
-Write-Host ""
+DB_NAME="soundup"
+DB_USER="root"
+DB_PASS="root"
+
+# Colors
+GREEN="\033[0;32m"
+RED="\033[0;31m"
+YELLOW="\033[1;33m"
+CYAN="\033[0;36m"
+NC="\033[0m" # No Color
+
+write_success() { echo -e "${GREEN}✅ $1${NC}"; }
+write_error() { echo -e "${RED}❌ $1${NC}"; }
+write_info() { echo -e "${YELLOW}ℹ️  $1${NC}"; }
+
+echo -e "${CYAN}🎵 =========================================="
+echo -e "   SoundUp - Setup Script for macOS/Linux"
+echo -e "=========================================== 🎵${NC}"
+echo ""
 
 # ====================================
-# Database configuration
+# 1. Check and install Homebrew
 # ====================================
-$DB_NAME = "soundup"
-$DB_USER = "root"
-$DB_PASS = "root"
+if ! command -v brew &>/dev/null; then
+  write_info "Homebrew not found. Installing..."
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  write_success "Homebrew installed"
+else
+  write_success "Homebrew already installed"
+fi
+echo ""
 
-# Check if running as Administrator
-$isAdmin = ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
-if (-not $isAdmin) {
-    Write-Error-Custom "This script must be run as Administrator!"
-    Write-Info "Right-click on PowerShell and select 'Run as Administrator'"
-    pause
-    exit
-}
-
-# 1. Check and install Chocolatey
-Write-Host "📦 Checking Chocolatey package manager..." -ForegroundColor White
-if (-not (Get-Command choco -ErrorAction SilentlyContinue)) {
-    Write-Info "Chocolatey not found. Installing..."
-    Set-ExecutionPolicy Bypass -Scope Process -Force
-    [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072
-    Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
-    Write-Success "Chocolatey installed"
-
-    # Refresh environment variables
-    $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
-} else {
-    Write-Success "Chocolatey already installed"
-}
-Write-Host ""
-
+# ====================================
 # 2. Check and install MySQL
-Write-Host "🗄️  Checking MySQL..." -ForegroundColor White
-if (-not (Get-Command mysql.exe -ErrorAction SilentlyContinue)) {
-    Write-Info "MySQL not found. Installing..."
-    choco install mysql -y
+# ====================================
+if ! command -v mysql &>/dev/null; then
+  write_info "MySQL not found. Installing..."
+  brew install mysql
+  brew services start mysql
+  write_success "MySQL installed"
+else
+  write_success "MySQL already installed"
+  brew services start mysql
+fi
+echo ""
 
-    # Refresh environment variables
-    $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
-
-    Write-Success "MySQL installed"
-    Write-Info "MySQL has been installed. You may need to restart your terminal."
-} else {
-    Write-Success "MySQL already installed"
-}
-Write-Host ""
-
+# ====================================
 # 3. Check and install Java
-Write-Host "☕ Checking Java..." -ForegroundColor White
-if (-not (Get-Command java -ErrorAction SilentlyContinue)) {
-    Write-Info "Java not found. Installing OpenJDK 17..."
-    choco install openjdk17 -y
+# ====================================
+if ! command -v java &>/dev/null; then
+  write_info "Java not found. Installing OpenJDK 17..."
+  brew install openjdk@17
+  echo 'export PATH="/usr/local/opt/openjdk@17/bin:$PATH"' >> ~/.zshrc
+  source ~/.zshrc
+  write_success "Java installed"
+else
+  JAVA_VERSION=$(java -version 2>&1 | head -n 1)
+  write_success "Java already installed ($JAVA_VERSION)"
+fi
+echo ""
 
-    # Refresh environment variables
-    $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
-
-    Write-Success "Java installed"
-} else {
-    $javaVersion = java -version 2>&1 | Select-Object -First 1
-    Write-Success "Java already installed ($javaVersion)"
-}
-Write-Host ""
-
+# ====================================
 # 4. Check and install Node.js
-Write-Host "📗 Checking Node.js..." -ForegroundColor White
-if (-not (Get-Command node -ErrorAction SilentlyContinue)) {
-    Write-Info "Node.js not found. Installing..."
-    choco install nodejs -y
+# ====================================
+if ! command -v node &>/dev/null; then
+  write_info "Node.js not found. Installing..."
+  brew install node
+  write_success "Node.js installed"
+else
+  NODE_VERSION=$(node -v)
+  write_success "Node.js already installed ($NODE_VERSION)"
+fi
+echo ""
 
-    # Refresh environment variables
-    $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
-
-    Write-Success "Node.js installed"
-} else {
-    $nodeVersion = node -v
-    Write-Success "Node.js already installed ($nodeVersion)"
-}
-Write-Host ""
-
+# ====================================
 # 5. Check and install Maven
-Write-Host "🔨 Checking Maven..." -ForegroundColor White
-if (-not (Get-Command mvn -ErrorAction SilentlyContinue)) {
-    Write-Info "Maven not found. Installing..."
-    choco install maven -y
+# ====================================
+if ! command -v mvn &>/dev/null; then
+  write_info "Maven not found. Installing..."
+  brew install maven
+  write_success "Maven installed"
+else
+  MAVEN_VERSION=$(mvn -v | head -n 1)
+  write_success "Maven already installed ($MAVEN_VERSION)"
+fi
+echo ""
 
-    # Refresh environment variables
-    $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
-
-    Write-Success "Maven installed"
-} else {
-    $mavenVersion = mvn -v | Select-Object -First 1
-    Write-Success "Maven already installed ($mavenVersion)"
-}
-Write-Host ""
-
+# ====================================
 # 6. Start MySQL service
-Write-Host "🚀 Starting MySQL service..." -ForegroundColor White
-try {
-    $service = Get-Service -Name MySQL* -ErrorAction SilentlyContinue | Select-Object -First 1
-    if ($service) {
-        if ($service.Status -ne 'Running') {
-            Start-Service -Name $service.Name -ErrorAction Stop
-            Write-Success "MySQL service started"
-        } else {
-            Write-Success "MySQL service already running"
-        }
-    } else {
-        Write-Info "MySQL service not found. Attempting to start manually..."
-        # Try to start MySQL manually
-        net start MySQL
-        Write-Success "MySQL service started"
-    }
-} catch {
-    Write-Error-Custom "Failed to start MySQL service: $_"
-    Write-Info "Please start MySQL manually from Services or MySQL Workbench"
-}
-Write-Host ""
+# ====================================
+write_info "Starting MySQL service..."
+brew services start mysql
+sleep 3
+write_success "MySQL service started"
+echo ""
 
+# ====================================
 # 7. Wait for MySQL to be ready
-Write-Host "⏳ Waiting for MySQL to be ready..." -ForegroundColor White
-Start-Sleep -Seconds 5
+# ====================================
+write_info "Waiting for MySQL to be ready..."
+MAX_ATTEMPTS=10
+ATTEMPT=0
+CONNECTED=false
 
-# Test MySQL connection
-$maxAttempts = 10
-$attempt = 0
-$connected = $false
+while [ $ATTEMPT -lt $MAX_ATTEMPTS ]; do
+  mysql -u"$DB_USER" -p"$DB_PASS" -e "SELECT 1" &>/dev/null
+  if [ $? -eq 0 ]; then
+    CONNECTED=true
+    break
+  else
+    ATTEMPT=$((ATTEMPT+1))
+    write_info "Attempt $ATTEMPT/$MAX_ATTEMPTS..."
+    sleep 2
+  fi
+done
 
-while (-not $connected -and $attempt -lt $maxAttempts) {
-    try {
-        $result = mysql -u $DB_USER -p$DB_PASS -e "SELECT 1" 2>&1
-        if ($LASTEXITCODE -eq 0) {
-            $connected = $true
-            Write-Success "MySQL is ready"
-        } else {
-            throw "Connection failed"
-        }
-    } catch {
-        $attempt++
-        Write-Info "Waiting for MySQL to accept connections... (Attempt $attempt/$maxAttempts)"
-        Start-Sleep -Seconds 2
-    }
-}
+if [ "$CONNECTED" = true ]; then
+  write_success "MySQL is ready"
+else
+  write_error "Could not connect to MySQL. Please check your installation."
+  exit 1
+fi
+echo ""
 
-if (-not $connected) {
-    Write-Error-Custom "Could not connect to MySQL. Please check your installation."
-    Write-Info "Try connecting manually: mysql -u $DB_USER -p$DB_PASS"
-    pause
-    exit
-}
-Write-Host ""
-
+# ====================================
 # 8. Create database
-Write-Host "🗄️  Setting up database '$DB_NAME'..." -ForegroundColor White
-try {
-    mysql -u $DB_USER -p$DB_PASS -e "CREATE DATABASE IF NOT EXISTS $DB_NAME;" 2>&1 | Out-Null
-    if ($LASTEXITCODE -eq 0) {
-        Write-Success "Database '$DB_NAME' created"
-    } else {
-        # Try without password
-        Write-Info "Trying to connect without password..."
-        mysql -u $DB_USER -e "CREATE DATABASE IF NOT EXISTS $DB_NAME;" 2>&1 | Out-Null
-        $DB_PASS = ""
-        Write-Success "Database '$DB_NAME' created"
-    }
-} catch {
-    Write-Error-Custom "Failed to create database: $_"
-    pause
-    exit
-}
-Write-Host ""
+# ====================================
+write_info "Creating database '$DB_NAME'..."
+mysql -u"$DB_USER" -p"$DB_PASS" -e "CREATE DATABASE IF NOT EXISTS $DB_NAME;" &>/dev/null
+if [ $? -eq 0 ]; then
+  write_success "Database '$DB_NAME' created"
+else
+  write_error "Failed to create database"
+  exit 1
+fi
+echo ""
 
-# 9. Load database schema from SQL file
-Write-Host "📁 Loading database schema..." -ForegroundColor White
-$sqlFile = "init-db.sql"
+# ====================================
+# 9. Load database schema
+# ====================================
+SQL_FILE="init-db.sql"
 
-if (Test-Path $sqlFile) {
-    Write-Info "Found $sqlFile - Loading database schema and data..."
-    if ($DB_PASS) {
-        Get-Content $sqlFile | mysql -u $DB_USER -p$DB_PASS $DB_NAME 2>&1 | Out-Null
-    } else {
-        Get-Content $sqlFile | mysql -u $DB_USER $DB_NAME 2>&1 | Out-Null
-    }
+if [ -f "$SQL_FILE" ]; then
+  write_info "Found $SQL_FILE - Loading schema..."
+  mysql -u"$DB_USER" -p"$DB_PASS" "$DB_NAME" < "$SQL_FILE"
+  if [ $? -eq 0 ]; then
+    write_success "Database schema loaded from $SQL_FILE"
+  else
+    write_error "Error loading SQL file"
+  fi
+else
+  write_error "SQL file not found: $SQL_FILE"
+  write_info "Creating basic database structure as fallback..."
 
-    if ($LASTEXITCODE -eq 0) {
-        Write-Success "Database schema loaded from $sqlFile"
-    } else {
-        Write-Error-Custom "Error loading SQL file"
-    }
-} else {
-    Write-Error-Custom "SQL file not found: $sqlFile"
-    Write-Info "Please make sure 'init-db.sql' is in the same directory as this script"
-    Write-Info "You can download it from the project repository"
-    Write-Host ""
-    Write-Info "Creating basic database structure as fallback..."
-
-    # Minimal fallback schema
-    $fallbackSql = @"
+  FALLBACK_SQL=$(cat <<'EOF'
 CREATE TABLE IF NOT EXISTS versao (
     id_versao INT AUTO_INCREMENT PRIMARY KEY,
     versao INT NOT NULL,
@@ -238,95 +189,73 @@ CREATE TABLE IF NOT EXISTS artistas (
     CONSTRAINT fk_artista_usuario FOREIGN KEY (id_artista) REFERENCES usuarios(id) ON DELETE CASCADE,
     CHECK(quant_ouvintes >= 0)
 );
-"@
+EOF
+)
 
-    $tempFile = "$env:TEMP\soundup_fallback.sql"
-    $fallbackSql | Out-File -FilePath $tempFile -Encoding UTF8
+  echo "$FALLBACK_SQL" | mysql -u"$DB_USER" -p"$DB_PASS" "$DB_NAME"
+  if [ $? -eq 0 ]; then
+    write_success "Basic database structure created"
+    write_info "⚠️  For full schema with sample data, please add 'init-db.sql'"
+  else
+    write_error "Failed to create fallback schema"
+  fi
+fi
+echo ""
 
-    if ($DB_PASS) {
-        mysql -u $DB_USER -p$DB_PASS $DB_NAME < $tempFile 2>&1 | Out-Null
-    } else {
-        mysql -u $DB_USER $DB_NAME < $tempFile 2>&1 | Out-Null
-    }
-
-    Remove-Item $tempFile -Force
-    Write-Success "Basic database structure created"
-    Write-Info "⚠️  For full schema with sample data, please add 'init-db.sql' file"
-}
-Write-Host ""
-
+# ====================================
 # 10. Verify installation
-Write-Host "🔍 Verifying installation..." -ForegroundColor White
-if ($DB_PASS) {
-    mysql -u $DB_USER -p$DB_PASS $DB_NAME -e "SHOW TABLES;"
-} else {
-    mysql -u $DB_USER $DB_NAME -e "SHOW TABLES;"
-}
-Write-Host ""
+# ====================================
+write_info "Verifying installation..."
+mysql -u"$DB_USER" -p"$DB_PASS" "$DB_NAME" -e "SHOW TABLES;"
+echo ""
 
+# ====================================
 # 11. Install Frontend Dependencies
-Write-Host "📦 Installing Frontend Dependencies..." -ForegroundColor White
-if (Test-Path "frontend\soundup") {
-    Write-Info "Found frontend directory, installing npm packages..."
-    Push-Location frontend\soundup
+# ====================================
+if [ -d "frontend/soundup" ]; then
+  write_info "Found frontend directory, installing npm packages..."
+  pushd frontend/soundup >/dev/null
+  npm install
+  npm install @mui/material @emotion/react @emotion/styled
+  npm install react-router-dom
+  npm install axios
+  npm install chart.js react-chartjs-2
+  popd >/dev/null
+  write_success "All frontend dependencies installed"
+else
+  write_info "Frontend directory not found at 'frontend/soundup'"
+  write_info "Skipping frontend dependency installation"
+fi
+echo ""
 
-    # Install base dependencies
-    Write-Info "Installing React dependencies..."
-    npm install
-
-    # Install Material-UI
-    Write-Info "Installing Material-UI..."
-    npm install @mui/material @emotion/react @emotion/styled
-
-    # Install React Router
-    Write-Info "Installing React Router..."
-    npm install react-router-dom
-
-    # Install Axios
-    Write-Info "Installing Axios..."
-    npm install axios
-
-    # Install Chart.js
-    Write-Info "Installing Chart.js..."
-    npm install chart.js react-chartjs-2
-
-    Pop-Location
-    Write-Success "All frontend dependencies installed"
-} else {
-    Write-Info "Frontend directory not found at 'frontend\soundup'"
-    Write-Info "Skipping frontend dependency installation"
-}
-Write-Host ""
-
+# ====================================
 # Summary
-Write-Host ""
-Write-Host "🎉 ==========================================" -ForegroundColor Green
-Write-Host "   Setup Complete!" -ForegroundColor Green
-Write-Host "=========================================== 🎉" -ForegroundColor Green
-Write-Host ""
-Write-Host "Database Information:" -ForegroundColor Cyan
-Write-Host "  • Database: $DB_NAME"
-Write-Host "  • User: $DB_USER"
-Write-Host "  • Password: $DB_PASS"
-Write-Host "  • Host: localhost"
-Write-Host "  • Port: 3306"
-Write-Host ""
-Write-Host "Installed Frontend Packages:" -ForegroundColor Cyan
-Write-Host "  • Material-UI (@mui/material)"
-Write-Host "  • React Router (react-router-dom)"
-Write-Host "  • Axios (axios)"
-Write-Host "  • Chart.js (chart.js, react-chartjs-2)"
-Write-Host ""
-Write-Host "Next Steps:" -ForegroundColor Cyan
-Write-Host "  1. Navigate to backend folder: cd backend"
-Write-Host "  2. Run Spring Boot: .\mvnw.cmd spring-boot:run"
-Write-Host "  3. Open a new terminal and navigate to frontend: cd frontend\soundup"
-Write-Host "  4. Start React app: npm start"
-Write-Host ""
-Write-Host "💡 Tip: Place your SQL file as 'init-db.sql' in the root directory" -ForegroundColor Yellow
-Write-Host "   The script will automatically load it on next run!" -ForegroundColor Yellow
-Write-Host ""
-Write-Success "SoundUp is ready to use! 🎵"
-Write-Host ""
-
-pause
+# ====================================
+echo -e "${GREEN}🎉 =========================================="
+echo -e "   Setup Complete!"
+echo -e "=========================================== 🎉${NC}"
+echo ""
+echo -e "${CYAN}Database Information:${NC}"
+echo "  • Database: $DB_NAME"
+echo "  • User: $DB_USER"
+echo "  • Password: $DB_PASS"
+echo "  • Host: localhost"
+echo "  • Port: 3306"
+echo ""
+echo -e "${CYAN}Installed Frontend Packages:${NC}"
+echo "  • Material-UI (@mui/material)"
+echo "  • React Router (react-router-dom)"
+echo "  • Axios (axios)"
+echo "  • Chart.js (chart.js, react-chartjs-2)"
+echo ""
+echo -e "${CYAN}Next Steps:${NC}"
+echo "  1. cd backend"
+echo "  2. ./mvnw spring-boot:run"
+echo "  3. cd frontend/soundup"
+echo "  4. npm start"
+echo ""
+write_info "Place your SQL file as 'init-db.sql' in the root directory"
+write_info "The script will automatically load it on next run!"
+write_success "SoundUp is ready to use! 🎵"
+echo ""
+```
