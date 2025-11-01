@@ -23,6 +23,7 @@ CREATE TABLE musicas (
     id_versao INT NULL,
     nome VARCHAR(70) NOT NULL,
     duracao INT NOT NULL,
+    --versao VARCHAR(50) NOT NULL,
     CONSTRAINT fk_musica_versao FOREIGN KEY (id_versao) REFERENCES versao(id_versao)
         ON DELETE SET NULL,
     CHECK (duracao > 0)
