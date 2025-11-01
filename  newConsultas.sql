@@ -1,5 +1,7 @@
 DROP TABLE IF EXISTS Album;
 DROP TABLE IF EXISTS Genero;
+DROP TABLE IF EXISTS Colabora;
+DROP TABLE IF EXISTS Tem;
 
 CREATE TABLE Album (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -12,6 +14,26 @@ CREATE TABLE Genero (
    id INT AUTO_INCREMENT PRIMARY KEY,
    nome VARCHAR(50) NOT NULL,
    descricao TEXT
+);
+
+CREATE TABLE Colabora (
+    id_artistaPrincipal INT,
+    id_artistaConvidado INT,
+    PRIMARY KEY (id_artistaPrincipal, id_artistaConvidado),
+    CONSTRAINT fk_colab_principal FOREIGN KEY (id_artistaPrincipal) REFERENCES Artista(id_artista)
+        ON DELETE CASCADE,
+    CONSTRAINT fk_colab_convidado FOREIGN KEY (id_artistaConvidado) REFERENCES Artista(id_artista)
+        ON DELETE CASCADE
+);
+
+CREATE TABLE Tem (
+    id_musica INT,
+    id_genero INT,
+    PRIMARY KEY (id_musica, id_genero),
+    CONSTRAINT fk_tem_musica FOREIGN KEY (id_musica) REFERENCES Musica(id)
+        ON DELETE CASCADE,
+    CONSTRAINT fk_tem_genero FOREIGN KEY (id_genero) REFERENCES Genero(id)
+        ON DELETE CASCADE
 );
 
 INSERT INTO Album (nome, duracao) VALUES
@@ -51,4 +73,19 @@ INSERT INTO Genero (nome, descricao) VALUES
     ('Rap','Rap nacional e internacional'),
     ('Fado','Estilo tradicional português'),
     ('Trap','Trap internacional e nacional');
+
+INSERT INTO Colabora (id_artistaPrincipal, id_artistaConvidado) VALUES
+    (1,5),(1,11),(2,3),(3,4),(5,11),(6,7),(7,8),(8,9),(9,1),(10,11),
+    (11,5),(12,14),(13,15),(14,16),(15,17),(16,1),(17,2),(18,19),(19,20),(20,21),
+    (21,22),(22,23),(23,24),(24,25),(25,26),(26,27),(27,28),(28,29),(29,30), (30,1);
+
+INSERT INTO Tem (id_musica, id_genero) VALUES
+    (1,6),(2,8),(3,2),(4,6),
+    (5,2),(6,5),(7,4),(8,9),
+    (9,2),(10,5),(11,7),(12,4),
+    (13,21),(14,5),(15,21),(16,23),
+    (17,5),(18,6),(19,2),(20,2),
+    (21,5),(22,5),(23,5),(24,2),
+    (25,4),(26,18),(27,18),(28,6),
+    (29,4),(30,4);
 
