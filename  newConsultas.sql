@@ -89,3 +89,22 @@ INSERT INTO Tem (id_musica, id_genero) VALUES
     (25,4),(26,18),(27,18),(28,6),
     (29,4),(30,4);
 
+CREATE INDEX idx_genero ON Genero(nome);
+
+SELECT
+    m.nome AS musicas,
+    (
+        SELECT g.nome
+        FROM Genero g
+                 JOIN Tem t ON t.id_genero = g.id
+        WHERE t.id_musica = m.id
+              LIMIT 1
+    ) AS genero
+FROM musicas m;
+
+SELECT u.nome
+FROM artistas a
+         JOIN usuarios u ON a.id_artista = u.id
+         LEFT JOIN Colabora c1 ON c1.id_artistaPrincipal = a.id_artista
+         LEFT JOIN Colabora c2 ON c2.id_artistaConvidado = a.id_artista
+WHERE c1.id_artistaPrincipal IS NULL AND c2.id_artistaConvidado IS NULL;
