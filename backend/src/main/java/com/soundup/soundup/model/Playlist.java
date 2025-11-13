@@ -19,7 +19,7 @@ public class Playlist {
     public void setId(int id){
         this.id = id;
     }
-    public int id_ouvinte(){
+    public int getId_ouvinte(){
         return id_ouvinte;
     }
     public void setId_ouvinte(int id_ouvinte){
@@ -31,7 +31,7 @@ public class Playlist {
     public void setVisibilidade(String visibilidade){
         this.visibilidade = visibilidade;
     }
-    public String nome(){
+    public String getNome(){
         return nome;
     }
     public void setNome(String nome){
