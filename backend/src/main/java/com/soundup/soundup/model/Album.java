@@ -27,7 +27,7 @@ public class Album {
         return id_album;
     }
 
-    public void setId(int id){
+    public void setId(int id_album){
         this.id_album = id_album;
     }
 

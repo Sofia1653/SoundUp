@@ -61,7 +61,7 @@ public class MusicaRepository {
     }
 
     public int update(Musica musica) {
-        String sql = "UPDATE musicas SET nome = ?, duracao = ? WHERE id = ?";
+        String sql = "UPDATE musicas SET nome = ?, duracao = ? WHERE id_album = ?";
         return jdbcTemplate.update(sql, musica.getNome(), musica.getDuracao(), musica.getId());
     }
 
