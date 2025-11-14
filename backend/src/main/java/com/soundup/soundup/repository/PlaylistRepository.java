@@ -56,7 +56,7 @@ public class PlaylistRepository {
 
     public int update(Playlist playlist) {
         String sql = "UPDATE playlist SET id_ouvinte = ?, visibilidade = ?, nome = ? WHERE id = ?";
-        return jdbcTemplate.update(sql, playlist.getNome(), playlist.getVisibilidade(), playlist.getId(), playlist.getId_ouvinte());
+        return jdbcTemplate.update(sql, playlist.getId_ouvinte(), playlist.getVisibilidade(), playlist.getNome(), playlist.getId());
     }
 
     public int delete(int id) {

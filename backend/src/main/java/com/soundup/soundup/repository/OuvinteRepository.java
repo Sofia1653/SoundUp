@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
 import java.sql.Statement;
+import java.util.List;
 
 @Repository
 public class OuvinteRepository {
@@ -45,4 +46,8 @@ public class OuvinteRepository {
         return jdbcTemplate.queryForObject(sql, ouvinteRowMapper, id);
     }
 
+    public List<Ouvinte> findAll() {
+        String sql = "SELECT id_ouvinte FROM Ouvinte";
+        return jdbcTemplate.query(sql, ouvinteRowMapper);
+    }
 }

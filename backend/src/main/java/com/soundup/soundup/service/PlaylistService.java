@@ -27,7 +27,7 @@ public class PlaylistService {
         return playlistRepository.findById(id);
     }
 
-    public void createNewPlaylist(Playlist playlist) {
+    public void createPlaylist(Playlist playlist) {
         playlistRepository.save(playlist);
     }
 
