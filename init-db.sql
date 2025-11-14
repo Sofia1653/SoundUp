@@ -17,14 +17,29 @@ CREATE TABLE versao (
     descricao VARCHAR(50) NOT NULL
 );
 
+CREATE TABLE albuns (
+    id_album INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(80) NOT NULL,
+    duracao int not null,
+    ano int not null
+);
+
 -- Create musicas table (correct table name)
 CREATE TABLE musicas (
     id INT AUTO_INCREMENT PRIMARY KEY,
     id_versao INT NULL,
+    id_album INT NULL,   -- NOVO
     nome VARCHAR(70) NOT NULL,
     duracao INT NOT NULL,
-    CONSTRAINT fk_musica_versao FOREIGN KEY (id_versao) REFERENCES versao(id_versao)
+
+    CONSTRAINT fk_musica_versao 
+        FOREIGN KEY (id_versao) REFERENCES versao(id_versao)
         ON DELETE SET NULL,
+
+    CONSTRAINT fk_musica_album 
+        FOREIGN KEY (id_album) REFERENCES albuns(id_album)
+        ON DELETE SET NULL,
+
     CHECK (duracao > 0)
 );
 
