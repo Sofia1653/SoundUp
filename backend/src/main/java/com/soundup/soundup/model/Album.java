@@ -1,14 +1,26 @@
 package com.soundup.soundup.model;
 
+import java.util.List;
+import java.util.ArrayList;
+
+
 public class Album {
     private int id;
     private String nome;
     private int duracao;
+    private List<Musica> musicas;
+    private int ano;
 
-    public Album(int id, String nome, int duracao){
+    public Album() {
+        this.musicas = new ArrayList<>();
+    }
+
+    public Album(int id, String nome, int duracao, int ano){
         this.id = id;
         this.nome = nome;
         this.duracao = duracao;
+        this.musicas = new ArrayList<>();
+        this.ano = ano;
     }
 
     public int getId(){
@@ -33,5 +45,17 @@ public class Album {
 
     public void setDuracao(int duracaco){
         this.duracao = duracaco;
+    }
+    public List<Musica> getMusicas(){
+        return musicas;
+    }
+    public void setMusicas(List<Musica> musicas){
+        this.musicas = musicas;
+    }
+    public int getAno(){
+        return ano;
+    }
+    public void setAno(int ano){
+        this.ano = ano;
     }
 }

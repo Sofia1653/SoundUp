@@ -20,14 +20,18 @@ public class MusicaRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    private RowMapper<Musica> musicaRowMapper = (rs, rowNum) -> new Musica(
-            rs.getInt("id"),
-            rs.getString("nome"),
-            rs.getInt("duracao")
-    );
+    private RowMapper<Musica> musicaRowMapper = (rs, rowNum) -> {
+        Musica musica = new Musica(
+                rs.getInt("id"),
+                rs.getString("nome"),
+                rs.getInt("duracao")
+        );
+        musica.setAlbumId(rs.getObject("album_id", Integer.class));
+        return musica;
+    };
 
     public int save(Musica musica) {
-        String sql = "INSERT INTO musicas (nome, duracao) VALUES (?, ?)";
+        String sql = "INSERT INTO musicas (nome, duracao, id_album) VALUES (?, ?, ?)";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
@@ -35,6 +39,7 @@ public class MusicaRepository {
             PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, musica.getNome());
             ps.setInt(2, musica.getDuracao());
+            ps.setObject(3, musica.getAlbumId());
             return ps;
         }, keyHolder);
 
@@ -63,5 +68,9 @@ public class MusicaRepository {
     public int delete(int id) {
         String sql = "DELETE FROM musicas WHERE id = ?";
         return jdbcTemplate.update(sql, id);
+    }
+    public List<Musica> findByAlbumId(int albumId) {
+        String sql = "SELECT id, nome, duracao, album_id FROM musicas WHERE album_id = ?";
+        return jdbcTemplate.query(sql, musicaRowMapper, albumId);
     }
 }

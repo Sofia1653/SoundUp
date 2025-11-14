@@ -8,13 +8,14 @@ public class Musica {
     private String nome;
     private int duracao;
     private List<Artista> artistas;
+    private Integer albumId;
 
     // Default constructor
     public Musica() {
         this.artistas = new ArrayList<>();
     }
 
-    public Musica(int id, String nome, int duracao){
+    public Musica(int id, String nome, int duracao) {
         this.id = id;
         this.nome = nome;
         this.duracao = duracao;
@@ -43,6 +44,13 @@ public class Musica {
 
     public void setDuracao(int duracao){
         this.duracao = duracao;
+    }
+
+    public Integer getAlbumId() {
+        return albumId;
+    }
+    public void setAlbumId(Integer albumId) {
+        this.albumId = albumId;
     }
 
     // Methods to manage artist relationship
