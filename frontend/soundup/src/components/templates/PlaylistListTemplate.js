@@ -27,7 +27,10 @@ export default function PlaylistListTemplate({ playlists, handleDelete, handleEd
                 <TableHead>
                     <TableRow sx={{ backgroundColor: "#1E1E1E" }}>
                         <TableCell sx={{ fontWeight: "bold" }}>Nome</TableCell>
-                        <TableCell sx={{ fontWeight: "bold" }}>Descrição</TableCell>
+                        {/* MUDANÇA 1: Cabeçalho alterado para ID do Ouvinte */}
+                        <TableCell sx={{ fontWeight: "bold" }}>ID Ouvinte</TableCell>
+                        {/* Adicionei a Visibilidade de volta, se necessário */}
+                        <TableCell sx={{ fontWeight: "bold" }}>Visibilidade</TableCell>
                         <TableCell sx={{ fontWeight: "bold" }} align="center">Ações</TableCell>
                     </TableRow>
                 </TableHead>
@@ -49,9 +52,19 @@ export default function PlaylistListTemplate({ playlists, handleDelete, handleEd
                                 </Typography>
                             </TableCell>
 
+                            {/* MUDANÇA 2: Exibe o ID do ouvinte (p.id_ouvinte) */}
                             <TableCell>
                                 <Typography variant="body2">
-                                    {p.descricao || "-"}
+                                    {/* Supondo que o ID do ouvinte esteja em p.id_ouvinte */}
+                                    {p.id_ouvinte || "-"}
+                                </Typography>
+                            </TableCell>
+
+                            {/* Célula para a Visibilidade */}
+                            <TableCell>
+                                <Typography variant="body2">
+                                    {/* Supondo que a visibilidade esteja em p.visibilidade */}
+                                    {p.visibilidade ? (p.visibilidade.charAt(0).toUpperCase() + p.visibilidade.slice(1)) : "-"}
                                 </Typography>
                             </TableCell>
 

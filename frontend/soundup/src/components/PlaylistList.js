@@ -1,21 +1,23 @@
 import React, { useEffect, useState } from "react";
-import { getPlaylists, deletePlaylist } from "../services/playlistService";
+import { Box, Typography } from "@mui/material";
+import { getPlaylists, deletePlaylist } from "../services/playlistService"; // Funções de serviço
 import PlaylistForm from "./PlaylistForm";
+import PlaylistListTemplate from "./templates/PlaylistListTemplate";
 
 export default function PlaylistList() {
-
     const [playlists, setPlaylists] = useState([]);
     const [editingPlaylist, setEditingPlaylist] = useState(null);
 
     const fetchPlaylists = () => {
         getPlaylists()
             .then(data => {
+                // Lógica de manipulação de dados igual à de MusicaList
                 if (Array.isArray(data)) setPlaylists(data);
                 else if (data?.content) setPlaylists(data.content);
                 else setPlaylists([]);
             })
             .catch(err => {
-                console.error("Erro ao carregar playlists:", err);
+                console.error("Erro ao buscar playlists:", err);
                 setPlaylists([]);
             });
     };
@@ -30,7 +32,8 @@ export default function PlaylistList() {
         });
     };
 
-    const handleCreatedOrUpdated = () => {
+    const handleCreatedOrUpdated = (playlistAtualizada) => {
+        // Para simplificar, sempre busca a lista atualizada após salvar
         fetchPlaylists();
         setEditingPlaylist(null);
     };
@@ -44,48 +47,32 @@ export default function PlaylistList() {
     };
 
     return (
-        <div style={{ padding: 20 }}>
-            <h2>Gerenciar Playlists</h2>
-
-            <PlaylistForm
-                onCreated={handleCreatedOrUpdated}
-                editingPlaylist={editingPlaylist}
-                onCancelEdit={handleCancelEdit}
-            />
-
-            <h3 style={{ marginTop: 30 }}>Lista de Playlists</h3>
-
-            <table border="1" cellPadding="8" style={{ marginTop: 10 }}>
-                <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Ouvinte</th>
-                    <th>Nome</th>
-                    <th>Visibilidade</th>
-                    <th>Ações</th>
-                </tr>
-                </thead>
-
-                <tbody>
-                {playlists.map((p) => (
-                    <tr key={p.id}>
-                        <td>{p.id}</td>
-                        <td>{p.id_ouvinte}</td>
-                        <td>{p.nome}</td>
-                        <td>{p.visibilidade}</td>
-                        <td>
-                            <button onClick={() => handleEditClick(p)}>Editar</button>
-                            <button
-                                onClick={() => handleDelete(p.id)}
-                                style={{ marginLeft: 10, color: "red" }}
-                            >
-                                Deletar
-                            </button>
-                        </td>
-                    </tr>
-                ))}
-                </tbody>
-            </table>
-        </div>
+        React.createElement(Box, { sx: { p: 3 } }, [
+            React.createElement(
+                Typography,
+                { key: "titulo", variant: "h4", component: "h1", gutterBottom: true },
+                "Gerenciar Playlists"
+            ),
+            React.createElement(
+                Box,
+                { key: "form", sx: { mb: 4 } },
+                React.createElement(PlaylistForm, {
+                    onCreated: handleCreatedOrUpdated,
+                    editingPlaylist,
+                    onCancelEdit: handleCancelEdit
+                })
+            ),
+            React.createElement(
+                Typography,
+                { key: "lista-titulo", variant: "h5", component: "h2", gutterBottom: true },
+                "Lista de Playlists"
+            ),
+            React.createElement(PlaylistListTemplate, {
+                key: "lista",
+                playlists,
+                handleDelete,
+                handleEditClick
+            })
+        ])
     );
 }
