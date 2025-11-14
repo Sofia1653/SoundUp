@@ -4,6 +4,9 @@ import { Button, TextField, Box, FormControl, InputLabel, Select, MenuItem, Circ
 export default function MusicaFormTemplate({
                                                musica,
                                                artistas,
+                                               albuns,
+                                               selectedAlbumId,
+                                               handleAlbumChange,
                                                selectedArtistaId,
                                                handleChange,
                                                handleArtistaChange,
@@ -68,6 +71,30 @@ export default function MusicaFormTemplate({
                                 {artistas.map((artista) => (
                                     <MenuItem key={artista.id_artista} value={artista.id_artista}>
                                         {artista.nome} ({artista.email})
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
+                    </Box>
+                )}
+                {/* Seletor de Álbum */}
+                {albuns.length > 0 && (
+                    <Box sx={{ display: "flex", flexDirection: { xs: "column", sm: "row" }, gap: 2 }}>
+                        <FormControl fullWidth sx={inputStyles}>
+                            <InputLabel id="album-select-label">Álbum (Opcional)</InputLabel>
+                            <Select
+                                labelId="album-select-label"
+                                value={selectedAlbumId}
+                                label="Álbum (Opcional)"
+                                onChange={handleAlbumChange}
+                                disabled={loading}
+                            >
+                                <MenuItem value="">
+                                    <em>Nenhum álbum selecionado</em>
+                                </MenuItem>
+                                {albuns.map((album) => (
+                                    <MenuItem key={album.id} value={album.id}>
+                                        {album.nome} ({album.ano})
                                     </MenuItem>
                                 ))}
                             </Select>

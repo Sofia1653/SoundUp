@@ -54,8 +54,9 @@ public class MusicaService {
         }
     }
 
-    public void createMusica(Musica musica) {
+    public Musica createMusica(Musica musica) {
         musicaRepository.save(musica);
+        return musica;
     }
 
     public void updateMusica(Musica musica) {
