@@ -22,7 +22,7 @@ public class AlbumRepository {
 
     private RowMapper<Album> albumRowMapper = (rs, rowNum) ->
             new Album(
-                    rs.getInt("id"),
+                    rs.getInt("id_album"),
                     rs.getString("nome"),
                     rs.getInt("duracao"),
                     rs.getInt("ano")
@@ -49,7 +49,7 @@ public class AlbumRepository {
     }
 
     public Album findById(int id) {
-        String sql = "SELECT id, nome, duracao, ano FROM albuns WHERE id = ?";
+        String sql = "SELECT id_album, nome, duracao, ano FROM albuns WHERE id_album = ?";
         return jdbcTemplate.queryForObject(sql, albumRowMapper, id);
     }
 
@@ -59,7 +59,7 @@ public class AlbumRepository {
     }
 
     public int update(Album album) {
-        String sql = "UPDATE albuns SET nome = ?, duracao = ?, ano = ? WHERE id = ?";
+        String sql = "UPDATE albuns SET nome = ?, duracao = ?, ano = ? WHERE id_album = ?";
         return jdbcTemplate.update(sql,
                 album.getNome(),
                 album.getDuracao(),
@@ -68,7 +68,7 @@ public class AlbumRepository {
     }
 
     public int delete(int id) {
-        String sql = "DELETE FROM albuns WHERE id = ?";
+        String sql = "DELETE FROM albuns WHERE id_album = ?";
         return jdbcTemplate.update(sql, id);
     }
 }

@@ -19,6 +19,7 @@ import MusicaList from "./components/MusicaList";
 import PreferenciasPage from "./components/PreferenciasPage";
 import Consultas from "./components/Consultas";
 import GraficosPage from "./components/GraficosPage";
+import AlbumList from "./components/AlbumList";
 
 // Cores e Tema (estilo da primeira página)
 const PRIMARY_PURPLE = '#7E57C2';
@@ -99,6 +100,7 @@ const Dashboard = () => (
             }}>
                 <UsuarioList />
                 <ArtistaList />
+                <AlbumList />
                 <MusicaList />
                 <Consultas />
             </Box>

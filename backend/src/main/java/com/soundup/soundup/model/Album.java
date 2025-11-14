@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 
 public class Album {
-    private int id;
+    private int id_album;
     private String nome;
     private int duracao;
     private List<Musica> musicas;
@@ -15,8 +15,8 @@ public class Album {
         this.musicas = new ArrayList<>();
     }
 
-    public Album(int id, String nome, int duracao, int ano){
-        this.id = id;
+    public Album(int id_album, String nome, int duracao, int ano){
+        this.id_album = id_album;
         this.nome = nome;
         this.duracao = duracao;
         this.musicas = new ArrayList<>();
@@ -24,11 +24,11 @@ public class Album {
     }
 
     public int getId(){
-        return id;
+        return id_album;
     }
 
     public void setId(int id){
-        this.id = id;
+        this.id_album = id_album;
     }
 
     public String getNome(){
