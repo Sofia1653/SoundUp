@@ -1,6 +1,5 @@
 package com.soundup.soundup.repository;
 
-import com.soundup.soundup.model.Musica;
 import com.soundup.soundup.model.Ouvinte;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -41,7 +40,7 @@ public class OuvinteRepository {
         return generatedId;
     }
 
-    public Ouvinte findById(int id) {
+    public Ouvinte findById(Long id) {
         String sql = "SELECT id_ouvinte FROM ouvinte WHERE id = ?";
         return jdbcTemplate.queryForObject(sql, ouvinteRowMapper, id);
     }

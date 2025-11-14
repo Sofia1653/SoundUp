@@ -14,8 +14,7 @@ public class OuvinteService {
     }
 
     public Ouvinte getOuvinteById(Long id) {
-        return ouvinteRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Ouvinte não encontrado"));
+        return ouvinteRepository.findById(id);
     }
 }
 
