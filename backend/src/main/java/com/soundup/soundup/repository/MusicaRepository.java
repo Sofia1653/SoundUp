@@ -26,7 +26,7 @@ public class MusicaRepository {
                 rs.getString("nome"),
                 rs.getInt("duracao")
         );
-        musica.setAlbumId(rs.getObject("album_id", Integer.class));
+        musica.setAlbumId(rs.getObject("id_album", Integer.class));
         return musica;
     };
 
@@ -70,7 +70,7 @@ public class MusicaRepository {
         return jdbcTemplate.update(sql, id);
     }
     public List<Musica> findByAlbumId(int albumId) {
-        String sql = "SELECT id, nome, duracao, album_id FROM musicas WHERE album_id = ?";
+        String sql = "SELECT id, nome, duracao, album_id FROM musicas WHERE id_album = ?";
         return jdbcTemplate.query(sql, musicaRowMapper, albumId);
     }
 }
