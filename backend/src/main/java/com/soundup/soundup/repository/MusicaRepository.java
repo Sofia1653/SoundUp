@@ -51,26 +51,31 @@ public class MusicaRepository {
     }
 
     public List<Musica> findAll() {
-        String sql = "SELECT id, nome, duracao FROM musicas";
+        String sql = "SELECT id, nome, duracao, id_album FROM musicas";
         return jdbcTemplate.query(sql, musicaRowMapper);
     }
 
     public Musica findById(int id) {
-        String sql = "SELECT id, nome, duracao FROM musicas WHERE id = ?";
+        String sql = "SELECT id, nome, duracao, id_album FROM musicas WHERE id = ?";
         return jdbcTemplate.queryForObject(sql, musicaRowMapper, id);
     }
 
     public int update(Musica musica) {
-        String sql = "UPDATE musicas SET nome = ?, duracao = ? WHERE id_album = ?";
-        return jdbcTemplate.update(sql, musica.getNome(), musica.getDuracao(), musica.getId());
+        String sql = "UPDATE musicas SET nome = ?, duracao = ?, id_album = ? WHERE id = ?";
+        return jdbcTemplate.update(sql,
+                musica.getNome(),
+                musica.getDuracao(),
+                musica.getAlbumId(),
+                musica.getId());
     }
 
     public int delete(int id) {
         String sql = "DELETE FROM musicas WHERE id = ?";
         return jdbcTemplate.update(sql, id);
     }
+
     public List<Musica> findByAlbumId(int albumId) {
-        String sql = "SELECT id, nome, duracao, album_id FROM musicas WHERE id_album = ?";
+        String sql = "SELECT id, nome, duracao, id_album FROM musicas WHERE id_album = ?";
         return jdbcTemplate.query(sql, musicaRowMapper, albumId);
     }
 }
