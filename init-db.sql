@@ -232,6 +232,38 @@ INSERT INTO Colabora (id_artistaPrincipal, id_artistaConvidado) VALUES
     (11,5),(12,14),(13,15),(14,16),(15,17),(16,1),(17,2),(18,19),(19,20),(20,21),
     (21,22),(22,23),(23,24),(24,25),(25,26),(26,27),(27,28),(28,29),(29,30), (30,1);
 
+INSERT INTO albuns (nome, duracao, ano) VALUES
+    ('Album Pipoco',180,2022),
+    ('Album Hear Me Now',210,2017),
+    ('Album Rain on Me',200,2020),
+    ('Album Infiel',230,2016),
+    ('Album Break My Soul',220,2022),
+    ('Album Everlong',250,1997),
+    ('Album Ai Ai Ai',190,2006),
+    ('Album LUNA',205,2023),
+    ('Album Slow Hands',210,2017),
+    ('Album Cedo ou Tarde',240,2008),
+    ('Album Nikes',260,2016),
+    ('Album Trevo',230,2016),
+    ('Album After Party',200,2021),
+    ('Album Karma Police',240,1997),
+    ('Album God''s Plan',220,2018),
+    ('Album Teu Silencio',200,2015),
+    ('Album Livin on a Prayer',250,1986),
+    ('Album Flor e o Beija-Flor',210,2017),
+    ('Album What Makes You Beautiful',230,2011),
+    ('Album Dancing Queen',220,1976),
+    ('Album Chop Suey',210,2001),
+    ('Album Dreams',260,1977),
+    ('Album Wonderwall',240,1995),
+    ('Album Summertime Sadness',230,2012),
+    ('Album Por Supuesto',200,2021),
+    ('Album Moonlight on the River',420,2017),
+    ('Album Kyoto',180,2020),
+    ('Album Os Anjos Cantam',180,2015),
+    ('Album Primeiros Erros',240,1989),
+    ('Album Faz Parte do Meu Show',180,1988);
+
 INSERT INTO musicas (id_album, nome, duracao) VALUES
     (1,'Pipoco',180),
     (2,'Hear Me Now',210),
