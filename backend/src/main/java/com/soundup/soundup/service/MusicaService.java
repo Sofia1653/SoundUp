@@ -1,5 +1,6 @@
 package com.soundup.soundup.service;
 
+import com.soundup.soundup.dto.MusicasPorAlbumDTO;
 import com.soundup.soundup.model.Musica;
 import com.soundup.soundup.model.Artista;
 import com.soundup.soundup.repository.MusicaRepository;
@@ -92,4 +93,8 @@ public class MusicaService {
     public void removerAssociacaoMusicaArtista(int musicaId, int artistaId) {
         musicaArtistaService.removerLancamento(artistaId, musicaId);
     }
+    public List<MusicasPorAlbumDTO> getMusicasPorAlbum() {
+        return musicaRepository.getMusicasPorAlbum();
+    }
+
 }

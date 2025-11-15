@@ -52,8 +52,8 @@ export async function deleteAlbum(id) {
 }
 
 // GET - obter músicas de um álbum
-export async function getMusicasDoAlbum(albumId) {
-    const res = await fetch(`${API_URL}/${albumId}/musicas`);
+export async function getMusicasDoAlbum(id_album) {
+    const res = await fetch(`${API_URL}/${id_album}/musicas`);
 
     if (!res.ok) throw new Error("Erro ao buscar músicas do álbum");
 

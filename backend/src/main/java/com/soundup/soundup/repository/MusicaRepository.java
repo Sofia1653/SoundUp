@@ -1,5 +1,6 @@
 package com.soundup.soundup.repository;
 
+import com.soundup.soundup.dto.MusicasPorAlbumDTO;
 import com.soundup.soundup.model.Musica;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -26,7 +27,7 @@ public class MusicaRepository {
                 rs.getString("nome"),
                 rs.getInt("duracao")
         );
-        musica.setAlbumId(rs.getObject("id_album", Integer.class));
+        musica.setId_album(rs.getObject("id_album", Integer.class));
         return musica;
     };
 
@@ -39,7 +40,7 @@ public class MusicaRepository {
             PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, musica.getNome());
             ps.setInt(2, musica.getDuracao());
-            ps.setObject(3, musica.getAlbumId());
+            ps.setObject(3, musica.getId_album());
             return ps;
         }, keyHolder);
 
@@ -65,7 +66,7 @@ public class MusicaRepository {
         return jdbcTemplate.update(sql,
                 musica.getNome(),
                 musica.getDuracao(),
-                musica.getAlbumId(),
+                musica.getId_album(),
                 musica.getId());
     }
 
@@ -74,8 +75,32 @@ public class MusicaRepository {
         return jdbcTemplate.update(sql, id);
     }
 
-    public List<Musica> findByAlbumId(int albumId) {
+    public List<Musica> findByAlbumId(int id_album) {
         String sql = "SELECT id, nome, duracao, id_album FROM musicas WHERE id_album = ?";
-        return jdbcTemplate.query(sql, musicaRowMapper, albumId);
+        return jdbcTemplate.query(sql, musicaRowMapper, id_album);
+    }
+
+    public List<MusicasPorAlbumDTO> getMusicasPorAlbum() {
+        String sql =
+                "SELECT a.nome AS album, COUNT(m.id) AS quantidade " +
+                        "FROM albuns a " +
+                        "LEFT JOIN musicas m ON m.id_album = a.id_album " +
+                        "GROUP BY a.id_album " +
+                        "ORDER BY quantidade DESC";
+
+        return jdbcTemplate.query(sql, (rs, rowNum) ->
+                new MusicasPorAlbumDTO(
+                        rs.getString("album"),
+                        rs.getInt("quantidade")
+                )
+        );
+    }
+    public int updateAlbumId(int musicaId, Integer id_album) {
+        String sql = "UPDATE musicas SET id_album = ? WHERE id = ?";
+        return jdbcTemplate.update(sql, id_album, musicaId);
+    }
+    public int clearAlbumIdForAlbum(int id_album) {
+        String sql = "UPDATE musicas SET id_album = NULL WHERE id_album = ?";
+        return jdbcTemplate.update(sql, id_album);
     }
 }

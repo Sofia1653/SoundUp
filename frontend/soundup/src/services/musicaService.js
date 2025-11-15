@@ -137,3 +137,17 @@ export const removerAssociacaoMusicaArtista = async (musicaId, artistaId) => {
     throw error;
   }
 };
+export const associarMusicaComAlbum = async (musicaId, id_album) => {
+  try {
+    // Endereço de API esperado: POST /api/musicas/{musicaId}/albuns/{albumId}
+    const response = await fetch(`${API_BASE}/musicas/${musicaId}/albuns/${id_album}`, { method: 'POST' });
+
+    if (!response.ok) throw new Error('Failed to associate music with album');
+
+    // Retorna um objeto simples de sucesso
+    return { success: true };
+  } catch (error) {
+    console.error('Error associating music with album:', error);
+    throw error;
+  }
+};
