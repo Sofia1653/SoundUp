@@ -44,4 +44,14 @@ public class PlaylistController {
         playlistService.deletePlaylistById(id);
     }
 
+    @PostMapping("/{playlistId}/musicas/{musicaId}")
+    public ResponseEntity<?> addMusica(
+            @PathVariable int playlistId,
+            @PathVariable int musicaId) {
+
+        playlistService.adicionarMusicaNaPlaylist(playlistId, musicaId);
+        return ResponseEntity.ok("Música adicionada à playlist!");
+    }
+
+
 }

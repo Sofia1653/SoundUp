@@ -29,10 +29,13 @@ public class PlaylistService {
     }
 
     public void createPlaylist(Playlist playlist) {
+        verificarSeOuvinteExiste(playlist.getIdOuvinte());
         playlistRepository.save(playlist);
     }
 
     public void updatePlaylist(Playlist playlist) {
+
+        verificarSeOuvinteExiste(playlist.getIdOuvinte());
         playlistRepository.update(playlist);
     }
 
@@ -44,4 +47,26 @@ public class PlaylistService {
         playlistRepository.save(playlist);
         return playlist;
     }
+
+    public void adicionarMusicaNaPlaylist(int playlistId, int musicaId) {
+
+        Playlist playlist = playlistRepository.findById(playlistId);
+        if (playlist == null) {
+            throw new RuntimeException("Playlist não encontrada");
+        }
+
+        if (musicaService.getMusicaById(musicaId) == null) {
+            throw new RuntimeException("Música não encontrada");
+        }
+
+        playlistRepository.addMusicaToPlaylist(playlistId, musicaId);
+    }
+
+    public void verificarSeOuvinteExiste(Long idOuvinte) {
+        if (ouvinteService.getOuvinteById(idOuvinte) == null) {
+            throw new RuntimeException("Ouvinte não encontrado");
+        }
+    }
+
+
 }

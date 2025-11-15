@@ -2,11 +2,11 @@ package com.soundup.soundup.model;
 
 public class Playlist {
     private int id;
-    private int id_ouvinte;
+    private long id_ouvinte;
     private String visibilidade;
     private String nome;
 
-    public Playlist(int id, int id_ouvinte, String visibilidade, String nome){
+    public Playlist(int id, long id_ouvinte, String visibilidade, String nome){
         this.id = id;
         this.id_ouvinte = id_ouvinte;
         this.visibilidade = visibilidade;
@@ -19,10 +19,10 @@ public class Playlist {
     public void setId(int id){
         this.id = id;
     }
-    public int getId_ouvinte(){
+    public long getIdOuvinte(){
         return id_ouvinte;
     }
-    public void setId_ouvinte(int id_ouvinte){
+    public void setIdOuvinte(int id_ouvinte){
         this.id_ouvinte = id_ouvinte;
     }
     public String getVisibilidade(){

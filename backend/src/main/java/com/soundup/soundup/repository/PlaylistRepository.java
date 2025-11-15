@@ -31,7 +31,7 @@ public class PlaylistRepository {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            ps.setInt(1, playlist.getId_ouvinte());
+            ps.setLong(1, playlist.getIdOuvinte());
             ps.setString(2, playlist.getVisibilidade());
             ps.setString(3, playlist.getNome());
             return ps;
@@ -56,11 +56,17 @@ public class PlaylistRepository {
 
     public int update(Playlist playlist) {
         String sql = "UPDATE playlist SET id_ouvinte = ?, visibilidade = ?, nome = ? WHERE id = ?";
-        return jdbcTemplate.update(sql, playlist.getId_ouvinte(), playlist.getVisibilidade(), playlist.getNome(), playlist.getId());
+        return jdbcTemplate.update(sql, playlist.getIdOuvinte(), playlist.getVisibilidade(), playlist.getNome(), playlist.getId());
     }
 
     public int delete(int id) {
         String sql = "DELETE FROM playlist WHERE id = ?";
         return jdbcTemplate.update(sql, id);
     }
+
+    public void addMusicaToPlaylist(int playlistId, int musicaId) {
+        String sql = "INSERT INTO Possui (id_playlist, id_musica) VALUES (?, ?)";
+        jdbcTemplate.update(sql, playlistId, musicaId);
+    }
+
 }

@@ -69,3 +69,36 @@ export const deletePlaylist = async (id) => {
         throw error;
     }
 };
+
+export const getAllMusicas = async () => {
+    try {
+        // Altere o endpoint se for diferente no seu Back-end
+        const response = await fetch(`${API_BASE}/musicas`);
+        if (!response.ok) {
+            throw new Error('Falha ao buscar todas as músicas.');
+        }
+        const data = await response.json();
+        // A API pode retornar a lista diretamente ou dentro de um 'content'
+        return data.content || data;
+    } catch (error) {
+        console.error("Erro em getAllMusicas:", error);
+        return [];
+    }
+};
+
+export const getPlaylistMusicas = async (playlistId) => {
+    try {
+        // Altere o endpoint para o seu Back-end. Exemplo: /playlists/1/musicas
+        const response = await fetch(`${API_BASE}/playlists/${playlistId}/musicas`);
+        if (!response.ok) {
+            throw new Error(`Falha ao buscar músicas da playlist ${playlistId}.`);
+        }
+        const data = await response.json();
+        return data.content || data;
+    } catch (error) {
+        console.error("Erro em getPlaylistMusicas:", error);
+        return [];
+    }
+};
+
+

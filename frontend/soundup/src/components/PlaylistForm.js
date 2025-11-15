@@ -1,42 +1,70 @@
 import React, { useEffect, useState } from "react";
-// Assumindo que você terá funções de serviço similares às de música
-import { createPlaylist, updatePlaylist } from "../services/playlistService";
+import { createPlaylist, updatePlaylist, getPlaylistMusicas, getAllMusicas } from "../services/playlistService";
 import PlaylistFormTemplate from "./templates/PlaylistFormTemplate";
 
-// O id_ouvinte DEVE ser passado como prop aqui se for para uma nova criação
+// O id_ouvinte DEVE ser passado como prop
 export default function PlaylistForm({ onCreated, editingPlaylist, onCancelEdit, currentUserId }) {
 
-    // Incluindo id_ouvinte no estado inicial
     const [playlist, setPlaylist] = useState({
         id: 0,
         nome: "",
         visibilidade: "publica",
-        id_ouvinte: currentUserId || 0 // Use o ID do usuário logado se for novo
+        id_ouvinte: currentUserId || 0,
+        musica_ids: [] // Novo campo para IDs de músicas selecionadas
     });
+    const [allMusicas, setAllMusicas] = useState([]); // Todas as músicas disponíveis
     const [loading, setLoading] = useState(false);
+    const [musicasLoading, setMusicasLoading] = useState(false);
 
-    // Efeito para carregar dados da playlist ao entrar em modo de edição
+    // 1. Carregar TODAS as músicas disponíveis
+    useEffect(() => {
+        setMusicasLoading(true);
+        getAllMusicas()
+            .then(data => {
+                // Assume que data é um array de { id: number, nome: string, artista: string }
+                setAllMusicas(Array.isArray(data) ? data : data?.content || []);
+            })
+            .catch(err => console.error("Erro ao carregar músicas disponíveis:", err))
+            .finally(() => setMusicasLoading(false));
+    }, []);
+
+    // 2. Carregar músicas da playlist em edição
     useEffect(() => {
         if (editingPlaylist) {
-            setPlaylist({
+            setPlaylist(prev => ({
+                ...prev,
                 id: Number(editingPlaylist.id) || 0,
                 nome: editingPlaylist.nome || "",
                 visibilidade: editingPlaylist.visibilidade || "publica",
-                // Pega o ID do ouvinte da playlist que está sendo editada
                 id_ouvinte: editingPlaylist.id_ouvinte || 0,
-            });
+                // Mantém as músicas antigas como fallback, mas o ideal é carregar:
+                musica_ids: [],
+            }));
+
+            // Busca os IDs das músicas que JÁ estão nesta playlist
+            getPlaylistMusicas(editingPlaylist.id)
+                .then(musicasNaPlaylist => {
+                    const ids = musicasNaPlaylist.map(m => m.id);
+                    setPlaylist(prev => ({ ...prev, musica_ids: ids }));
+                })
+                .catch(err => console.error("Erro ao carregar músicas da playlist:", err));
+
         } else {
-            // Reseta para a criação, usando o ID do usuário logado
-            setPlaylist({ id: 0, nome: "", visibilidade: "publica", id_ouvinte: currentUserId || 0 });
+            // Reseta para a criação
+            setPlaylist({ id: 0, nome: "", visibilidade: "publica", id_ouvinte: currentUserId || 0, musica_ids: [] });
         }
-    }, [editingPlaylist, currentUserId]); // Dependência em currentUserId adicionada
+    }, [editingPlaylist, currentUserId]);
 
     // Função genérica de manipulação de mudança
     const handleChange = (e) => {
         const { name, value } = e.target;
+
+        // O Select Múltiplo para músicas retorna um array
+        const finalValue = name === 'id_ouvinte' ? Number(value) : value;
+
         setPlaylist(prev => ({
             ...prev,
-            [name]: value
+            [name]: finalValue
         }));
     };
 
@@ -44,11 +72,12 @@ export default function PlaylistForm({ onCreated, editingPlaylist, onCancelEdit,
         e.preventDefault();
         setLoading(true);
 
-        // Adaptação da lógica de salvamento (INCLUINDO ID_OUVINTE)
         const playlistToSave = {
             nome: playlist.nome,
             visibilidade: playlist.visibilidade,
-            id_ouvinte: playlist.id_ouvinte, // Garante que o ID do ouvinte é enviado
+            id_ouvinte: playlist.id_ouvinte,
+            // NOVO CAMPO: Lista de IDs de músicas
+            musica_ids: playlist.musica_ids,
         };
 
         try {
@@ -63,7 +92,7 @@ export default function PlaylistForm({ onCreated, editingPlaylist, onCancelEdit,
 
             // Reset form para criação futura
             if (!editingPlaylist) {
-                setPlaylist({ id: 0, nome: "", visibilidade: "publica", id_ouvinte: currentUserId || 0 });
+                setPlaylist({ id: 0, nome: "", visibilidade: "publica", id_ouvinte: currentUserId || 0, musica_ids: [] });
             }
 
         } catch (error) {
@@ -75,10 +104,11 @@ export default function PlaylistForm({ onCreated, editingPlaylist, onCancelEdit,
 
     return React.createElement(PlaylistFormTemplate, {
         playlist,
+        allMusicas, // Passa todas as músicas disponíveis para o template
         handleChange,
         handleSubmit,
         editingPlaylist,
         onCancelEdit,
-        loading
+        loading: loading || musicasLoading
     });
 }
