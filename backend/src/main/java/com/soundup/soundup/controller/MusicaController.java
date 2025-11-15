@@ -1,5 +1,6 @@
 package com.soundup.soundup.controller;
 
+import com.soundup.soundup.dto.MusicasPorAlbumDTO;
 import com.soundup.soundup.model.Musica;
 import com.soundup.soundup.model.Artista;
 import com.soundup.soundup.service.MusicaService;
@@ -90,4 +91,9 @@ public class MusicaController {
         musica.setId(id);
         musicaService.updateMusica(musica);
     }
+    @GetMapping("/estatisticas/musicas-por-album")
+    public List<MusicasPorAlbumDTO> getMusicasPorAlbum() {
+        return musicaService.getMusicasPorAlbum();
+    }
+    // Associar música a um álbum
 }
