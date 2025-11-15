@@ -25,6 +25,8 @@ import AlbumList from "./components/AlbumList";
 import MusicasPorAlbumChart from "./components/MusicasPorAlbumGraf";
 import TendenciaDuracaoAnual from "./components/TendenciaDuracaoAnual";
 import DistribuicaoPorPais from "./components/DistribuicaoPorPais";
+import ComparativoArtistaRadar from "./components/ComparativoArtistaRadar";
+import Top5ArtistasBarra from "./components/Top5ArtistasBarra";
 
 
 // Cores e Tema (estilo da primeira página)
@@ -114,6 +116,7 @@ const Dashboard = () => (
                 <MusicasPorAlbumChart />
                 <TendenciaDuracaoAnual />
                 <DistribuicaoPorPais />
+                <Top5ArtistasBarra />
 
             </Box>
         </Container>
