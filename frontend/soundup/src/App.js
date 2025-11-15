@@ -21,6 +21,7 @@ import Consultas from "./components/Consultas";
 import GraficosPage from "./components/GraficosPage";
 import AlbumList from "./components/AlbumList";
 import MusicasPorAlbumChart from "./components/MusicasPorAlbumGraf";
+import TendenciaDuracaoAnual from "./components/TendenciaDuracaoAnual";
 
 // Cores e Tema (estilo da primeira página)
 const PRIMARY_PURPLE = '#7E57C2';
@@ -105,6 +106,7 @@ const Dashboard = () => (
                 <MusicaList />
                 <Consultas />
                 <MusicasPorAlbumChart />
+                <TendenciaDuracaoAnual />
             </Box>
         </Container>
     </Box>
