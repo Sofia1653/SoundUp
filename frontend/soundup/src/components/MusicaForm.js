@@ -74,33 +74,24 @@ export default function MusicaForm({ onCreated, editingMusica, onCancelEdit }) {
 
     try {
       if (editingMusica) {
-        // Atualizar música já existente
-        await updateMusica(musica.id, {
-          ...musica,
-          artistaId: selectedArtistaId ? Number(selectedArtistaId) : null,
-          albumId: selectedAlbumId ? Number(selectedAlbumId) : null
-        });
-
+        // Atualiza música
+        await updateMusica(musica.id, musica);
       } else {
-        // Criar nova música
-        const payload = {
-          ...musica,
-          artistaId: selectedArtistaId ? Number(selectedArtistaId) : null,
-          albumId: selectedAlbumId ? Number(selectedAlbumId) : null
-        };
-
-        await createMusica(payload);
+        // Cria nova música
+        if (selectedArtistaId) {
+          await createMusicaComArtista(musica, selectedArtistaId);
+        } else {
+          await createMusica(musica);
+        }
       }
 
-      // Callback externo
       if (onCreated) onCreated();
       if (editingMusica && onCancelEdit) onCancelEdit();
 
-      // Resetar form após criar
+      // Reset form para criação futura
       if (!editingMusica) {
         setMusica({ id: 0, nome: "", duracao: 0 });
         setSelectedArtistaId("");
-        setSelectedAlbumId("");
       }
 
     } catch (error) {
