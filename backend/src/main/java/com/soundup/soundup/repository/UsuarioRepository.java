@@ -1,5 +1,6 @@
 package com.soundup.soundup.repository;
 
+import com.soundup.soundup.dto.ContagemPorPaisDTO;
 import com.soundup.soundup.model.Usuario;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -83,5 +84,20 @@ public class UsuarioRepository {
     public int delete(int id) {
         String sql = "DELETE FROM usuarios WHERE id = ?";
         return jdbcTemplate.update(sql, id);
+    }
+
+    public List<ContagemPorPaisDTO> getContagemUsuariosPorPais() {
+        String sql =
+                "SELECT pais, COUNT(id) AS contagem " +
+                        "FROM usuarios " +
+                        "GROUP BY pais " +
+                        "ORDER BY contagem DESC"; // Ordenamos para visualizar o Top
+
+        return jdbcTemplate.query(sql, (rs, rowNum) ->
+                new ContagemPorPaisDTO(
+                        rs.getString("pais"),
+                        rs.getInt("contagem")
+                )
+        );
     }
 }
