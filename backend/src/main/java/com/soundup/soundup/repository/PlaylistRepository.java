@@ -27,7 +27,7 @@ public class PlaylistRepository {
     );
 
     public int save(Playlist playlist) {
-        String sql = "INSERT INTO playlist (id_ouvinte, visibilidade, nome) VALUES (?,?,?)";
+        String sql = "INSERT INTO Playlist (id_ouvinte, visibilidade, nome) VALUES (?,?,?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -45,22 +45,22 @@ public class PlaylistRepository {
     }
 
     public List<Playlist> findAll() {
-        String sql = "SELECT id, id_ouvinte, visibilidade, nome FROM playlist";
+        String sql = "SELECT id, id_ouvinte, visibilidade, nome FROM Playlist";
         return jdbcTemplate.query(sql, playlistRowMapper);
     }
 
     public Playlist findById(int id) {
-        String sql = "SELECT id, id_ouvinte, visibilidade, nome FROM playlist WHERE id = ?";
+        String sql = "SELECT id, id_ouvinte, visibilidade, nome FROM Playlist WHERE id = ?";
         return jdbcTemplate.queryForObject(sql, playlistRowMapper, id);
     }
 
     public int update(Playlist playlist) {
-        String sql = "UPDATE playlist SET id_ouvinte = ?, visibilidade = ?, nome = ? WHERE id = ?";
+        String sql = "UPDATE Playlist SET id_ouvinte = ?, visibilidade = ?, nome = ? WHERE id = ?";
         return jdbcTemplate.update(sql, playlist.getIdOuvinte(), playlist.getVisibilidade(), playlist.getNome(), playlist.getId());
     }
 
     public int delete(int id) {
-        String sql = "DELETE FROM playlist WHERE id = ?";
+        String sql = "DELETE FROM Playlist WHERE id = ?";
         return jdbcTemplate.update(sql, id);
     }
 

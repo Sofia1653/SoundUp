@@ -66,7 +66,7 @@ CREATE TABLE Lanca (
 
 CREATE TABLE Ouvinte (
     id_ouvinte INT PRIMARY KEY,
-    CONSTRAINT fk_ouvinte_usuario FOREIGN KEY (id_ouvinte) REFERENCES Usuario(id)
+    CONSTRAINT fk_ouvinte_usuario FOREIGN KEY (id_ouvinte) REFERENCES usuarios(id)
         ON DELETE CASCADE
         ON UPDATE CASCADE
 );
@@ -86,7 +86,7 @@ CREATE TABLE Possui (
     id_musica INT,
     id_playlist INT,
     PRIMARY KEY (id_musica, id_playlist),
-    CONSTRAINT fk_possui_musica FOREIGN KEY (id_musica) REFERENCES Musica(id)
+    CONSTRAINT fk_possui_musica FOREIGN KEY (id_musica) REFERENCES musicas(id)
         ON DELETE CASCADE,
     CONSTRAINT fk_possui_playlist FOREIGN KEY (id_playlist) REFERENCES Playlist(id)
         ON DELETE CASCADE
@@ -150,7 +150,7 @@ INSERT INTO usuarios (nome, pais, estado, cidade, email, senha, quantSeguidores,
 ('Capital Inicial','Brazil','DF','Brasilia','capitalinicial@example.com','pw2929',7000000,'551199111139'),
 ('Cazuza','Brazil','RJ','Rio','cazuza@example.com','pw3030',5000000,'551199111140');
 
-INSERT INTO Artista (id_artista, quant_ouvintes) VALUES
+INSERT INTO artistas (id_artista, quant_ouvintes) VALUES
 (1,20000000),(2,15000000),(3,50000000),(4,30000000),(5,60000000),
 (6,35000000),(7,5000000),(8,7000000),(9,12000000),(10,8000000),
 (11,9000000),(12,6000000),(13,5000000),(14,15000000),(15,47000000),
@@ -170,7 +170,7 @@ INSERT INTO Versao (versao, descricao) VALUES
 (1,'Original'),(1,'Original'),(1,'Original'),(2,'Unplugged'),(1,'Original'),(1,'Original'),
 (1,'Original'),(1,'Original'),(1,'Original'),(2,'Remix'),(1,'Original'),(1,'Original');
 
-INSERT INTO Musica (id_versao, nome, duracao) VALUES
+INSERT INTO musicas (id_versao, nome, duracao) VALUES
 (1,'Pipoco','180'),(1,'Hear Me Now','210'),(1,'Rain on Me','200'),
 (1,'Infiel','230'),(1,'Break My Soul','220'),(1,'Everlong','250'),
 (1,'Ai Ai Ai','190'),(1,'LUNA','205'),(1,'Slow Hands','210'),
