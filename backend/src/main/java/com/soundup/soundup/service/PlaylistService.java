@@ -10,11 +10,12 @@ import java.util.List;
 public class PlaylistService {
 
     private final PlaylistRepository playlistRepository;
-    //private final PlaylistService playlistService;
+    private final MusicaService musicaService;
     private final OuvinteService ouvinteService;
 
-    public PlaylistService(PlaylistRepository playlistRepository, OuvinteService ouvinteService) {
+    public PlaylistService(PlaylistRepository playlistRepository, MusicaService musicaService ,OuvinteService ouvinteService) {
         this.playlistRepository = playlistRepository;
+        this.musicaService = musicaService;
         this.ouvinteService = ouvinteService;
     }
 

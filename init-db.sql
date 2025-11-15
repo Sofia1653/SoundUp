@@ -64,6 +64,35 @@ CREATE TABLE Lanca (
         ON DELETE CASCADE
 );
 
+CREATE TABLE Ouvinte (
+    id_ouvinte INT PRIMARY KEY,
+    CONSTRAINT fk_ouvinte_usuario FOREIGN KEY (id_ouvinte) REFERENCES Usuario(id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
+
+CREATE TABLE Playlist (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_ouvinte INT NOT NULL,
+    visibilidade VARCHAR(20) NOT NULL DEFAULT 'privada',
+    nome VARCHAR(70) NOT NULL,
+    CONSTRAINT fk_playlist_ouvinte FOREIGN KEY (id_ouvinte) REFERENCES Ouvinte(id_ouvinte)
+        ON DELETE CASCADE,
+    UNIQUE (id_ouvinte, nome),
+    CHECK (visibilidade IN ('privada', 'publica'))
+);
+
+CREATE TABLE Possui (
+    id_musica INT,
+    id_playlist INT,
+    PRIMARY KEY (id_musica, id_playlist),
+    CONSTRAINT fk_possui_musica FOREIGN KEY (id_musica) REFERENCES Musica(id)
+        ON DELETE CASCADE,
+    CONSTRAINT fk_possui_playlist FOREIGN KEY (id_playlist) REFERENCES Playlist(id)
+        ON DELETE CASCADE
+);
+
+
 -- Create Preferencias table
 CREATE TABLE IF NOT EXISTS Preferencias (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -159,6 +188,26 @@ INSERT INTO Lanca (id_artista, id_musica) VALUES
 (1,1),(2,2),(3,3),(4,4),(5,5),(6,6),(7,7),(8,8),(9,9),(10,10),
 (11,11),(12,12),(13,13),(14,14),(15,15),(16,16),(17,17),(18,18),(19,19),(20,20),
 (21,21),(22,22),(23,23),(24,24),(25,25),(26,26),(27,27),(28,28),(29,29),(30,30);
+
+INSERT INTO Ouvinte (id_ouvinte) VALUES
+    (1),(2),(3),(4),(5),(6),(7),(8),(9),(10),
+    (11),(12),(13),(14),(15),(16),(17),(18),(19),(20),
+    (21),(22),(23),(24),(25),(26),(27),(28),(29),(30);
+
+INSERT INTO Playlist (id_ouvinte, visibilidade, nome) VALUES
+    (1,'publica','Taylor Hits'),(2,'publica','Bad Bunny Mix'),(3,'publica','Drake Favs'),(4,'publica','Weeknd Night'),
+    (5,'publica','Bruno Grooves'),(6,'publica','Kendrick Flow'),(7,'publica','SZA Chill'),(8,'publica','Rosé Pop'),
+    (9,'publica','BLACKPINK Bangers'),(10,'publica','Billie Mellow'),(11,'publica','Ed Loves'),(12,'publica','Adele Ballads'),
+    (13,'publica','Rihanna Vibes'),(14,'publica','Coldplay Moods'),(15,'publica','KarolG Hits'),(16,'publica','Bieber Mix'),
+    (17,'publica','Ariana Top'),(18,'privada','Fan Playlist 1'),(19,'privada','Fan Playlist 2'),(20,'privada','Fan Playlist 3'),
+    (21,'privada','Indie 1'),(22,'privada','Indie 2'),(23,'publica','Producer Mix'),(24,'publica','Label Best'),
+    (25,'privada','UserA List'),(26,'privada','UserB List'),(27,'privada','UserC List'),(28,'privada','UserD List'),
+    (29,'publica','Collabs'), (30, 'privada', 'Favoritas');
+
+INSERT INTO Possui (id_musica, id_playlist) VALUES
+    (1,1),(2,2),(3,3),(4,4),(5,5),(6,6),(7,7),(8,8),(9,9),(10,10),
+    (11,11),(12,12),(13,13),(14,14),(15,15),(16,16),(17,17),(18,18),(19,19),(20,20),
+    (21,21),(22,22),(23,23),(24,24),(25,25),(26,26),(27,27),(28,28),(29,29), (30,30);
 
 -- Display summary
 SELECT '========================================' as '';
