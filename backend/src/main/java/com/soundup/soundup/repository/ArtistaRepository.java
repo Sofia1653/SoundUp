@@ -1,5 +1,7 @@
 package com.soundup.soundup.repository;
 
+import com.soundup.soundup.dto.ComparativoArtistaDTO;
+import com.soundup.soundup.dto.CorrelacaoDuracaoSeguidoresDTO;
 import com.soundup.soundup.model.Artista;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -110,5 +112,50 @@ public class ArtistaRepository {
     // DELETE artista (deleta Usuario, FK ON DELETE CASCADE cuida do Artista)
     public int delete(int id) {
         return jdbcTemplate.update("DELETE FROM usuarios WHERE id = ?", id);
+    }
+
+    public List<ComparativoArtistaDTO> getMetricasComparativas() {
+        String sql =
+                "SELECT " +
+                        "u.nome AS nome_artista, " +
+                        "a.quant_ouvintes, " +
+                        "COUNT(m.id) AS total_musicas, " +
+                        "COALESCE(AVG(m.duracao), 0) AS duracao_media " +
+                        "FROM artistas a " +
+                        "INNER JOIN usuarios u ON u.id = a.id_artista " +
+                        "LEFT JOIN Lanca l ON l.id_artista = a.id_artista " +
+                        "LEFT JOIN musicas m ON m.id = l.id_musica " +
+                        "GROUP BY u.nome, a.quant_ouvintes, a.id_artista " +
+                        "ORDER BY a.quant_ouvintes DESC";
+
+        return jdbcTemplate.query(sql, (rs, rowNum) ->
+                new ComparativoArtistaDTO(
+                        rs.getString("nome_artista"),
+                        rs.getInt("quant_ouvintes"),
+                        rs.getInt("total_musicas"),
+                        rs.getDouble("duracao_media")
+                )
+        );
+    }
+    public List<CorrelacaoDuracaoSeguidoresDTO> getCorrelacaoDuracaoSeguidores() {
+        String sql =
+                "SELECT " +
+                        "u.nome AS nome_artista, " +
+                        "u.quantSeguidores, " +
+                        "COALESCE(AVG(m.duracao), 0) AS duracao_media " +
+                        "FROM artistas a " +
+                        "INNER JOIN usuarios u ON u.id = a.id_artista " +
+                        "LEFT JOIN Lanca l ON l.id_artista = a.id_artista " +
+                        "LEFT JOIN musicas m ON m.id = l.id_musica " +
+                        "GROUP BY u.nome, u.quantSeguidores, a.id_artista " +
+                        "HAVING AVG(m.duracao) IS NOT NULL AND COUNT(m.id) > 0"; // Garante apenas artistas com músicas
+
+        return jdbcTemplate.query(sql, (rs, rowNum) ->
+                new CorrelacaoDuracaoSeguidoresDTO(
+                        rs.getString("nome_artista"),
+                        rs.getInt("quantSeguidores"),
+                        rs.getDouble("duracao_media")
+                )
+        );
     }
 }
