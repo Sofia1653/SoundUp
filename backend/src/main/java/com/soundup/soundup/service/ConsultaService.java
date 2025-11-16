@@ -4,6 +4,7 @@ import com.soundup.soundup.dto.ArtistaColaboracaoDTO;
 import com.soundup.soundup.dto.ArtistaIndependenteDTO;
 import com.soundup.soundup.dto.DuracaoPorAlbumDTO;
 import com.soundup.soundup.dto.MusicaEGeneroDTO;
+import com.soundup.soundup.dto.CatalogoDetalhadoMusicaDTO;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -173,6 +174,56 @@ public class ConsultaService {
                         rs.getString("nome_artista"),
                         rs.getString("papel"),
                         rs.getInt("total_colaboracoes")
+                )
+        );
+    }
+
+    public List<CatalogoDetalhadoMusicaDTO> getCatalogoDetalhadoMusicas() {
+
+        jdbcTemplate.update("""
+        CREATE OR REPLACE VIEW vw_CatalogoDetalhadoMusicas AS
+        SELECT 
+            m.id AS id_musica,
+            m.nome AS nome_musica,
+            m.duracao AS duracao_segundos,
+
+            u.id AS id_artista,
+            u.nome AS nome_artista,
+
+            alb.id_album AS id_album,
+            alb.nome AS nome_album,
+
+            g.id AS id_genero,
+            g.nome AS nome_genero
+
+        FROM musicas m
+        LEFT JOIN Lanca l ON m.id = l.id_musica
+        LEFT JOIN usuarios u ON l.id_artista = u.id
+
+        LEFT JOIN Pertence p ON m.id = p.id_musica
+        LEFT JOIN albuns alb ON p.id_album = alb.id_album
+
+        LEFT JOIN Tem t ON m.id = t.id_musica
+        LEFT JOIN Genero g ON t.id_genero = g.id;
+    """);
+
+        // Agora consulta a view CORRETA
+        String sqlSelect = "SELECT * FROM vw_CatalogoDetalhadoMusicas";
+
+        return jdbcTemplate.query(sqlSelect, (rs, rowNum) ->
+                new CatalogoDetalhadoMusicaDTO(
+                        rs.getInt("id_musica"),
+                        rs.getString("nome_musica"),
+                        rs.getInt("duracao_segundos"),
+
+                        rs.getInt("id_artista"),
+                        rs.getString("nome_artista"),
+
+                        rs.getInt("id_album"),
+                        rs.getString("nome_album"),
+
+                        rs.getObject("id_genero", Integer.class),
+                        rs.getString("nome_genero")
                 )
         );
     }
