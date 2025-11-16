@@ -32,6 +32,7 @@ public class ArtistaRepository {
         // campos Artista
         artista.setId_artista(rs.getInt("id_artista"));
         artista.setQuant_ouvintes(rs.getInt("quant_ouvintes"));
+        artista.setMusicasLancadas(0);
         return artista;
     };
 
@@ -110,5 +111,10 @@ public class ArtistaRepository {
     // DELETE artista (deleta Usuario, FK ON DELETE CASCADE cuida do Artista)
     public int delete(int id) {
         return jdbcTemplate.update("DELETE FROM usuarios WHERE id = ?", id);
+    }
+
+    public int countMusicasLancadas(int idArtista) {
+        String sql = "SELECT QuantMusicasArtista(?)";
+        return jdbcTemplate.queryForObject(sql, Integer.class, idArtista);
     }
 }

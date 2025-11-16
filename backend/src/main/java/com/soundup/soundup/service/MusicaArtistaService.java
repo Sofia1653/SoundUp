@@ -94,8 +94,8 @@ public class MusicaArtistaService {
     public Artista getArtistaComMusicas(int artistaId) {
         Artista artista = artistaRepository.findById(artistaId);
         if (artista != null) {
-            List<Musica> musicas = getMusicasDoArtista(artistaId);
-            artista.setMusicasLancadas(musicas);
+            int qtd = artistaRepository.countMusicasLancadas(artistaId);
+            artista.setMusicasLancadas(qtd);
         }
         return artista;
     }

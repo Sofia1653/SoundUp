@@ -1,7 +1,9 @@
 package com.soundup.soundup.service;
 
 import com.soundup.soundup.model.Artista;
+import com.soundup.soundup.model.Musica;
 import com.soundup.soundup.repository.ArtistaRepository;
+import com.soundup.soundup.repository.LancaRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,9 +12,11 @@ import java.util.List;
 public class ArtistaService {
 
     private final ArtistaRepository artistaRepository;
+    private final LancaRepository lancaRepository;
 
-    public ArtistaService(ArtistaRepository artistaRepository) {
+    public ArtistaService(ArtistaRepository artistaRepository, LancaRepository lancaRepository) {
         this.artistaRepository = artistaRepository;
+        this.lancaRepository = lancaRepository;
     }
 
     public Artista save(Artista artista) {
@@ -25,13 +29,22 @@ public class ArtistaService {
 
     // GET all
     public List<Artista> getAllArtistas() {
-        return artistaRepository.findAll();
+        List<Artista> artistas = artistaRepository.findAll();
+        for (Artista a : artistas) {
+            int qtd = artistaRepository.countMusicasLancadas(a.getId());
+            a.setMusicasLancadas(qtd);
+        }
+        return artistas;
     }
 
-    // GET by ID
     public Artista getArtistaById(int id) {
-        return artistaRepository.findById(id);
+        Artista artista = artistaRepository.findById(id);
+        int qtd = artistaRepository.countMusicasLancadas(id);
+        artista.setMusicasLancadas(qtd);
+        return artista;
     }
+
+
 
     // POST create
     public void createArtista(Artista artista) {
