@@ -1,5 +1,9 @@
 package com.soundup.soundup.controller;
 
+import com.soundup.soundup.dto.ArtistaColaboracaoDTO;
+import com.soundup.soundup.dto.ArtistaIndependenteDTO;
+import com.soundup.soundup.dto.DuracaoPorAlbumDTO;
+import com.soundup.soundup.dto.MusicaEGeneroDTO;
 import com.soundup.soundup.service.ConsultaService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -38,5 +42,25 @@ public class ConsultaController {
     @GetMapping("/ranking-paises")
     public ResponseEntity<List<Map<String, Object>>> rankingPaises() {
         return ResponseEntity.ok(consultaService.rankingPaises());
+    }
+
+    @GetMapping("/duracao-por-album")
+    public List<DuracaoPorAlbumDTO> getDuracaoPorAlbum() {
+        return consultaService.getDuracaoPorAlbum();
+    }
+
+    @GetMapping("/independentes")
+    public List<ArtistaIndependenteDTO> getArtistasIndependentes() {
+        return consultaService.getArtistasIndependentes();
+    }
+
+    @GetMapping("/colaboracoes-por-artista")
+    public List<ArtistaColaboracaoDTO> getColaboracoesPorArtista() {
+        return consultaService.getColaboracoesPorArtista();
+    }
+
+    @GetMapping("/musica-e-genero")
+    public List<MusicaEGeneroDTO> getMusicaEGenero() {
+        return consultaService.getMusicaEGenero();
     }
 }
