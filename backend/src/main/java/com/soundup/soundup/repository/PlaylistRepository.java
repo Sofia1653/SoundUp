@@ -2,12 +2,10 @@ package com.soundup.soundup.repository;
 
 import com.soundup.soundup.model.Playlist;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
-import java.sql.PreparedStatement;
-import java.sql.Statement;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 @Repository
@@ -19,54 +17,70 @@ public class PlaylistRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    private RowMapper<Playlist> playlistRowMapper = (rs, rowNum) -> new Playlist(
-            rs.getInt("id"),
-            rs.getInt("id_ouvinte"),
-            rs.getString("visibilidade"),
-            rs.getString("nome")
-    );
-
-    public int save(Playlist playlist) {
-        String sql = "INSERT INTO Playlist (id_ouvinte, visibilidade, nome) VALUES (?,?,?)";
-        KeyHolder keyHolder = new GeneratedKeyHolder();
-        jdbcTemplate.update(connection -> {
-            PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            ps.setLong(1, playlist.getIdOuvinte());
-            ps.setString(2, playlist.getVisibilidade());
-            ps.setString(3, playlist.getNome());
-            return ps;
-        }, keyHolder);
-
-        Number key = keyHolder.getKey();
-        int generatedId = key != null ? key.intValue() : 0;
-        playlist.setId(generatedId);
-
-        return generatedId;
+    private Playlist mapRow(ResultSet rs, int rowNum) throws SQLException {
+        return new Playlist(
+                rs.getInt("id"),
+                rs.getLong("id_ouvinte"),
+                rs.getString("visibilidade"),
+                rs.getString("nome"),
+                null // será carregada depois
+        );
     }
 
-    public List<Playlist> findAll() {
-        String sql = "SELECT id, id_ouvinte, visibilidade, nome FROM Playlist";
-        return jdbcTemplate.query(sql, playlistRowMapper);
+    // Lista IDs das músicas da playlist
+    public List<Integer> findMusicasIdsByPlaylist(int playlistId) {
+        return jdbcTemplate.query(
+                "SELECT id_musica FROM Possui WHERE id_playlist = ?",
+                (rs, i) -> rs.getInt("id_musica"),
+                playlistId
+        );
     }
 
+    // Buscar playlist com musicasIds
     public Playlist findById(int id) {
-        String sql = "SELECT id, id_ouvinte, visibilidade, nome FROM Playlist WHERE id = ?";
-        return jdbcTemplate.queryForObject(sql, playlistRowMapper, id);
+        Playlist playlist = jdbcTemplate.queryForObject(
+                "SELECT * FROM Playlist WHERE id = ?",
+                this::mapRow,
+                id
+        );
+
+        playlist.setMusicasIds(findMusicasIdsByPlaylist(id));
+        return playlist;
     }
 
-    public int update(Playlist playlist) {
-        String sql = "UPDATE Playlist SET id_ouvinte = ?, visibilidade = ?, nome = ? WHERE id = ?";
-        return jdbcTemplate.update(sql, playlist.getIdOuvinte(), playlist.getVisibilidade(), playlist.getNome(), playlist.getId());
+    // Listar todas com musicasIds
+    public List<Playlist> findAllWithDetails() {
+        List<Playlist> playlists = jdbcTemplate.query(
+                "SELECT * FROM Playlist",
+                this::mapRow
+        );
+
+        for (Playlist p : playlists) {
+            p.setMusicasIds(findMusicasIdsByPlaylist(p.getId()));
+        }
+
+        return playlists;
     }
 
-    public int delete(int id) {
-        String sql = "DELETE FROM Playlist WHERE id = ?";
-        return jdbcTemplate.update(sql, id);
+    public void save(Playlist playlist) {
+        jdbcTemplate.update(
+                "INSERT INTO Playlist (id_ouvinte, visibilidade, nome) VALUES (?, ?, ?)",
+                playlist.getIdOuvinte(),
+                playlist.getVisibilidade(),
+                playlist.getNome()
+        );
     }
 
-    public void addMusicaToPlaylist(int playlistId, int musicaId) {
-        String sql = "INSERT INTO Possui (id_playlist, id_musica) VALUES (?, ?)";
-        jdbcTemplate.update(sql, playlistId, musicaId);
+    public void update(int id, Playlist playlist) {
+        jdbcTemplate.update(
+                "UPDATE Playlist SET visibilidade=?, nome=? WHERE id=?",
+                playlist.getVisibilidade(),
+                playlist.getNome(),
+                id
+        );
     }
 
+    public void delete(int id) {
+        jdbcTemplate.update("DELETE FROM Playlist WHERE id=?", id);
+    }
 }
