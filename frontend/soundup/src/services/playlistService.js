@@ -89,7 +89,7 @@ export const getAllMusicas = async () => {
 export const getPlaylistMusicas = async (playlistId) => {
     try {
         // Altere o endpoint para o seu Back-end. Exemplo: /playlists/1/musicas
-        const response = await fetch(`${API_BASE}/playlists/${playlistId}/musicas`);
+        const response = await fetch(`${API_BASE}/playlist/${playlistId}/musicas`);
         if (!response.ok) {
             throw new Error(`Falha ao buscar músicas da playlist ${playlistId}.`);
         }

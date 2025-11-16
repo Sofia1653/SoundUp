@@ -1,14 +1,18 @@
 package com.soundup.soundup.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Playlist {
     private int id;
-    private long id_ouvinte;
+    private long idOuvinte;
     private String visibilidade;
     private String nome;
 
-    public Playlist(int id, long id_ouvinte, String visibilidade, String nome){
+    private Ouvinte ouvinte;
+
+    public Playlist(int id, long idOuvinte, String visibilidade, String nome){
         this.id = id;
-        this.id_ouvinte = id_ouvinte;
+        this.idOuvinte = idOuvinte;
         this.visibilidade = visibilidade;
         this.nome = nome;
     }
@@ -20,10 +24,10 @@ public class Playlist {
         this.id = id;
     }
     public long getIdOuvinte(){
-        return id_ouvinte;
+        return idOuvinte;
     }
     public void setIdOuvinte(int id_ouvinte){
-        this.id_ouvinte = id_ouvinte;
+        this.idOuvinte = id_ouvinte;
     }
     public String getVisibilidade(){
         return visibilidade;

@@ -68,5 +68,14 @@ public class PlaylistService {
         }
     }
 
+    public Playlist saveWithMusicas(Playlist playlist, List<Integer> musicaIds) {
+        int id = playlistRepository.save(playlist);
+
+        for(Integer musicaId : musicaIds){
+            playlistRepository.addMusicaToPlaylist(id, musicaId);
+        }
+
+        return playlist;
+    }
 
 }

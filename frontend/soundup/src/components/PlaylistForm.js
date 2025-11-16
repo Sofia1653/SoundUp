@@ -3,13 +3,13 @@ import { createPlaylist, updatePlaylist, getPlaylistMusicas, getAllMusicas } fro
 import PlaylistFormTemplate from "./templates/PlaylistFormTemplate";
 
 // O id_ouvinte DEVE ser passado como prop
-export default function PlaylistForm({ onCreated, editingPlaylist, onCancelEdit, currentUserId }) {
+export default function PlaylistForm({ onCreated, editingPlaylist, onCancelEdit}) {
 
     const [playlist, setPlaylist] = useState({
         id: 0,
         nome: "",
         visibilidade: "publica",
-        id_ouvinte: currentUserId || 0,
+        idOuvinte: currentUserId || 0,
         musica_ids: [] // Novo campo para IDs de músicas selecionadas
     });
     const [allMusicas, setAllMusicas] = useState([]); // Todas as músicas disponíveis
@@ -36,7 +36,7 @@ export default function PlaylistForm({ onCreated, editingPlaylist, onCancelEdit,
                 id: Number(editingPlaylist.id) || 0,
                 nome: editingPlaylist.nome || "",
                 visibilidade: editingPlaylist.visibilidade || "publica",
-                id_ouvinte: editingPlaylist.id_ouvinte || 0,
+                idOuvinte: editingPlaylist.idOuvinte || 0,
                 // Mantém as músicas antigas como fallback, mas o ideal é carregar:
                 musica_ids: [],
             }));
@@ -51,7 +51,7 @@ export default function PlaylistForm({ onCreated, editingPlaylist, onCancelEdit,
 
         } else {
             // Reseta para a criação
-            setPlaylist({ id: 0, nome: "", visibilidade: "publica", id_ouvinte: currentUserId || 0, musica_ids: [] });
+            setPlaylist({ id: 0, nome: "", visibilidade: "publica", idOuvinte: currentUserId || 0, musica_ids: [] });
         }
     }, [editingPlaylist, currentUserId]);
 
@@ -60,7 +60,7 @@ export default function PlaylistForm({ onCreated, editingPlaylist, onCancelEdit,
         const { name, value } = e.target;
 
         // O Select Múltiplo para músicas retorna um array
-        const finalValue = name === 'id_ouvinte' ? Number(value) : value;
+        const finalValue = name === 'idOuvinte' ? Number(value) : value;
 
         setPlaylist(prev => ({
             ...prev,
@@ -75,7 +75,7 @@ export default function PlaylistForm({ onCreated, editingPlaylist, onCancelEdit,
         const playlistToSave = {
             nome: playlist.nome,
             visibilidade: playlist.visibilidade,
-            id_ouvinte: playlist.id_ouvinte,
+            idOuvinte: playlist.idOuvinte,
             // NOVO CAMPO: Lista de IDs de músicas
             musica_ids: playlist.musica_ids,
         };
@@ -92,7 +92,7 @@ export default function PlaylistForm({ onCreated, editingPlaylist, onCancelEdit,
 
             // Reset form para criação futura
             if (!editingPlaylist) {
-                setPlaylist({ id: 0, nome: "", visibilidade: "publica", id_ouvinte: currentUserId || 0, musica_ids: [] });
+                setPlaylist({ id: 0, nome: "", visibilidade: "publica", idOuvinte: currentUserId || 0, musica_ids: [] });
             }
 
         } catch (error) {

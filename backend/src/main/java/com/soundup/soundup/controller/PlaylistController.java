@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/playlist")
@@ -19,9 +20,10 @@ public class PlaylistController {
 
     @PostMapping
     public ResponseEntity<Playlist> createPlaylist(@RequestBody Playlist playlist) {
-        Playlist saved = playlistService.save(playlist);
-        return ResponseEntity.ok(saved);
+        playlistService.createPlaylist(playlist);
+        return ResponseEntity.ok(playlist);
     }
+
 
     @GetMapping
     public List<Playlist> getPlaylists() {
@@ -53,5 +55,19 @@ public class PlaylistController {
         return ResponseEntity.ok("Música adicionada à playlist!");
     }
 
+    @PostMapping
+    public ResponseEntity<?> createPlaylist(@RequestBody Map<String,Object> body){
+        Playlist p = new Playlist(
+                0,
+                Long.valueOf(body.get("id_ouvinte").toString()),
+                body.get("visibilidade").toString(),
+                body.get("nome").toString()
+        );
+
+        List<Integer> musicas = (List<Integer>) body.get("musica_ids");
+        playlistService.saveWithMusicas(p, musicas);
+
+        return ResponseEntity.ok(p);
+    }
 
 }

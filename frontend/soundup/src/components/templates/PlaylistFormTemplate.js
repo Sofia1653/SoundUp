@@ -55,8 +55,8 @@ export default function PlaylistFormTemplate({
                     {/* ID do Ouvinte (Mantido como readOnly) */}
                     <TextField
                         label="ID do Ouvinte"
-                        name="id_ouvinte"
-                        value={playlist.id_ouvinte || 0}
+                        name="idOuvinte"
+                        value={playlist.idOuvinte || 0}
                         fullWidth
                         onChange={handleChange}
                         sx={inputStyles}
