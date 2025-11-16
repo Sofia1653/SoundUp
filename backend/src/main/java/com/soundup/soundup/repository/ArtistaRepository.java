@@ -111,4 +111,20 @@ public class ArtistaRepository {
     public int delete(int id) {
         return jdbcTemplate.update("DELETE FROM usuarios WHERE id = ?", id);
     }
+
+    // método pro dashboard
+    public Artista findTopByOrderByQuantOuvintesDesc() {
+        String sql = "SELECT u.id, u.nome, u.pais, u.estado, u.cidade, u.email, u.senha, " +
+                "u.quantSeguidores, u.telefone, a.id_artista, a.quant_ouvintes " +
+                "FROM usuarios u INNER JOIN artistas a ON u.id = a.id_artista " +
+                "ORDER BY a.quant_ouvintes DESC LIMIT 1";
+
+        return jdbcTemplate.queryForObject(sql, rowMapper);
+    }
+
+    public double avgOuvintes() {
+        String sql = "SELECT AVG(quant_ouvintes) FROM artistas";
+        Double avg = jdbcTemplate.queryForObject(sql, Double.class);
+        return (avg != null) ? avg : 0.0;
+    }
 }
