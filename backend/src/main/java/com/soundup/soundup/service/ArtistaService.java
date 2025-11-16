@@ -1,6 +1,7 @@
 package com.soundup.soundup.service;
 
 import com.soundup.soundup.dto.ComparativoArtistaDTO;
+import com.soundup.soundup.dto.CorrelacaoDuracaoSeguidoresDTO;
 import com.soundup.soundup.model.Artista;
 import com.soundup.soundup.repository.ArtistaRepository;
 import org.springframework.stereotype.Service;
@@ -51,5 +52,8 @@ public class ArtistaService {
 
     public List<ComparativoArtistaDTO> getMetricasComparativas() {
         return artistaRepository.getMetricasComparativas();
+    }
+    public List<CorrelacaoDuracaoSeguidoresDTO> getCorrelacaoDuracaoSeguidores() {
+        return artistaRepository.getCorrelacaoDuracaoSeguidores();
     }
 }

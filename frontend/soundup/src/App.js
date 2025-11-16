@@ -27,6 +27,7 @@ import TendenciaDuracaoAnual from "./components/TendenciaDuracaoAnual";
 import DistribuicaoPorPais from "./components/DistribuicaoPorPais";
 import ComparativoArtistaRadar from "./components/ComparativoArtistaRadar";
 import Top5ArtistasBarra from "./components/Top5ArtistasBarra";
+import CorrelacaoScatter from "./components/CorrelacaoScatter";
 
 
 // Cores e Tema (estilo da primeira página)
@@ -117,6 +118,7 @@ const Dashboard = () => (
                 <TendenciaDuracaoAnual />
                 <DistribuicaoPorPais />
                 <Top5ArtistasBarra />
+                <CorrelacaoScatter />
 
             </Box>
         </Container>
