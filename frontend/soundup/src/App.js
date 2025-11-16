@@ -28,6 +28,7 @@ import DistribuicaoPorPais from "./components/DistribuicaoPorPais";
 import ComparativoArtistaRadar from "./components/ComparativoArtistaRadar";
 import Top5ArtistasBarra from "./components/Top5ArtistasBarra";
 import CorrelacaoScatter from "./components/CorrelacaoScatter";
+import ComparativoArtistasSelecionavel from "./components/ComparativoArtistas";
 
 
 // Cores e Tema (estilo da primeira página)
@@ -119,6 +120,7 @@ const Dashboard = () => (
                 <DistribuicaoPorPais />
                 <Top5ArtistasBarra />
                 <CorrelacaoScatter />
+                <ComparativoArtistasSelecionavel />
 
             </Box>
         </Container>
