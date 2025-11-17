@@ -115,17 +115,7 @@ public class ArtistaRepository {
     }
 
     public int countMusicasLancadas(int idArtista) {
-        String sql = "SELECT QuantMusicasArtista(?)";
-        String json = jdbcTemplate.queryForObject(sql, String.class, idArtista);
-        // Converte JSON para Lista
-        ObjectMapper mapper = new ObjectMapper();
-        List<Integer> musicas;
-
-        try {
-            musicas = mapper.readValue(json, new TypeReference<List<Integer>>() {});
-        } catch (Exception e) {
-            throw new RuntimeException("Erro convertendo JSON", e);
-        }
-        return musicas.size();
+        String sql = "SELECT QuantMusicasArtista";
+        return jdbcTemplate.queryForObject(sql, Integer.class, idArtista);
     }
 }
