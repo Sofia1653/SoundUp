@@ -5,6 +5,7 @@ import axios from 'axios';
 
 // Registrar os componentes necessários para o Gráfico de Dispersão
 ChartJS.register(ScatterController, PointElement, LinearScale, Title, Tooltip, Legend);
+ChartJS.defaults.font.family = 'Inter, "Helvetica Neue", Arial, sans-serif';
 
 const ENDPOINT = "http://localhost:8080/api/artistas/estatisticas/correlacao-duracao-seguidores";
 

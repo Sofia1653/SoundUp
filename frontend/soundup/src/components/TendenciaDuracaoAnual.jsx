@@ -16,7 +16,7 @@ ChartJS.register(
 
 // O novo endpoint que criamos
 const ENDPOINT = "http://localhost:8080/api/musicas/estatisticas/duracao/tendencia-anual";
-
+ChartJS.defaults.font.family = 'Inter, "Helvetica Neue", Arial, sans-serif';
 const PRIMARY_PURPLE = '#7E57C2';
 const SECONDARY_GREEN = '#1DB954';
 const BACKGROUND_PAPER = '#1E1E1E';

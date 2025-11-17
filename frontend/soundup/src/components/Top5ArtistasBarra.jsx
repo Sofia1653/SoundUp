@@ -5,7 +5,7 @@ import axios from 'axios';
 
 // Registrar os componentes necessários para o Gráfico de Barras
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
-
+ChartJS.defaults.font.family = 'Inter, "Helvetica Neue", Arial, sans-serif';
 const PRIMARY_PURPLE = '#7E57C2';
 const SECONDARY_GREEN = '#1DB954';
 const BACKGROUND_PAPER = '#1E1E1E';
@@ -82,7 +82,7 @@ const Top5ArtistasBarra = () => {
                 display: true,
                 text: `Top ${maxArtists} Artistas por Quantidade de Ouvintes`,
                 color: '#FFFF',
-                font: { size: 18 }
+                font: { size: 15 }
             },
             tooltip: {
                 callbacks: {
@@ -102,7 +102,7 @@ const Top5ArtistasBarra = () => {
                     color: TEXT_SECONDARY, // 🛑 Título do Eixo X: Cinza Claro
                 },
                 ticks: { color: TEXT_PRIMARY }, // 🛑 Números (Ticks) do Eixo X: Branco
-                grid: { color: '#333333' }, // 🛑 Grade: Escura
+                grid: { color: TEXT_SECONDARY }, // 🛑 Grade: Escura
                 beginAtZero: true,
             },
             y: {

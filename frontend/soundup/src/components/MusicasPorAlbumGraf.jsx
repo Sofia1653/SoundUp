@@ -27,6 +27,7 @@ ChartJS.register(
     Tooltip,
     Legend
 );
+ChartJS.defaults.font.family = 'Inter, "Helvetica Neue", Arial, sans-serif';
 
 export default function MusicasPorAlbumChart() {
     const [chartData, setChartData] = useState(null);

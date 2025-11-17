@@ -5,6 +5,7 @@ import axios from 'axios';
 
 // Registrar os componentes necessários para um Gráfico de Pizza
 ChartJS.register(ArcElement, Tooltip, Legend);
+ChartJS.defaults.font.family = 'Inter, "Helvetica Neue", Arial, sans-serif';
 
 // O novo endpoint
 const ENDPOINT = "http://localhost:8080/api/usuarios/estatisticas/distribuicao-pais";

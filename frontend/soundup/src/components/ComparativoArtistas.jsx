@@ -5,6 +5,7 @@ import axios from 'axios';
 import Select from 'react-select'; // Componente de seleção
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+ChartJS.defaults.font.family = 'Inter, "Helvetica Neue", Arial, sans-serif';
 
 const ENDPOINT = "http://localhost:8080/api/artistas/estatisticas/comparativo";
 
@@ -134,10 +135,11 @@ const ComparativoArtistasSelecionavel = () => {
                     display: true,
                     text: 'Valores Absolutos',
                     color: TEXT_SECONDARY // Cor do título do eixo
+
                 },
                 ticks: { color: TEXT_SECONDARY }, // Cor dos números do eixo
                 grid: { color: '#333333' }, // Linhas de grade mais escuras
-                beginAtZero: true
+                beginAtZero: true,
             },
             x: {
                 ticks: { color: TEXT_SECONDARY }, // Cor dos rótulos do eixo X
