@@ -7,7 +7,6 @@ import {
     Box
 } from '@mui/material';
 
-// --- 1. IMPORTAR TODOS OS SEUS COMPONENTES DE GRÁFICOS ---
 import ComparativoArtistas from './ComparativoArtistas';
 import DistribuicaoPorPais from './DistribuicaoPorPais';
 import MusicasPorAlbumChart from './MusicasPorAlbumGraf';
@@ -20,14 +19,22 @@ export default function EstatisticasPage() {
 
     const spacingValue = 3;
 
-    // Estilo base para os cards de gráficos
     const cardStyle = {
         p: spacingValue,
         display: 'flex',
         flexDirection: 'column',
         height: '100%',
         borderRadius: '12px',
-        minHeight: 450, // Altura mínima para gráficos
+        minHeight: 450,
+    };
+
+    const chartBoxStyle = {
+        flexGrow: 1,
+        width: '100%',
+        height: '100%',
+        minHeight: 350,
+        position: 'relative',
+        p: 2, 
     };
 
     return (
@@ -39,23 +46,25 @@ export default function EstatisticasPage() {
 
             <Grid container spacing={spacingValue}>
 
-                {/* -------------------- LINHA 1: COMPARATIVO DE ARTISTAS (12/12) -------------------- */}
                 <Grid item xs={12}>
                     <Paper sx={{...cardStyle, minHeight: 550}} elevation={3}>
                         <Typography variant="h6" component="h2" gutterBottom>
                             Comparativo Detalhado de Artistas
                         </Typography>
-                        <Box sx={{ flexGrow: 1 }}><ComparativoArtistas /></Box>
+                        <Box sx={{ ...chartBoxStyle, minHeight: 450 }}>
+                            <ComparativoArtistas />
+                        </Box>
                     </Paper>
                 </Grid>
 
-                {/* -------------------- LINHA 2: SCATTER E TOP 5 (6/12 cada) -------------------- */}
                 <Grid item xs={12} md={7}>
                     <Paper sx={cardStyle} elevation={3}>
                         <Typography variant="h6" component="h2" gutterBottom>
                             Correlação de Atributos (Scatter Plot)
                         </Typography>
-                        <Box sx={{ flexGrow: 1 }}><CorrelacaoScatter /></Box>
+                        <Box sx={chartBoxStyle}>
+                            <CorrelacaoScatter />
+                        </Box>
                     </Paper>
                 </Grid>
 
@@ -64,37 +73,42 @@ export default function EstatisticasPage() {
                         <Typography variant="h6" component="h2" gutterBottom>
                             Top 5 Artistas
                         </Typography>
-                        <Box sx={{ flexGrow: 1 }}><Top5ArtistasBarra /></Box>
+                        <Box sx={chartBoxStyle}>
+                            <Top5ArtistasBarra />
+                        </Box>
                     </Paper>
                 </Grid>
 
-                {/* -------------------- LINHA 3: TENDÊNCIA ANUAL (12/12) -------------------- */}
                 <Grid item xs={12}>
-                    <Paper sx={cardStyle} elevation={3}>
+                    <Paper sx={{...cardStyle, minHeight: 500}} elevation={3}>
                         <Typography variant="h6" component="h2" gutterBottom>
                             Tendência de Duração Anual
                         </Typography>
-                        <Box sx={{ flexGrow: 1 }}><TendenciaDuracaoAnual /></Box>
+                        <Box sx={{ ...chartBoxStyle, minHeight: 400 }}>
+                            <TendenciaDuracaoAnual />
+                        </Box>
                     </Paper>
                 </Grid>
 
-                {/* -------------------- LINHA 4: DISTRIBUIÇÃO POR PAÍS (12/12) -------------------- */}
                 <Grid item xs={12}>
                     <Paper sx={cardStyle} elevation={3}>
                         <Typography variant="h6" component="h2" gutterBottom>
                             Distribuição de Usuários por País
                         </Typography>
-                        <Box sx={{ flexGrow: 1 }}><DistribuicaoPorPais /></Box>
+                        <Box sx={chartBoxStyle}>
+                            <DistribuicaoPorPais />
+                        </Box>
                     </Paper>
                 </Grid>
 
-                {/* -------------------- LINHA 5: MÚSICAS POR ÁLBUM (12/12) -------------------- */}
                 <Grid item xs={12}>
                     <Paper sx={cardStyle} elevation={3}>
                         <Typography variant="h6" component="h2" gutterBottom>
                             Músicas por Álbum
                         </Typography>
-                        <Box sx={{ flexGrow: 1 }}><MusicasPorAlbumChart /></Box>
+                        <Box sx={chartBoxStyle}>
+                            <MusicasPorAlbumChart />
+                        </Box>
                     </Paper>
                 </Grid>
 
