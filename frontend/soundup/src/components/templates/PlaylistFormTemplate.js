@@ -101,11 +101,25 @@ export default function PlaylistFormTemplate({
                             MenuProps={MenuProps}
                             disabled={loading}
                         >
-                            {allMusicas.map((musica) => (
-                                <MenuItem key={musica.id} value={musica.id}>
-                                    {musica.nome} — {musica.artista || "Desconhecido"}
-                                </MenuItem>
-                            ))}
+                            {allMusicas.map((musica) => {
+                                // 1. Acessa a lista de artistas (que é o campo 'artistas' do JSON)
+                                const artistas = musica.artistas;
+
+                                // 2. Cria a string com os nomes dos artistas (se houver)
+                                let nomeArtista;
+                                if (artistas && artistas.length > 0) {
+                                    // Junta os nomes de todos os artistas com vírgula ou 'e'
+                                    nomeArtista = artistas.map(a => a.nome).join(', ');
+                                } else {
+                                    nomeArtista = "Desconhecido";
+                                }
+
+                                return (
+                                    <MenuItem key={musica.id} value={musica.id}>
+                                        {musica.nome} — {nomeArtista}
+                                    </MenuItem>
+                                );
+                            })}
                         </Select>
                     </FormControl>
                 </Box>
