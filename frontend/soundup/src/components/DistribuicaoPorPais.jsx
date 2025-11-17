@@ -79,12 +79,16 @@ const DistribuicaoPorPais = () => {
         maintainAspectRatio: false,
         plugins: {
             legend: {
-                position: 'right', // Colocamos a legenda à direita para melhor visualização
+                position: 'right',
+                labels: {
+                    color: '#FFFF'
+                }
             },
             title: {
                 display: true,
                 text: 'Distribuição de Usuários por País',
-                font: { size: 18 }
+                font: { size: 18 },
+                color: '#FFFF'
             },
             tooltip: {
                 callbacks: {
@@ -102,7 +106,6 @@ const DistribuicaoPorPais = () => {
 
     return (
         <div style={{ width: '400px', height: '400px', margin: '20px auto' }}>
-            <h2>Distribuição Geográfica</h2>
             <Pie data={chartData} options={options} />
         </div>
     );
