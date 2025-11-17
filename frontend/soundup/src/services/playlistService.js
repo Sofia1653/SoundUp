@@ -2,103 +2,55 @@ const API_BASE = 'http://localhost:8080/api';
 
 // GET - buscar todas as playlists
 export const getPlaylists = async () => {
-    try {
-        const response = await fetch(`${API_BASE}/playlist`);
-        if (!response.ok) throw new Error('Failed to fetch playlist');
-        return await response.json();
-    } catch (error) {
-        console.error('Error fetching playlist:', error);
-        throw error;
-    }
-}
+    const response = await fetch(`${API_BASE}/playlist`);
+    if (!response.ok) throw new Error('Failed to fetch playlist');
+    return response.json();
+};
 
 // POST - criar playlist
 export const createPlaylist = async (playlist) => {
-    try {
-        const response = await fetch(`${API_BASE}/playlist`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(playlist),
-        });
+    const response = await fetch(`${API_BASE}/playlist`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(playlist),
+    });
 
-        if (!response.ok) throw new Error('Failed to create playlist');
-
-        try {
-            return await response.json();
-        } catch {
-            return { success: true };
-        }
-    } catch (error) {
-        console.error('Error creating playlist:', error);
-        throw error;
-    }
+    if (!response.ok) throw new Error('Failed to create playlist');
+    try { return await response.json(); } catch { return { success: true }; }
 };
 
 // PUT - atualizar playlist
 export const updatePlaylist = async (id, playlist) => {
-    if (!id || isNaN(Number(id))) {
-        throw new Error(`ID inválido para updatePlaylist: ${id}`);
-    }
-
     const response = await fetch(`${API_BASE}/playlist/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(playlist)
     });
 
-    if (!response.ok) {
-        throw new Error(`Erro ao atualizar playlist: ${response.status}`);
-    }
-
-    // Evita erro se backend não retornar JSON
-    try {
-        return await response.json();
-    } catch {
-        return { success: true };
-    }
+    if (!response.ok) throw new Error("Erro ao atualizar playlist");
+    try { return await response.json(); } catch { return { success: true }; }
 };
 
 // DELETE - remover playlist
 export const deletePlaylist = async (id) => {
-    try {
-        const response = await fetch(`${API_BASE}/playlist/${id}`, { method: 'DELETE' });
-        if (!response.ok) throw new Error('Failed to delete playlist');
-        return true; // backend retorna vazio
-    } catch (error) {
-        console.error('Error deleting playlist:', error);
-        throw error;
-    }
+    const response = await fetch(`${API_BASE}/playlist/${id}`, {
+        method: "DELETE"
+    });
+    if (!response.ok) throw new Error("Failed to delete playlist");
 };
 
+// Músicas
 export const getAllMusicas = async () => {
-    try {
-        // Altere o endpoint se for diferente no seu Back-end
-        const response = await fetch(`${API_BASE}/musicas`);
-        if (!response.ok) {
-            throw new Error('Falha ao buscar todas as músicas.');
-        }
-        const data = await response.json();
-        // A API pode retornar a lista diretamente ou dentro de um 'content'
-        return data.content || data;
-    } catch (error) {
-        console.error("Erro em getAllMusicas:", error);
-        return [];
-    }
+    const response = await fetch(`${API_BASE}/musicas`);
+    if (!response.ok) throw new Error("Falha ao buscar músicas");
+    const data = await response.json();
+    return data.content || data;
 };
 
-export const getPlaylistMusicas = async (playlistId) => {
-    try {
-        // Altere o endpoint para o seu Back-end. Exemplo: /playlists/1/musicas
-        const response = await fetch(`${API_BASE}/playlists/${playlistId}/musicas`);
-        if (!response.ok) {
-            throw new Error(`Falha ao buscar músicas da playlist ${playlistId}.`);
-        }
-        const data = await response.json();
-        return data.content || data;
-    } catch (error) {
-        console.error("Erro em getPlaylistMusicas:", error);
-        return [];
-    }
+// Músicas dentro da playlist
+export const getPossui = async (playlistId) => {
+    const response = await fetch(`${API_BASE}/playlist/${playlistId}/musicas`);
+    if (!response.ok) throw new Error("Falha ao buscar músicas da playlist");
+    const data = await response.json();
+    return data.content || data;
 };
-
-

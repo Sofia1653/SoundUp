@@ -9,49 +9,43 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/playlist")
+@CrossOrigin("*")
 public class PlaylistController {
 
-    private final PlaylistService playlistService;
+    private final PlaylistService service;
 
-    public PlaylistController(PlaylistService playlistService) {
-        this.playlistService = playlistService;
-    }
-
-    @PostMapping
-    public ResponseEntity<Playlist> createPlaylist(@RequestBody Playlist playlist) {
-        Playlist saved = playlistService.save(playlist);
-        return ResponseEntity.ok(saved);
+    public PlaylistController(PlaylistService service) {
+        this.service = service;
     }
 
     @GetMapping
-    public List<Playlist> getPlaylists() {
-        return playlistService.getAllPlaylists();
+    public List<Playlist> listar() {
+        return service.listarTodas();
     }
 
     @GetMapping("/{id}")
-    public Playlist getPlaylist(@PathVariable int id) {
-        return playlistService.getPlaylistById(id);
+    public ResponseEntity<Playlist> buscar(@PathVariable int id) {
+        return ResponseEntity.ok(service.buscarPorId(id));
+    }
+
+    @PostMapping
+    public ResponseEntity<String> criar(@RequestBody Playlist playlist) {
+        service.criar(playlist);
+        return ResponseEntity.ok("Playlist criada");
     }
 
     @PutMapping("/{id}")
-    public void updatePlaylist(@PathVariable int id, @RequestBody Playlist playlist) {
-        playlist.setId(id); // garante consistência do ID
-        playlistService.updatePlaylist(playlist);
+    public ResponseEntity<String> atualizar(
+            @PathVariable int id,
+            @RequestBody Playlist playlist
+    ) {
+        service.atualizar(id, playlist);
+        return ResponseEntity.ok("Playlist atualizada");
     }
 
     @DeleteMapping("/{id}")
-    public void deletePlaylist(@PathVariable int id) {
-        playlistService.deletePlaylistById(id);
+    public ResponseEntity<String> deletar(@PathVariable int id) {
+        service.deletar(id);
+        return ResponseEntity.ok("Playlist deletada");
     }
-
-    @PostMapping("/{playlistId}/musicas/{musicaId}")
-    public ResponseEntity<?> addMusica(
-            @PathVariable int playlistId,
-            @PathVariable int musicaId) {
-
-        playlistService.adicionarMusicaNaPlaylist(playlistId, musicaId);
-        return ResponseEntity.ok("Música adicionada à playlist!");
-    }
-
-
 }

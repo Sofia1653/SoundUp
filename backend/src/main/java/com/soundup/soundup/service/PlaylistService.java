@@ -9,64 +9,29 @@ import java.util.List;
 @Service
 public class PlaylistService {
 
-    private final PlaylistRepository playlistRepository;
-    private final MusicaService musicaService;
-    private final OuvinteService ouvinteService;
+    private final PlaylistRepository repo;
 
-    public PlaylistService(PlaylistRepository playlistRepository, MusicaService musicaService ,OuvinteService ouvinteService) {
-        this.playlistRepository = playlistRepository;
-        this.musicaService = musicaService;
-        this.ouvinteService = ouvinteService;
+    public PlaylistService(PlaylistRepository repo) {
+        this.repo = repo;
     }
 
-    public List<Playlist> getAllPlaylists() {
-        List<Playlist> playlists = playlistRepository.findAll();
-        return playlists;
+    public List<Playlist> listarTodas() {
+        return repo.findAllWithDetails();
     }
 
-    public Playlist getPlaylistById(int id) {
-        return playlistRepository.findById(id);
+    public Playlist buscarPorId(int id) {
+        return repo.findById(id);
     }
 
-    public void createPlaylist(Playlist playlist) {
-        verificarSeOuvinteExiste(playlist.getIdOuvinte());
-        playlistRepository.save(playlist);
+    public void criar(Playlist playlist) {
+        repo.save(playlist);
     }
 
-    public void updatePlaylist(Playlist playlist) {
-
-        verificarSeOuvinteExiste(playlist.getIdOuvinte());
-        playlistRepository.update(playlist);
+    public void atualizar(int id, Playlist playlist) {
+        repo.update(id, playlist);
     }
 
-    public void deletePlaylistById(int id) {
-        playlistRepository.delete(id);
+    public void deletar(int id) {
+        repo.delete(id);
     }
-
-    public Playlist save(Playlist playlist) {
-        playlistRepository.save(playlist);
-        return playlist;
-    }
-
-    public void adicionarMusicaNaPlaylist(int playlistId, int musicaId) {
-
-        Playlist playlist = playlistRepository.findById(playlistId);
-        if (playlist == null) {
-            throw new RuntimeException("Playlist não encontrada");
-        }
-
-        if (musicaService.getMusicaById(musicaId) == null) {
-            throw new RuntimeException("Música não encontrada");
-        }
-
-        playlistRepository.addMusicaToPlaylist(playlistId, musicaId);
-    }
-
-    public void verificarSeOuvinteExiste(Long idOuvinte) {
-        if (ouvinteService.getOuvinteById(idOuvinte) == null) {
-            throw new RuntimeException("Ouvinte não encontrado");
-        }
-    }
-
-
 }

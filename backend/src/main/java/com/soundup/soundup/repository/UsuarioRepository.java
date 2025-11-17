@@ -100,4 +100,9 @@ public class UsuarioRepository {
                 )
         );
     }
+    public long count() {
+        String sql = "SELECT COUNT(*) FROM usuarios";
+        Long count = jdbcTemplate.queryForObject(sql, Long.class);
+        return (count != null) ? count : 0;
+    }
 }

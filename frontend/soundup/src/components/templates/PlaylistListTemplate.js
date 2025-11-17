@@ -56,7 +56,7 @@ export default function PlaylistListTemplate({ playlists, handleDelete, handleEd
                             <TableCell>
                                 <Typography variant="body2">
                                     {/* Supondo que o ID do ouvinte esteja em p.id_ouvinte */}
-                                    {p.id_ouvinte || "-"}
+                                    {p.idOuvinte}
                                 </Typography>
                             </TableCell>
 
