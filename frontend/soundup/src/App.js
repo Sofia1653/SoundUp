@@ -11,9 +11,6 @@ import {
     Card,
     CardContent
 } from "@mui/material";
-
-// Importar os componentes da segunda página
-
 import Consultas from "./components/Consultas";
 import Sidebar from "./components/Sidebar";
 import SoundUpContainer from "./components/SoundUpContainer";
@@ -27,7 +24,15 @@ import GraficosPage from "./components/GraficosPage";
 import PaginaInicial from "./components/PaginaInicial";
 import Catalogo from "./components/Catalogo";
 
-// Cores e Tema (estilo da primeira página)
+import MusicasPorAlbumChart from "./components/MusicasPorAlbumGraf";
+import TendenciaDuracaoAnual from "./components/TendenciaDuracaoAnual";
+import DistribuicaoPorPais from "./components/DistribuicaoPorPais";
+import ComparativoArtistaRadar from "./components/ComparativoArtistaRadar";
+import Top5ArtistasBarra from "./components/Top5ArtistasBarra";
+import CorrelacaoScatter from "./components/CorrelacaoScatter";
+import ComparativoArtistasSelecionavel from "./components/ComparativoArtistas";
+
+
 const PRIMARY_PURPLE = '#7E57C2';
 const SECONDARY_GREEN = '#1DB954';
 const BACKGROUND_DEFAULT = '#121212';
