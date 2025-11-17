@@ -1,5 +1,6 @@
 package com.soundup.soundup.repository;
 
+import com.soundup.soundup.dto.DuracaoMediaPorAnoDTO;
 import com.soundup.soundup.dto.MusicasPorAlbumDTO;
 import com.soundup.soundup.model.Musica;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -104,6 +105,21 @@ public class MusicaRepository {
         return jdbcTemplate.update(sql, id_album);
     }
 
+    public List<DuracaoMediaPorAnoDTO> getDuracaoMediaPorAno() {
+        String sql =
+                "SELECT a.ano, AVG(m.duracao) AS duracao_media " +
+                        "FROM albuns a " +
+                        "JOIN musicas m ON m.id_album = a.id_album " +
+                        "GROUP BY a.ano " +
+                        "ORDER BY a.ano ASC"; // Ordenar por ano é crucial para o gráfico de linha!
+
+        return jdbcTemplate.query(sql, (rs, rowNum) ->
+                new DuracaoMediaPorAnoDTO(
+                        rs.getInt("ano"),
+                        rs.getDouble("duracao_media") // Use getDouble
+                )
+        );
+    }
     public long count() {
         String sql = "SELECT COUNT(*) FROM musicas";
         Long count = jdbcTemplate.queryForObject(sql, Long.class);

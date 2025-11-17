@@ -1,5 +1,7 @@
 package com.soundup.soundup.controller;
 
+import com.soundup.soundup.dto.ComparativoArtistaDTO;
+import com.soundup.soundup.dto.CorrelacaoDuracaoSeguidoresDTO;
 import com.soundup.soundup.model.Artista;
 import com.soundup.soundup.service.ArtistaService;
 import org.springframework.http.ResponseEntity;
@@ -46,5 +48,14 @@ public class ArtistaController {
     @DeleteMapping("/{id}")
     public void deleteArtista(@PathVariable int id) {
         artistaService.deleteArtista(id);
+    }
+
+    @GetMapping("/estatisticas/comparativo")
+    public List<ComparativoArtistaDTO> getComparativoArtistas() {
+        return artistaService.getMetricasComparativas();
+    }
+    @GetMapping("/estatisticas/correlacao-duracao-seguidores")
+    public List<CorrelacaoDuracaoSeguidoresDTO> getCorrelacaoDuracaoSeguidores() {
+        return artistaService.getCorrelacaoDuracaoSeguidores();
     }
 }

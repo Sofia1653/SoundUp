@@ -1,5 +1,6 @@
 package com.soundup.soundup.controller;
 
+import com.soundup.soundup.dto.ContagemPorPaisDTO;
 import com.soundup.soundup.model.Artista;
 import com.soundup.soundup.model.Usuario;
 import com.soundup.soundup.service.UsuarioService;
@@ -48,5 +49,10 @@ public class UsuarioController {
     @DeleteMapping("/{id}")
     public void deleteUsuario(@PathVariable int id) {
         UsuarioService.deleteUsuario(id);
+    }
+
+    @GetMapping("/estatisticas/distribuicao-pais")
+    public List<ContagemPorPaisDTO> getDistribuicaoPorPais() {
+        return UsuarioService.getContagemUsuariosPorPais();
     }
 }

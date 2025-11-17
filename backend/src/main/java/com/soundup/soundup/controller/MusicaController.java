@@ -1,5 +1,7 @@
 package com.soundup.soundup.controller;
 
+import com.soundup.soundup.dto.DuracaoBoxplotDTO;
+import com.soundup.soundup.dto.DuracaoMediaPorAnoDTO;
 import com.soundup.soundup.dto.MusicasPorAlbumDTO;
 import com.soundup.soundup.model.Musica;
 import com.soundup.soundup.model.Artista;
@@ -95,5 +97,14 @@ public class MusicaController {
     public List<MusicasPorAlbumDTO> getMusicasPorAlbum() {
         return musicaService.getMusicasPorAlbum();
     }
-    // Associar música a um álbum
+
+    @GetMapping("/estatisticas/duracao/boxplot")
+    public DuracaoBoxplotDTO getBoxplotDuracao() {
+        return musicaService.getBoxplotDuracao();
+    }
+
+    @GetMapping("/estatisticas/duracao/tendencia-anual")
+    public List<DuracaoMediaPorAnoDTO> getDuracaoMediaPorAno() {
+        return musicaService.getDuracaoMediaPorAno();
+    }
 }
