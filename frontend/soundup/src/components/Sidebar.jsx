@@ -67,9 +67,9 @@ export default function Sidebar() {
                         <ListItemIcon><HiChartBar color="white" size={20} /></ListItemIcon>
                         <ListItemText primary="Métricas" />
                     </ListItemButton>
-                    <ListItemButton component={Link} to="/estatistica">
+                    <ListItemButton component={Link} to="/estatisticas">
                         <ListItemIcon><HiChartPie color="white" size={20} /></ListItemIcon>
-                        <ListItemText primary="Estatística" />
+                        <ListItemText primary="Estatísticas" />
                     </ListItemButton>
                     <ListItemButton component={Link} to="/graficos">
                         <ListItemIcon><HiOutlinePresentationChartBar color="white" size={20} /></ListItemIcon>

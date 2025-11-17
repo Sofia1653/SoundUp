@@ -23,15 +23,7 @@ import PreferenciasPage from "./components/PreferenciasPage";
 import GraficosPage from "./components/GraficosPage";
 import PaginaInicial from "./components/PaginaInicial";
 import Catalogo from "./components/Catalogo";
-
-import MusicasPorAlbumChart from "./components/MusicasPorAlbumGraf";
-import TendenciaDuracaoAnual from "./components/TendenciaDuracaoAnual";
-import DistribuicaoPorPais from "./components/DistribuicaoPorPais";
-import ComparativoArtistaRadar from "./components/ComparativoArtistaRadar";
-import Top5ArtistasBarra from "./components/Top5ArtistasBarra";
-import CorrelacaoScatter from "./components/CorrelacaoScatter";
-import ComparativoArtistasSelecionavel from "./components/ComparativoArtistas";
-
+import EstatisticasPage from "./components/EstatisticasPage";
 
 const PRIMARY_PURPLE = '#7E57C2';
 const SECONDARY_GREEN = '#1DB954';
@@ -101,7 +93,7 @@ function App() {
                     <Route path="/preferencias" element={<PreferenciasPage />} />
                     <Route path="/consultas" element={<PreferenciasPage />} />
                     <Route path="/metricas" element={<GraficosPage />} />
-                    <Route path="/estatisticas" element={<GraficosPage />} />
+                    <Route path="/estatisticas" element={<EstatisticasPage />} />
                     <Route path="/graficos" element={<GraficosPage />} />
 
                     <Route path="/playlists" element={<PlaylistList />} />

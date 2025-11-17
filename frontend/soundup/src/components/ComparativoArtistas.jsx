@@ -2,16 +2,24 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 import axios from 'axios';
-import Select from 'react-select'; // Necessário instalar: npm install react-select
+import Select from 'react-select'; // Componente de seleção
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 const ENDPOINT = "http://localhost:8080/api/artistas/estatisticas/comparativo";
 
-// Mapeamento de cores para cada dataset (métrica)
+// --- 🛑 NOVA PALETA DE CORES PARA GRÁFICO (Baseada no seu Tema) ---
+const PRIMARY_PURPLE = '#7E57C2';
+const SECONDARY_PURPLE = '#4527A0';
+const BACKGROUND_PAPER = '#1E1E1E';
+const TEXT_PRIMARY = '#FFFFFF';
+const TEXT_SECONDARY = '#B0B0B0';
+
 const METRIC_COLORS = {
-    'Ouvintes': { bg: 'rgba(54, 162, 235, 0.7)', border: 'rgba(54, 162, 235, 1)' }, // Azul
-    'Músicas Totais': { bg: 'rgba(255, 99, 132, 0.7)', border: 'rgba(255, 99, 132, 1)' }, // Vermelho
+    // Roxo (Primary) para Ouvintes, que geralmente é a métrica principal
+    'Ouvintes': { bg: PRIMARY_PURPLE + 'b3', border: PRIMARY_PURPLE }, // b3 é 70% de opacidade
+    // Verde (Secondary) para Músicas Totais
+    'Músicas Totais': { bg: SECONDARY_PURPLE + 'b3', border: SECONDARY_PURPLE },
 };
 
 const ComparativoArtistasSelecionavel = () => {
@@ -20,13 +28,14 @@ const ComparativoArtistasSelecionavel = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
+    // ... (Logica de Fetch e Artist Options permanece a mesma) ...
+
     // 1. Fetch de todos os dados comparativos (quant_ouvintes, total_musicas)
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const response = await axios.get(ENDPOINT);
                 setAllData(response.data);
-                // Inicialmente, selecione os 3 primeiros artistas como padrão
                 const initialSelection = response.data.slice(0, 3).map(a => ({
                     value: a.nomeArtista,
                     label: a.nomeArtista
@@ -49,24 +58,17 @@ const ComparativoArtistasSelecionavel = () => {
         }));
     }, [allData]);
 
-    // 3. Processar Dados para o Gráfico (Baseado na seleção do usuário)
+    // 3. Processar Dados para o Gráfico (Usa as novas cores)
     const chartJsData = useMemo(() => {
         if (!selectedArtists || selectedArtists.length === 0) {
             return { labels: [], datasets: [] };
         }
 
-        // Os rótulos do eixo X são os artistas selecionados
         const labels = selectedArtists.map(a => a.label);
-
-        // Filtrar os objetos de dados apenas para os artistas selecionados
         const filteredArtists = allData.filter(artist =>
             selectedArtists.some(s => s.value === artist.nomeArtista)
         );
-
-        // Criar o dataset de Ouvintes
         const ouvintesData = filteredArtists.map(a => a.quantOuvintes);
-
-        // Criar o dataset de Músicas Totais
         const musicasData = filteredArtists.map(a => a.totalMusicas);
 
         return {
@@ -78,6 +80,8 @@ const ComparativoArtistasSelecionavel = () => {
                     backgroundColor: METRIC_COLORS.Ouvintes.bg,
                     borderColor: METRIC_COLORS.Ouvintes.border,
                     borderWidth: 1,
+                    // Adicionando um contraste suave para a barra ativa
+                    hoverBackgroundColor: METRIC_COLORS.Ouvintes.border,
                 },
                 {
                     label: 'Total de Músicas',
@@ -85,6 +89,7 @@ const ComparativoArtistasSelecionavel = () => {
                     backgroundColor: METRIC_COLORS['Músicas Totais'].bg,
                     borderColor: METRIC_COLORS['Músicas Totais'].border,
                     borderWidth: 1,
+                    hoverBackgroundColor: METRIC_COLORS['Músicas Totais'].border,
                 }
             ],
         };
@@ -93,48 +98,123 @@ const ComparativoArtistasSelecionavel = () => {
     if (loading) return <div>Carregando dados de artistas...</div>;
     if (error) return <div style={{ color: 'red' }}>Erro: {error}</div>;
 
+    // --- 🛑 NOVAS OPÇÕES DO GRÁFICO (para Modo Noturno) ---
     const options = {
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
-            legend: { position: 'top' },
+            legend: {
+                position: 'top',
+                labels: { color: TEXT_PRIMARY }, // Cor do texto da legenda
+            },
             title: {
                 display: true,
                 text: 'Comparativo de Performance de Artistas Selecionados',
+                color: TEXT_PRIMARY, // Cor do título
                 font: { size: 18 }
             },
+            tooltip: {
+                // Cor do texto do tooltip
+                bodyColor: BACKGROUND_PAPER,
+                titleColor: BACKGROUND_PAPER,
+            }
         },
         scales: {
             y: {
-                // Eixo Y é compartilhado, mas as escalas são muito diferentes
-                // Uma solução avançada seria usar dois eixos Y (eixo secundário)
-                // Para este exemplo, usaremos a escala simples para ambas.
-                title: { display: true, text: 'Valores Absolutos' },
+                title: {
+                    display: true,
+                    text: 'Valores Absolutos',
+                    color: TEXT_SECONDARY // Cor do título do eixo
+                },
+                ticks: { color: TEXT_SECONDARY }, // Cor dos números do eixo
+                grid: { color: '#333333' }, // Linhas de grade mais escuras
                 beginAtZero: true
             },
             x: {
-                // Eixo X são os nomes dos artistas
+                ticks: { color: TEXT_SECONDARY }, // Cor dos rótulos do eixo X
+                grid: { color: 'rgba(0, 0, 0, 0)' }, // Remover linhas verticais (opcional)
             }
         }
     };
 
+    // --- 🛑 ESTILIZAÇÃO DO REACT-SELECT PARA NIGHT MODE ---
+    const selectStyles = {
+        control: (provided, state) => ({
+            ...provided,
+            backgroundColor: BACKGROUND_PAPER,
+            borderColor: state.isFocused ? PRIMARY_PURPLE : '#333333',
+            boxShadow: state.isFocused ? `0 0 0 1px ${PRIMARY_PURPLE}` : 'none',
+            '&:hover': { borderColor: PRIMARY_PURPLE },
+            color: TEXT_PRIMARY,
+        }),
+        menu: (provided) => ({
+            ...provided,
+            backgroundColor: BACKGROUND_PAPER,
+            zIndex: 10,
+        }),
+        option: (provided, state) => ({
+            ...provided,
+            backgroundColor: state.isFocused
+                ? PRIMARY_PURPLE + '20' // Cor de foco sutil
+                : state.isSelected
+                    ? PRIMARY_PURPLE
+                    : BACKGROUND_PAPER,
+            color: TEXT_PRIMARY,
+            '&:active': { backgroundColor: PRIMARY_PURPLE + '40' },
+        }),
+        singleValue: (provided) => ({
+            ...provided,
+            color: TEXT_PRIMARY,
+        }),
+        multiValue: (provided) => ({
+            ...provided,
+            backgroundColor: PRIMARY_PURPLE + '30', // Fundo dos chips selecionados
+            color: TEXT_PRIMARY,
+        }),
+        multiValueLabel: (provided) => ({
+            ...provided,
+            color: TEXT_PRIMARY,
+        }),
+        multiValueRemove: (provided) => ({
+            ...provided,
+            color: TEXT_SECONDARY,
+            '&:hover': {
+                backgroundColor: PRIMARY_PURPLE,
+                color: 'white',
+            },
+        }),
+        input: (provided) => ({
+            ...provided,
+            color: TEXT_PRIMARY,
+        }),
+        placeholder: (provided) => ({
+            ...provided,
+            color: TEXT_SECONDARY,
+        }),
+    };
+
+
     return (
-        <div style={{ width: '80%', margin: '20px auto' }}>
-            <h2>Comparação Interativa de Artistas</h2>
+        <div style={{ padding: '0 20px' }}>
+            {/* Título aqui será substituído pelo Título do Paper/Card no DashboardPage */}
+            {/* <h2>Comparação Interativa de Artistas</h2> */}
 
             {/* 🛑 INTERAÇÃO: Seleção Múltipla */}
             <div style={{ marginBottom: '20px' }}>
-                <label><strong>Selecione Artistas para Comparar (Múltipla Escolha):</strong></label>
+                <label style={{ color: TEXT_SECONDARY, display: 'block', marginBottom: '8px' }}>
+                    <strong>Selecione Artistas para Comparar (Múltipla Escolha):</strong>
+                </label>
                 <Select
                     isMulti
                     options={artistOptions}
                     onChange={setSelectedArtists}
                     value={selectedArtists}
                     placeholder="Selecione os artistas..."
+                    styles={selectStyles} // Aplicando os estilos customizados
                 />
             </div>
 
-            <div style={{ height: '400px' }}>
+            <div style={{ height: '450px' }}>
                 <Bar data={chartJsData} options={options} />
             </div>
         </div>

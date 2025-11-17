@@ -8,6 +8,12 @@ ChartJS.register(ScatterController, PointElement, LinearScale, Title, Tooltip, L
 
 const ENDPOINT = "http://localhost:8080/api/artistas/estatisticas/correlacao-duracao-seguidores";
 
+const PRIMARY_PURPLE = '#7E57C2';
+const SECONDARY_GREEN = '#1DB954';
+const BACKGROUND_PAPER = '#1E1E1E';
+const TEXT_PRIMARY = '#FFFFFF';
+const TEXT_SECONDARY = '#B0B0B0';
+
 const CorrelacaoScatter = () => {
     const [chartData, setChartData] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -39,8 +45,8 @@ const CorrelacaoScatter = () => {
                         {
                             label: 'Artistas',
                             data: scatterPoints,
-                            backgroundColor: 'rgba(75, 192, 192, 0.7)',
-                            borderColor: 'rgba(75, 192, 192, 1)',
+                            backgroundColor: PRIMARY_PURPLE + 'b3',
+                            borderColor: PRIMARY_PURPLE,
                             pointRadius: 6, // Tamanho dos pontos
                         },
                     ],

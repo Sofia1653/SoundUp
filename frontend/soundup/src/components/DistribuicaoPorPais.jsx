@@ -12,9 +12,8 @@ const ENDPOINT = "http://localhost:8080/api/usuarios/estatisticas/distribuicao-p
 // Função utilitária para gerar cores dinâmicas
 const generateColors = (count) => {
     const colors = [];
-    const baseColors = [
-        '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40', '#4CAF50', '#E91E63'
-    ];
+    const baseColors =
+        ['#9C27B0',  '#7E57C2', '#5E35B1', '#4527A0', '#311B92'];
     for (let i = 0; i < count; i++) {
         // Cicla pelas cores base
         colors.push(baseColors[i % baseColors.length]);

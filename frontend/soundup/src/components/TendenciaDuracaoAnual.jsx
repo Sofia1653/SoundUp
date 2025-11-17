@@ -17,6 +17,12 @@ ChartJS.register(
 // O novo endpoint que criamos
 const ENDPOINT = "http://localhost:8080/api/musicas/estatisticas/duracao/tendencia-anual";
 
+const PRIMARY_PURPLE = '#7E57C2';
+const SECONDARY_GREEN = '#1DB954';
+const BACKGROUND_PAPER = '#1E1E1E';
+const TEXT_PRIMARY = '#FFFFFF';
+const TEXT_SECONDARY = '#B0B0B0';
+
 const TendenciaDuracaoAnual = () => {
     const [chartData, setChartData] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -39,8 +45,8 @@ const TendenciaDuracaoAnual = () => {
                         {
                             label: 'Duração Média das Músicas (segundos)',
                             data: duracoes,
-                            borderColor: 'rgb(255, 99, 132)',
-                            backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                            borderColor: PRIMARY_PURPLE + 'b3',
+                            backgroundColor: PRIMARY_PURPLE,
                             tension: 0.4, // Suaviza a linha (tendência)
                             pointRadius: 5
                         },
