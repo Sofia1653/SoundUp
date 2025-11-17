@@ -3,7 +3,9 @@ package com.soundup.soundup.service;
 import com.soundup.soundup.dto.ComparativoArtistaDTO;
 import com.soundup.soundup.dto.CorrelacaoDuracaoSeguidoresDTO;
 import com.soundup.soundup.model.Artista;
+import com.soundup.soundup.model.Musica;
 import com.soundup.soundup.repository.ArtistaRepository;
+import com.soundup.soundup.repository.LancaRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,9 +14,11 @@ import java.util.List;
 public class ArtistaService {
 
     private final ArtistaRepository artistaRepository;
+    private final LancaRepository lancaRepository;
 
-    public ArtistaService(ArtistaRepository artistaRepository) {
+    public ArtistaService(ArtistaRepository artistaRepository, LancaRepository lancaRepository) {
         this.artistaRepository = artistaRepository;
+        this.lancaRepository = lancaRepository;
     }
 
     public Artista save(Artista artista) {
@@ -24,15 +28,29 @@ public class ArtistaService {
         return artistaRepository.findById(idGerado);
     }
 
-
     // GET all
     public List<Artista> getAllArtistas() {
-        return artistaRepository.findAll();
+        List<Artista> artistas = artistaRepository.findAll();
+
+        for (Artista artista : artistas) {
+            List<Musica> musicas = lancaRepository.findMusicasByArtista(artista.getId_artista());
+            artista.setMusicasLancadas(musicas);
+        }
+
+        return artistas;
     }
 
     // GET by ID
     public Artista getArtistaById(int id) {
-        return artistaRepository.findById(id);
+        Artista artista = artistaRepository.findById(id);
+
+        if (artista != null) {
+            // pegar músicas lançadas
+            List<Musica> musicas = lancaRepository.findMusicasByArtista(artista.getId_artista());
+            artista.setMusicasLancadas(musicas);
+        }
+
+        return artista;
     }
 
     // POST create
@@ -50,9 +68,14 @@ public class ArtistaService {
         artistaRepository.delete(id);
     }
 
+    public int countMusicasLancadas(int idArtista) {
+        return artistaRepository.countMusicasLancadas(idArtista);
+    }
+  
     public List<ComparativoArtistaDTO> getMetricasComparativas() {
         return artistaRepository.getMetricasComparativas();
     }
+  
     public List<CorrelacaoDuracaoSeguidoresDTO> getCorrelacaoDuracaoSeguidores() {
         return artistaRepository.getCorrelacaoDuracaoSeguidores();
     }

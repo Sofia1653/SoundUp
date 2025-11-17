@@ -32,3 +32,30 @@ SELECT pais, total_artistas
                 GROUP BY u.pais
             ) AS sub
             ORDER BY total_artistas DESC;
+
+DELIMITER $$
+CREATE TRIGGER trg_atualiza_duracao_album_insert
+    AFTER INSERT ON Pertence
+    FOR EACH ROW
+BEGIN
+    UPDATE Album al
+    SET al.duracao = (
+        SELECT SUM(m.duracao)
+        FROM Pertence p
+                 JOIN Musica m ON p.id_musica = m.id
+        WHERE p.id_album = NEW.id_album
+    )
+    WHERE al.id = NEW.id_album;
+    END$$
+    DELIMITER ;
+
+DELIMITER //
+    CREATE FUNCTION QuantMusicasArtista(idArt INT)
+        RETURNS INT
+        DETERMINISTIC
+    BEGIN
+    DECLARE qtd INT;
+    SELECT COUNT(*) INTO qtd FROM Lanca WHERE id_artista = idArt;
+    RETURN qtd;
+END //
+DELIMITER ;

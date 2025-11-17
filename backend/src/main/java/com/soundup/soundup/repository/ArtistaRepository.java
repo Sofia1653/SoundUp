@@ -1,5 +1,7 @@
 package com.soundup.soundup.repository;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.soundup.soundup.dto.ComparativoArtistaDTO;
 import com.soundup.soundup.dto.CorrelacaoDuracaoSeguidoresDTO;
 import com.soundup.soundup.model.Artista;
@@ -114,6 +116,11 @@ public class ArtistaRepository {
         return jdbcTemplate.update("DELETE FROM usuarios WHERE id = ?", id);
     }
 
+    public int countMusicasLancadas(int idArtista) {
+        String sql = "SELECT QuantMusicasArtista";
+        return jdbcTemplate.queryForObject(sql, Integer.class, idArtista);
+    }
+  
     public List<ComparativoArtistaDTO> getMetricasComparativas() {
         String sql =
                 "SELECT " +

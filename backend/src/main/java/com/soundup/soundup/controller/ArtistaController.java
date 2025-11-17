@@ -50,10 +50,17 @@ public class ArtistaController {
         artistaService.deleteArtista(id);
     }
 
+    @GetMapping("/{idArtista}/musicas/count")
+    public ResponseEntity<Integer> countMusicasLancadas(@PathVariable int idArtista) {
+        int total = artistaService.countMusicasLancadas(idArtista);
+        return ResponseEntity.ok(total);
+    }
+  
     @GetMapping("/estatisticas/comparativo")
     public List<ComparativoArtistaDTO> getComparativoArtistas() {
         return artistaService.getMetricasComparativas();
     }
+  
     @GetMapping("/estatisticas/correlacao-duracao-seguidores")
     public List<CorrelacaoDuracaoSeguidoresDTO> getCorrelacaoDuracaoSeguidores() {
         return artistaService.getCorrelacaoDuracaoSeguidores();
