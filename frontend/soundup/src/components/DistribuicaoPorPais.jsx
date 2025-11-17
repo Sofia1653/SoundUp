@@ -3,20 +3,16 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Pie } from 'react-chartjs-2';
 import axios from 'axios';
 
-// Registrar os componentes necessários para um Gráfico de Pizza
 ChartJS.register(ArcElement, Tooltip, Legend);
 ChartJS.defaults.font.family = 'Inter, "Helvetica Neue", Arial, sans-serif';
 
-// O novo endpoint
 const ENDPOINT = "http://localhost:8080/api/usuarios/estatisticas/distribuicao-pais";
 
-// Função utilitária para gerar cores dinâmicas
 const generateColors = (count) => {
     const colors = [];
     const baseColors =
         ['#9C27B0',  '#7E57C2', '#5E35B1', '#4527A0', '#311B92'];
     for (let i = 0; i < count; i++) {
-        // Cicla pelas cores base
         colors.push(baseColors[i % baseColors.length]);
     }
     return colors;
@@ -30,21 +26,17 @@ const DistribuicaoPorPais = () => {
     useEffect(() => {
         const fetchChartData = async () => {
             try {
-                // Lembre-se: O proxy do package.json lida com o localhost:8080
                 const response = await axios.get(ENDPOINT);
-                const dataFromBackend = response.data; // Lista de ContagemPorPaisDTO
+                const dataFromBackend = response.data;
 
                 if (dataFromBackend.length === 0) {
-                    // Caso não haja dados, evitamos o erro de renderização
                     setChartData({ labels: [], datasets: [] });
                     return;
                 }
 
-                // Extrair rótulos e valores
                 const labels = dataFromBackend.map(item => item.pais);
                 const contagens = dataFromBackend.map(item => item.contagem);
 
-                // Gerar cores dinamicamente baseado no número de países
                 const backgroundColors = generateColors(labels.length);
 
                 setChartData({
@@ -94,7 +86,6 @@ const DistribuicaoPorPais = () => {
             tooltip: {
                 callbacks: {
                     label: function(context) {
-                        // Calcula a porcentagem para mostrar na tooltip
                         const total = context.dataset.data.reduce((a, b) => a + b, 0);
                         const valor = context.parsed;
                         const porcentagem = ((valor / total) * 100).toFixed(2);

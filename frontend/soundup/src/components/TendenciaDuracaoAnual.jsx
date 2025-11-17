@@ -3,7 +3,6 @@ import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement
 import { Line } from 'react-chartjs-2';
 import axios from 'axios';
 
-// 1. Registrar os componentes necessários para um Gráfico de Linha
 ChartJS.register(
     CategoryScale,
     LinearScale,
@@ -14,7 +13,6 @@ ChartJS.register(
     Legend
 );
 
-// O novo endpoint que criamos
 const ENDPOINT = "http://localhost:8080/api/musicas/estatisticas/duracao/tendencia-anual";
 ChartJS.defaults.font.family = 'Inter, "Helvetica Neue", Arial, sans-serif';
 const PRIMARY_PURPLE = '#7E57C2';
@@ -31,13 +29,11 @@ const TendenciaDuracaoAnual = () => {
     useEffect(() => {
         const fetchChartData = async () => {
             try {
-                // Chama o novo endpoint
                 const response = await axios.get(ENDPOINT);
-                const dataFromBackend = response.data; // Lista de DuracaoMediaPorAnoDTO
+                const dataFromBackend = response.data;
 
-                // 2. Preparar os dados para o Chart.js
-                const labels = dataFromBackend.map(item => item.ano); // Eixo X: Anos
-                const duracoes = dataFromBackend.map(item => item.duracaoMedia.toFixed(2)); // Eixo Y: Duração Média (com 2 casas decimais)
+                const labels = dataFromBackend.map(item => item.ano);
+                const duracoes = dataFromBackend.map(item => item.duracaoMedia.toFixed(2));
 
                 setChartData({
                     labels: labels,
@@ -47,7 +43,7 @@ const TendenciaDuracaoAnual = () => {
                             data: duracoes,
                             borderColor: PRIMARY_PURPLE + 'b3',
                             backgroundColor: PRIMARY_PURPLE,
-                            tension: 0.4, // Suaviza a linha (tendência)
+                            tension: 0.4,
                             pointRadius: 5,
                         },
                     ],

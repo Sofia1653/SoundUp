@@ -3,7 +3,6 @@ import { Chart as ChartJS, ScatterController, PointElement, LinearScale, Title, 
 import { Scatter } from 'react-chartjs-2';
 import axios from 'axios';
 
-// Registrar os componentes necessários para o Gráfico de Dispersão
 ChartJS.register(ScatterController, PointElement, LinearScale, Title, Tooltip, Legend);
 ChartJS.defaults.font.family = 'Inter, "Helvetica Neue", Arial, sans-serif';
 
@@ -31,13 +30,9 @@ const CorrelacaoScatter = () => {
                     return;
                 }
 
-                // Mapear os dados para o formato {x, y} que o Chart.js espera para Scatter
                 const scatterPoints = dataFromBackend.map(item => ({
-                    // Eixo X: Duração Média (segundos)
                     x: item.duracaoMedia.toFixed(1),
-                    // Eixo Y: Quantidade de Seguidores
                     y: item.quantSeguidores,
-                    // Armazena o nome do artista para o tooltip
                     nome: item.nomeArtista
                 }));
 
@@ -48,7 +43,7 @@ const CorrelacaoScatter = () => {
                             data: scatterPoints,
                             backgroundColor: PRIMARY_PURPLE + 'b3',
                             borderColor: PRIMARY_PURPLE,
-                            pointRadius: 6, // Tamanho dos pontos
+                            pointRadius: 6,
                         },
                     ],
                 });
@@ -68,7 +63,6 @@ const CorrelacaoScatter = () => {
     if (error) return <div style={{ color: 'red' }}>Erro: {error}</div>;
     if (!chartData || chartData.datasets.length === 0) return <div>Nenhum ponto de correlação encontrado.</div>;
 
-    // 3. Configurações do Gráfico
     const options = {
         responsive: true,
         maintainAspectRatio: false,
@@ -89,7 +83,6 @@ const CorrelacaoScatter = () => {
                 borderColor: PRIMARY_PURPLE,
                 borderWidth: 1,
                 callbacks: {
-                    // Mostra o nome do artista na tooltip
                     label: function(context) {
                         const ponto = context.raw;
                         return [
