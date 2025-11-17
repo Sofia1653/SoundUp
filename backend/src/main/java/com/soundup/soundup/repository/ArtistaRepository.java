@@ -1,5 +1,7 @@
 package com.soundup.soundup.repository;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.soundup.soundup.model.Artista;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -110,5 +112,20 @@ public class ArtistaRepository {
     // DELETE artista (deleta Usuario, FK ON DELETE CASCADE cuida do Artista)
     public int delete(int id) {
         return jdbcTemplate.update("DELETE FROM usuarios WHERE id = ?", id);
+    }
+
+    public int countMusicasLancadas(int idArtista) {
+        String sql = "SELECT QuantMusicasArtista(?)";
+        String json = jdbcTemplate.queryForObject(sql, String.class, idArtista);
+        // Converte JSON para Lista
+        ObjectMapper mapper = new ObjectMapper();
+        List<Integer> musicas;
+
+        try {
+            musicas = mapper.readValue(json, new TypeReference<List<Integer>>() {});
+        } catch (Exception e) {
+            throw new RuntimeException("Erro convertendo JSON", e);
+        }
+        return musicas.size();
     }
 }

@@ -47,4 +47,10 @@ public class ArtistaController {
     public void deleteArtista(@PathVariable int id) {
         artistaService.deleteArtista(id);
     }
+
+    @GetMapping("/{idArtista}/musicas/count")
+    public ResponseEntity<Integer> countMusicasLancadas(@PathVariable int idArtista) {
+        int total = artistaService.countMusicasLancadas(idArtista);
+        return ResponseEntity.ok(total);
+    }
 }
