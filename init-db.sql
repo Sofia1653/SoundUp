@@ -264,6 +264,21 @@ INSERT INTO albuns (nome, duracao, ano) VALUES
     ('Album Primeiros Erros',240,1989),
     ('Album Faz Parte do Meu Show',180,1988);
 
+INSERT INTO Genero (nome) VALUES
+('Funk'),
+('Eletrônica'),
+('Pop'),
+('Sertanejo'),
+('Dance'),
+('Rock'),
+('MPB'),
+('Indie'),
+('R&B'),
+('Rap'),
+('Disco'),
+('Metal'),
+('Alternativo');
+
 INSERT INTO musicas (id_album, nome, duracao) VALUES
     (1,'Pipoco',180),
     (2,'Hear Me Now',210),
@@ -295,6 +310,41 @@ INSERT INTO musicas (id_album, nome, duracao) VALUES
     (28,'Os Anjos Cantam',180),
     (29,'Primeiros Erros',240),
     (30,'Faz Parte do Meu Show',180);
+
+INSERT INTO Tem (id_musica, id_genero) VALUES
+(1,1),
+(2,2),
+(3,3),
+(4,4),
+(5,5),
+(6,6),
+(7,3),
+(8,3),
+(9,3),
+(10,6),
+(11,9),
+(12,7),
+(13,10),
+(14,13),
+(15,10),
+(16,7),
+(17,6),
+(18,4),
+(19,3),
+(20,11),
+(21,12),
+(22,6),
+(23,6),
+(24,3),
+(25,3),
+(26,8),
+(27,8),
+(28,4),
+(29,6),
+(30,7);
+
+INSERT INTO Pertence (id_musica, id_album)
+SELECT id, id_album FROM musicas;
 
 INSERT INTO Lanca (id_artista, id_musica) VALUES
     (1,1),(2,2),(3,3),(4,4),(5,5),(6,6),(7,7),(8,8),(9,9),(10,10),

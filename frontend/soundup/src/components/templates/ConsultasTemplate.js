@@ -17,6 +17,12 @@ import {
   TableRow,
   Paper
 } from "@mui/material";
+import {
+    artistasIndependentes,
+    colaboracoesPorArtista,
+    duracaoPorAlbum,
+    musicaEGenero
+} from "../../services/consultaService";
 
 const estadosBR = ["AC","AL","AP","AM","BA","CE","DF","ES","GO","MA","MT","MS","MG","PA","PB","PR","PE","PI","RJ","RN","RS","RO","RR","SC","SP","SE","TO"];
 const PRIMARY_PURPLE = '#7E57C2';
@@ -67,9 +73,13 @@ export default function ConsultasTemplate({
             <MenuItem value="ranking-artistas">Ranking de artistas</MenuItem>
             <MenuItem value="musicas-por-estado">Contagem de músicas por estado</MenuItem>
             <MenuItem value="ranking-paises">Ranking de países</MenuItem>
+
+              <MenuItem value="duracao-por-album">Duração por álbum</MenuItem>
+              <MenuItem value="artistas-independentes">Artistas Independentes</MenuItem>
+              <MenuItem value="colaboracoes-por-artista">Colaborações por artista</MenuItem>
+              <MenuItem value="musica-e-genero">Música e Gênero</MenuItem>
           </Select>
         </FormControl>
-
         {/* Inputs dinâmicos */}
         {consultaSelecionada === "musicas" && (
             <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
