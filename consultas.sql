@@ -48,14 +48,3 @@ BEGIN
     WHERE al.id = NEW.id_album;
     END$$
     DELIMITER ;
-
-DELIMITER //
-    CREATE FUNCTION QuantMusicasArtista(idArt INT)
-        RETURNS INT
-        DETERMINISTIC
-    BEGIN
-    DECLARE qtd INT;
-    SELECT COUNT(*) INTO qtd FROM Lanca WHERE id_artista = idArt;
-    RETURN qtd;
-END //
-DELIMITER ;
