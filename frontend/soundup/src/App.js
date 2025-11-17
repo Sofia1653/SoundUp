@@ -13,16 +13,19 @@ import {
 } from "@mui/material";
 
 // Importar os componentes da segunda página
-import UsuarioList from "./components/UsuarioList";
-import ArtistaList from "./components/ArtistaList";
-import MusicaList from "./components/MusicaList";
-import PreferenciasPage from "./components/PreferenciasPage";
+
 import Consultas from "./components/Consultas";
-import GraficosPage from "./components/GraficosPage";
-import PlaylistList from "./components/PlaylistList";
-import AlbumList from "./components/AlbumList";
 import Sidebar from "./components/Sidebar";
 import SoundUpContainer from "./components/SoundUpContainer";
+import MusicaList from "./components/MusicaList";
+import ArtistaList from "./components/ArtistaList";
+import AlbumList from "./components/AlbumList";
+import PlaylistList from "./components/PlaylistList";
+import UsuarioList from "./components/UsuarioList";
+import PreferenciasPage from "./components/PreferenciasPage";
+import GraficosPage from "./components/GraficosPage";
+import PaginaInicial from "./components/PaginaInicial";
+import Catalogo from "./components/Catalogo";
 
 // Cores e Tema (estilo da primeira página)
 const PRIMARY_PURPLE = '#7E57C2';
@@ -85,11 +88,24 @@ function App() {
             <Sidebar />
 
             {/* Conteúdo das Rotas */}
-            <Routes>
-                <Route path="/" element={<SoundUpContainer />} />
-                <Route path="/preferencias" element={<PreferenciasPage />} />
-                <Route path="/graficos" element={<GraficosPage />} />
-            </Routes>
+            <SoundUpContainer>
+                <Routes>
+                    <Route path="/" element={<PaginaInicial />} />
+                    <Route path="/catalogo" element={<Catalogo />} />
+                    <Route path="/musicas" element={<MusicaList />} />
+                    <Route path="/preferencias" element={<PreferenciasPage />} />
+                    <Route path="/consultas" element={<PreferenciasPage />} />
+                    <Route path="/metricas" element={<GraficosPage />} />
+                    <Route path="/estatisticas" element={<GraficosPage />} />
+                    <Route path="/graficos" element={<GraficosPage />} />
+
+                    <Route path="/playlists" element={<PlaylistList />} />
+                    <Route path="/musicas" element={<ArtistaList />} />
+                    <Route path="/albuns" element={<AlbumList />} />
+                    <Route path="/artistas" element={<ArtistaList />} />
+                    <Route path="/usuarios" element={<UsuarioList />} />
+                </Routes>
+            </SoundUpContainer>
         </Router>
         </ThemeProvider>
     );

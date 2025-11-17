@@ -84,3 +84,13 @@ export const musicaEGenero = async () => {
         return [];
     }
 };
+
+export const getCatalogo = async () => {
+    const res = await fetch(`${API_BASE}/catalogo-detalhado-musicas`);
+    if (!res.ok) throw new Error("Erro ao buscar catalogo");
+    try {
+        return await res.json();
+    } catch {
+        return [];
+    }
+};
