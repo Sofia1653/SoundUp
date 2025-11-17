@@ -12,11 +12,7 @@ import {
     Legend
 } from 'chart.js';
 
-import GroupIcon from '@mui/icons-material/Group';
-import LibraryMusicIcon from '@mui/icons-material/LibraryMusic';
-import AlbumIcon from '@mui/icons-material/Album';
-import MicIcon from '@mui/icons-material/Mic';
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import { HiUserGroup, HiMusicNote, HiCollection, HiMicrophone, HiClock } from "react-icons/hi";
 
 ChartJS.register(
     CategoryScale,
@@ -36,7 +32,7 @@ const cardStyle = {
     height: '100%',
     p: 2, 
     borderRadius: '16px', 
-    background: 'linear-gradient(145deg, #2a2a2a, #1a1a1a)', 
+    background: 'linear-gradient(145deg, #2a2a2a, #1a1a1a)',
 };
 
 const TotalStatCard = React.forwardRef(({ title, value, icon: IconComponent, color, subtext }, ref) => (
@@ -46,10 +42,12 @@ const TotalStatCard = React.forwardRef(({ title, value, icon: IconComponent, col
         </Typography>
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start', mt: 1 }}>
             {IconComponent && (
-                <IconComponent sx={{ fontSize: '3.5rem', color: color, mr: 2 }} />
+                <Box sx={{ color: color, mr: 2 }}>
+                    <IconComponent size="3.5rem" /> 
+                </Box>
             )}
             <Box>
-                <Typography variant="h3" sx={{ fontWeight: 'bold', lineHeight: 1.1 }}>
+                <Typography variant="h3" sx={{ fontWeight: 'normal', lineHeight: 1.1 }}>
                     {value}
                 </Typography>
                 {subtext && (
@@ -100,7 +98,7 @@ const GaugeCard = React.forwardRef(({ title, value, color }, ref) => {
                         top: '65%', 
                         left: '50%', 
                         transform: 'translate(-50%, -50%)',
-                        fontWeight: 'bold',
+                        fontWeight: 'normal',
                         color: 'white'
                     }}
                 >
@@ -146,7 +144,7 @@ const BarChartCard = React.forwardRef(({ title, label1, value1, label2, value2, 
                 grid: { color: '#333' }
             },
             y: {
-                ticks: { color: '#FFFFFF', font: { size: 14, weight: 'bold' } },
+                ticks: { color: '#FFFFFF', font: { size: 14, weight: 'normal' } },
                 grid: { display: false }
             }
         }
@@ -211,7 +209,7 @@ const MetricasPage = () => {
                         newVisibility[index] = true;
                         return newVisibility;
                     });
-                }, 300 * index); 
+                }, 150 * index); 
             });
         }
     }, [loading, stats]); 
@@ -238,7 +236,7 @@ const MetricasPage = () => {
                 <Typography
                     variant="h4"
                     color="white"
-                    sx={{ mb: 4, textAlign: 'center', fontWeight: 'bold' }}
+                    sx={{ mb: 4, textAlign: 'center', fontWeight: 'normal' }}
                 >
                     Dashboard Estatístico
                 </Typography>
@@ -249,8 +247,8 @@ const MetricasPage = () => {
                             <TotalStatCard 
                                 title="Usuários Ativos" 
                                 value={formatNumber(stats.totalUsuarios)}
-                                icon={GroupIcon}
-                                color="#1DB954" 
+                                icon={HiUserGroup} 
+                                color="#7E57C2" 
                             />
                         </Slide>
                     </Grid>
@@ -259,7 +257,7 @@ const MetricasPage = () => {
                             <TotalStatCard 
                                 title="Catálogo de Músicas" 
                                 value={formatNumber(stats.totalMusicas)}
-                                icon={LibraryMusicIcon}
+                                icon={HiMusicNote} 
                                 color="#7E57C2" 
                             />
                         </Slide>
@@ -269,8 +267,8 @@ const MetricasPage = () => {
                             <TotalStatCard 
                                 title="Total de Álbuns" 
                                 value={formatNumber(stats.totalAlbuns)}
-                                icon={AlbumIcon}
-                                color="#FFA000" 
+                                icon={HiCollection} 
+                                color="#7E57C2" 
                             />
                         </Slide>
                     </Grid>
@@ -314,7 +312,7 @@ const MetricasPage = () => {
                             <TotalStatCard 
                                 title="Duração Média" 
                                 value={formatTime(stats.mediaDuracaoMusica)}
-                                icon={AccessTimeIcon}
+                                icon={HiClock} 
                                 color="#FFEE58" 
                                 subtext="Por faixa"
                             />
@@ -325,8 +323,8 @@ const MetricasPage = () => {
                             <TotalStatCard 
                                 title="Artista Mais Popular" 
                                 value={stats.topArtista || 'Nenhum'}
-                                icon={MicIcon}
-                                color="#FF9800" 
+                                icon={HiMicrophone} 
+                                color="#7E57C2" 
                                 subtext={`${formatNumber(stats.topArtistaOuvintes)} Ouvintes`}
                             />
                         </Slide>
