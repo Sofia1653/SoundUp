@@ -64,12 +64,22 @@ const ComparativoArtistasSelecionavel = () => {
             return { labels: [], datasets: [] };
         }
 
+        // 1. Os rótulos (nomes dos artistas) na ordem de seleção do usuário
         const labels = selectedArtists.map(a => a.label);
-        const filteredArtists = allData.filter(artist =>
-            selectedArtists.some(s => s.value === artist.nomeArtista)
-        );
-        const ouvintesData = filteredArtists.map(a => a.quantOuvintes);
-        const musicasData = filteredArtists.map(a => a.totalMusicas);
+
+        // 2. Garante que os dados de ouvintes e músicas sigam a ORDEM EXATA dos rótulos (selectedArtists)
+        const ouvintesData = selectedArtists.map(selection => {
+            // Encontra o objeto de dados completo que corresponde ao artista selecionado
+            const artistData = allData.find(artist => artist.nomeArtista === selection.value);
+            // Retorna o valor de ouvintes. Se não encontrar (o que não deve acontecer), retorna 0.
+            return artistData ? artistData.quantOuvintes : 0;
+        });
+
+        const musicasData = selectedArtists.map(selection => {
+            // Reutiliza a busca de dados
+            const artistData = allData.find(artist => artist.nomeArtista === selection.value);
+            return artistData ? artistData.totalMusicas : 0;
+        });
 
         return {
             labels,
@@ -80,7 +90,6 @@ const ComparativoArtistasSelecionavel = () => {
                     backgroundColor: METRIC_COLORS.Ouvintes.bg,
                     borderColor: METRIC_COLORS.Ouvintes.border,
                     borderWidth: 1,
-                    // Adicionando um contraste suave para a barra ativa
                     hoverBackgroundColor: METRIC_COLORS.Ouvintes.border,
                 },
                 {
@@ -108,15 +117,15 @@ const ComparativoArtistasSelecionavel = () => {
                 labels: { color: TEXT_PRIMARY }, // Cor do texto da legenda
             },
             title: {
-                display: true,
+                display: false,
                 text: 'Comparativo de Performance de Artistas Selecionados',
                 color: TEXT_PRIMARY, // Cor do título
                 font: { size: 18 }
             },
             tooltip: {
                 // Cor do texto do tooltip
-                bodyColor: BACKGROUND_PAPER,
-                titleColor: BACKGROUND_PAPER,
+                bodyColor: '#FFFFFF',
+                titleColor: '#FFFFFF',
             }
         },
         scales: {

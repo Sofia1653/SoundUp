@@ -6,6 +6,12 @@ import axios from 'axios';
 // Registrar os componentes necessários para o Gráfico de Barras
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
+const PRIMARY_PURPLE = '#7E57C2';
+const SECONDARY_GREEN = '#1DB954';
+const BACKGROUND_PAPER = '#1E1E1E';
+const TEXT_PRIMARY = '#FFFFFF';
+const TEXT_SECONDARY = '#B0B0B0';
+
 // Mantemos o mesmo endpoint que já retorna as métricas comparativas
 const ENDPOINT = "http://localhost:8080/api/artistas/estatisticas/comparativo";
 
@@ -75,6 +81,7 @@ const Top5ArtistasBarra = () => {
             title: {
                 display: true,
                 text: `Top ${maxArtists} Artistas por Quantidade de Ouvintes`,
+                color: '#FFFF',
                 font: { size: 18 }
             },
             tooltip: {
@@ -92,20 +99,22 @@ const Top5ArtistasBarra = () => {
                 title: {
                     display: true,
                     text: 'Quantidade de Ouvintes',
+                    color: TEXT_SECONDARY, // 🛑 Título do Eixo X: Cinza Claro
                 },
+                ticks: { color: TEXT_PRIMARY }, // 🛑 Números (Ticks) do Eixo X: Branco
+                grid: { color: '#333333' }, // 🛑 Grade: Escura
                 beginAtZero: true,
             },
             y: {
-                title: {
-                    display: false, // Os nomes dos artistas já são os rótulos
-                },
+                title: { display: false },
+                ticks: { color: TEXT_PRIMARY }, // 🛑 Nomes dos Artistas (Ticks) do Eixo Y: Branco
+                grid: { color: 'rgba(0, 0, 0, 0)' }, // Grade Vertical Removida
             }
         }
     };
 
     return (
-        <div style={{ width: '80%', height: '400px', margin: '20px auto' }}>
-            <h2>Top Artistas por Popularidade</h2>
+        <div style={{ width: '80%', height: '400px', margin: '80px auto' }}>
             <Bar data={chartData} options={options} />
         </div>
     );

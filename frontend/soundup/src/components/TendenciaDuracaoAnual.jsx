@@ -48,7 +48,7 @@ const TendenciaDuracaoAnual = () => {
                             borderColor: PRIMARY_PURPLE + 'b3',
                             backgroundColor: PRIMARY_PURPLE,
                             tension: 0.4, // Suaviza a linha (tendência)
-                            pointRadius: 5
+                            pointRadius: 5,
                         },
                     ],
                 });
@@ -68,18 +68,22 @@ const TendenciaDuracaoAnual = () => {
     if (error) return <div style={{ color: 'red' }}>Erro: {error}</div>;
     if (!chartData || chartData.labels.length === 0) return <div>Nenhuma música vinculada a álbuns com ano de lançamento para análise.</div>;
 
-    // 3. Configurações do Gráfico
+
     const options = {
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
             legend: {
                 position: 'top',
+                labels: {
+                    color: '#FFFF'
+                }
             },
             title: {
                 display: true,
                 text: 'Tendência Temporal da Duração Média das Músicas por Ano',
-                font: { size: 18 }
+                font: { size: 18 },
+                color: '#FFFF'
             },
         },
         scales: {
@@ -87,13 +91,17 @@ const TendenciaDuracaoAnual = () => {
                 title: {
                     display: true,
                     text: 'Ano de Lançamento do Álbum',
-                }
+                    color: '#FFFF'
+                },
+                ticks: {color: '#FFFF'}
             },
             y: {
                 title: {
                     display: true,
                     text: 'Duração Média (segundos)',
+                    color: '#FFFF'
                 },
+                ticks: {color: '#FFFF'},
                 beginAtZero: true
             }
         }
@@ -101,7 +109,6 @@ const TendenciaDuracaoAnual = () => {
 
     return (
         <div style={{ width: '90%', height: '500px', margin: '20px auto' }}>
-            <h2>Tendência Temporal</h2>
             <Line data={chartData} options={options} />
         </div>
     );

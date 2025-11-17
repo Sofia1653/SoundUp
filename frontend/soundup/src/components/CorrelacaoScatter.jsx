@@ -78,9 +78,15 @@ const CorrelacaoScatter = () => {
             title: {
                 display: true,
                 text: 'Correlação: Duração Média da Música vs. Seguidores do Artista',
-                font: { size: 18 }
+                font: { size: 18 },
+                color: '#FFFFFF'
             },
             tooltip: {
+                backgroundColor: BACKGROUND_PAPER,
+                titleColor: PRIMARY_PURPLE,
+                bodyColor: TEXT_PRIMARY,
+                borderColor: PRIMARY_PURPLE,
+                borderWidth: 1,
                 callbacks: {
                     // Mostra o nome do artista na tooltip
                     label: function(context) {
@@ -101,7 +107,10 @@ const CorrelacaoScatter = () => {
                 title: {
                     display: true,
                     text: 'Duração Média das Músicas (segundos)',
+                    color: '#FFFF'
                 },
+                ticks: { color: TEXT_PRIMARY },
+                grid: { color: TEXT_SECONDARY },
                 beginAtZero: true
             },
             y: {
@@ -109,7 +118,10 @@ const CorrelacaoScatter = () => {
                 title: {
                     display: true,
                     text: 'Quantidade de Seguidores',
+                    color: '#FFFF'
                 },
+                ticks: { color: TEXT_PRIMARY },
+                grid: { color: TEXT_SECONDARY },
                 beginAtZero: true
             }
         }
@@ -117,7 +129,6 @@ const CorrelacaoScatter = () => {
 
     return (
         <div style={{ width: '80%', height: '500px', margin: '20px auto' }}>
-            <h2>Análise de Correlação</h2>
             <Scatter data={chartData} options={options} />
         </div>
     );
