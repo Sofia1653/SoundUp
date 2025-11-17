@@ -21,6 +21,8 @@ import Consultas from "./components/Consultas";
 import GraficosPage from "./components/GraficosPage";
 import PlaylistList from "./components/PlaylistList";
 import AlbumList from "./components/AlbumList";
+import Sidebar from "./components/Sidebar";
+import SoundUpContainer from "./components/SoundUpContainer";
 
 // Cores e Tema (estilo da primeira página)
 const PRIMARY_PURPLE = '#7E57C2';
@@ -75,118 +77,20 @@ const darkTheme = createTheme({
     },
 });
 
-// Componente para a página principal
-const Dashboard = () => (
-    <Box sx={{
-        bgcolor: BACKGROUND_DEFAULT,
-        minHeight: 'calc(100vh - 89px)',
-        py: 4
-    }}>
-        <Container maxWidth="lg">
-            <Typography
-                variant="h4"
-                color="white"
-                sx={{
-                    mb: 4,
-                    textAlign: 'center',
-                    fontWeight: 'bold'
-                }}
-            >
-                🎯 Dashboard Principal
-            </Typography>
-            <Box sx={{
-                display: 'grid',
-                gap: 3,
-                gridTemplateColumns: '1fr'
-            }}>
-                <UsuarioList />
-                <ArtistaList />
-                <AlbumList />
-                <MusicaList />
-                <PlaylistList />
-                <Consultas />
-            </Box>
-        </Container>
-    </Box>
-);
-
 function App() {
     return (
         <ThemeProvider theme={darkTheme}>
             <CssBaseline />
             <Router>
-                {/* Header Fixo com Navegação */}
-                <Box
-                    component="header"
-                    sx={{
-                        bgcolor: PAPER_BACKGROUND,
-                        py: 2,
-                        borderBottom: `1px solid ${PRIMARY_PURPLE}`,
-                        position: 'sticky',
-                        top: 0,
-                        zIndex: 1000
-                    }}
-                >
-                    <Container maxWidth="lg" sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <Typography variant="h5" component="div" sx={{ fontWeight: 'bold', color: PRIMARY_PURPLE }}>
-                            🎵 SoundUp
-                        </Typography>
-                        <Box component="nav" sx={{ display: 'flex', gap: 3 }}>
-                            <Button
-                                component={RouterLink}
-                                to="/"
-                                sx={{
-                                    color: 'white',
-                                    textDecoration: 'none',
-                                    fontWeight: 'bold',
-                                    '&:hover': {
-                                        color: PRIMARY_PURPLE,
-                                        backgroundColor: 'rgba(126, 87, 194, 0.1)'
-                                    }
-                                }}
-                            >
-                                🏠 Página Inicial
-                            </Button>
-                            <Button
-                                component={RouterLink}
-                                to="/preferencias"
-                                sx={{
-                                    color: 'white',
-                                    textDecoration: 'none',
-                                    fontWeight: 'bold',
-                                    '&:hover': {
-                                        color: PRIMARY_PURPLE,
-                                        backgroundColor: 'rgba(126, 87, 194, 0.1)'
-                                    }
-                                }}
-                            >
-                                📊 Preferências Musicais
-                            </Button>
-                            <Button
-                                component={RouterLink}
-                                to="/graficos"
-                                sx={{
-                                    color: 'white',
-                                    textDecoration: 'none',
-                                    fontWeight: 'bold',
-                                    '&:hover': {
-                                        color: PRIMARY_PURPLE,
-                                        backgroundColor: 'rgba(126, 87, 194, 0.1)'
-                                    }
-                                }}
-                            >
-                                📈 Gráficos
-                            </Button>
-                        </Box>
-                    </Container>
-                </Box>
-                {/* Conteúdo das Rotas */}
-                <Routes>
-                    <Route path="/" element={<Dashboard />} />
-                    <Route path="/preferencias" element={<PreferenciasPage />} />
-                    <Route path="/graficos" element={<GraficosPage />} />
-                </Routes>
-            </Router>
+            <Sidebar />
+
+            {/* Conteúdo das Rotas */}
+            <Routes>
+                <Route path="/" element={<SoundUpContainer />} />
+                <Route path="/preferencias" element={<PreferenciasPage />} />
+                <Route path="/graficos" element={<GraficosPage />} />
+            </Routes>
+        </Router>
         </ThemeProvider>
     );
 }
