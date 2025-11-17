@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-// 1. IMPORTAMOS O SLIDE
-import { Container, Typography, Box, Grid, Card, CardContent, CircularProgress, Paper, Fade, Slide } from '@mui/material';
+import { Container, Typography, Box, Grid, Card, CardContent, CircularProgress, Paper, Fade } from '@mui/material';
 import { Doughnut, Bar } from 'react-chartjs-2';
 import {
     Chart as ChartJS,
@@ -13,13 +12,11 @@ import {
     Legend
 } from 'chart.js';
 
-// Ícones que estão sendo usados
 import GroupIcon from '@mui/icons-material/Group';
 import LibraryMusicIcon from '@mui/icons-material/LibraryMusic';
 import AlbumIcon from '@mui/icons-material/Album';
 import MicIcon from '@mui/icons-material/Mic';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
-// Ícones não utilizados foram removidos
 
 ChartJS.register(
     CategoryScale,
@@ -40,10 +37,10 @@ const cardStyle = {
     p: 2, 
     borderRadius: '16px', 
     background: 'linear-gradient(145deg, #2a2a2a, #1a1a1a)', 
-    // Removido o box-shadow e hover para um visual mais limpo como o da sua imagem
-    transition: 'transform 0.3s ease-in-out',
+    transition: 'transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out',
     '&:hover': {
-        transform: 'translateY(-5px)', // Mantém o hover
+        transform: 'translateY(-5px)', 
+        boxShadow: '7px 7px 14px #0a0a0a, -7px -7px 14px #333333',
     },
 };
 
@@ -92,7 +89,6 @@ const GaugeCard = React.forwardRef(({ title, value, color }, ref) => {
             legend: { display: false },
         },
         cutout: '75%', 
-        // Animação já é padrão no Chart.js
     };
 
     return (
@@ -158,8 +154,7 @@ const BarChartCard = React.forwardRef(({ title, label1, value1, label2, value2, 
                 ticks: { color: '#FFFFFF', font: { size: 14, weight: 'bold' } },
                 grid: { display: false }
             }
-        },
-        // Animação já é padrão no Chart.js
+        }
     };
 
     return (
@@ -177,6 +172,7 @@ const BarChartCard = React.forwardRef(({ title, label1, value1, label2, value2, 
 const MetricasPage = () => {
     const [stats, setStats] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [cardsVisible, setCardsVisible] = useState(Array(8).fill(false)); // 8 cards
 
     const formatTime = (seconds) => {
         if (!seconds || seconds === 0) return "0:00";
@@ -208,6 +204,20 @@ const MetricasPage = () => {
         fetchStats();
     }, []);
 
+    useEffect(() => {
+        if (!loading && stats) { 
+            cardsVisible.forEach((_, index) => {
+                setTimeout(() => {
+                    setCardsVisible(prev => {
+                        const newVisibility = [...prev];
+                        newVisibility[index] = true;
+                        return newVisibility;
+                    });
+                }, 200 * index); 
+            });
+        }
+    }, [loading, stats]); 
+
     if (loading) {
         return (
             <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '80vh', bgcolor: '#121212' }}>
@@ -236,45 +246,39 @@ const MetricasPage = () => {
                 </Typography>
 
                 <Grid container spacing={3}>
-                    {/* --- LINHA 1: TOTAIS --- */}
                     <Grid item xs={12} sm={4} md={4}>
-                        {/* 2. SUBSTITUÍDO O FADE POR SLIDE */}
-                        <Slide direction="up" in={true} timeout={500}>
+                        <Fade in={cardsVisible[0]} timeout={500}> 
                             <TotalStatCard 
                                 title="Usuários Ativos" 
                                 value={formatNumber(stats.totalUsuarios)}
                                 icon={GroupIcon}
                                 color="#1DB954" 
                             />
-                        </Slide>
+                        </Fade>
                     </Grid>
                     <Grid item xs={12} sm={4} md={4}>
-                         {/* 2. SUBSTITUÍDO O FADE POR SLIDE */}
-                         <Slide direction="up" in={true} timeout={700}>
+                         <Fade in={cardsVisible[1]} timeout={500}> 
                             <TotalStatCard 
                                 title="Catálogo de Músicas" 
                                 value={formatNumber(stats.totalMusicas)}
                                 icon={LibraryMusicIcon}
                                 color="#7E57C2" 
                             />
-                        </Slide>
+                        </Fade>
                     </Grid>
                     <Grid item xs={12} sm={4} md={4}>
-                         {/* 2. SUBSTITUÍDO O FADE POR SLIDE */}
-                         <Slide direction="up" in={true} timeout={900}>
+                         <Fade in={cardsVisible[2]} timeout={500}>
                             <TotalStatCard 
                                 title="Total de Álbuns" 
                                 value={formatNumber(stats.totalAlbuns)}
                                 icon={AlbumIcon}
                                 color="#FFA000" 
                             />
-                        </Slide>
+                        </Fade>
                     </Grid>
 
-                    {/* --- LINHA 2: MÉDIAS E PERCENTUAIS (GRÁFICOS) --- */}
                     <Grid item xs={12} md={8}>
-                         {/* 2. SUBSTITUÍDO O FADE POR SLIDE */}
-                         <Slide direction="up" in={true} timeout={1100}>
+                         <Fade in={cardsVisible[3]} timeout={500}> 
                             <BarChartCard
                                 title="Artista em Destaque vs. Média"
                                 label1={stats.topArtista || 'N/A'}
@@ -283,23 +287,20 @@ const MetricasPage = () => {
                                 value2={stats.mediaOuvintesArtista}
                                 color="#EC407A" 
                             />
-                        </Slide>
+                        </Fade>
                     </Grid>
                     <Grid item xs={12} md={4}>
-                         {/* 2. SUBSTITUÍDO O FADE POR SLIDE */}
-                         <Slide direction="up" in={true} timeout={1200}>
+                         <Fade in={cardsVisible[4]} timeout={500}> 
                             <GaugeCard
                                 title="Playlists Públicas"
                                 value={stats.pctPlaylistsPublicas}
                                 color="#9CCC65" 
                             />
-                        </Slide>
+                        </Fade>
                     </Grid>
                     
-                    {/* --- LINHA 3: OUTRAS MÉDIAS E TOP --- */}
                     <Grid item xs={12} sm={6} md={4}>
-                         {/* 2. SUBSTITUÍDO O FADE POR SLIDE */}
-                         <Slide direction="up" in={true} timeout={1300}>
+                         <Fade in={cardsVisible[5]} timeout={500}> 
                              <BarChartCard
                                 title="Músicas por Playlist"
                                 label1="Média Atual"
@@ -308,11 +309,10 @@ const MetricasPage = () => {
                                 value2={8} 
                                 color="#00BCD4" 
                             />
-                        </Slide>
+                        </Fade>
                     </Grid>
                     <Grid item xs={12} sm={6} md={4}>
-                         {/* 2. SUBSTITUÍDO O FADE POR SLIDE */}
-                         <Slide direction="up" in={true} timeout={1400}>
+                         <Fade in={cardsVisible[6]} timeout={500}> 
                             <TotalStatCard 
                                 title="Duração Média" 
                                 value={formatTime(stats.mediaDuracaoMusica)}
@@ -320,11 +320,10 @@ const MetricasPage = () => {
                                 color="#FFEE58" 
                                 subtext="Por faixa"
                             />
-                        </Slide>
+                        </Fade>
                     </Grid>
                     <Grid item xs={12} sm={12} md={4}>
-                         {/* 2. SUBSTITUÍDO O FADE POR SLIDE */}
-                         <Slide direction="up" in={true} timeout={1500}>
+                         <Fade in={cardsVisible[7]} timeout={500}> 
                             <TotalStatCard 
                                 title="Artista Mais Popular" 
                                 value={stats.topArtista || 'Nenhum'}
@@ -332,7 +331,7 @@ const MetricasPage = () => {
                                 color="#FF9800" 
                                 subtext={`${formatNumber(stats.topArtistaOuvintes)} Ouvintes`}
                             />
-                        </Slide>
+                        </Fade>
                     </Grid>
 
                 </Grid>
