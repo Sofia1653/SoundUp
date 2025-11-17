@@ -23,6 +23,8 @@ import PreferenciasPage from "./components/PreferenciasPage";
 import GraficosPage from "./components/GraficosPage";
 import PaginaInicial from "./components/PaginaInicial";
 import Catalogo from "./components/Catalogo";
+import MetricasPage from "./components/MetricasPage";
+import EstatisticasPage from "./components/EstatisticasPage";
 
 import MusicasPorAlbumChart from "./components/MusicasPorAlbumGraf";
 import TendenciaDuracaoAnual from "./components/TendenciaDuracaoAnual";
@@ -31,7 +33,6 @@ import ComparativoArtistaRadar from "./components/ComparativoArtistaRadar";
 import Top5ArtistasBarra from "./components/Top5ArtistasBarra";
 import CorrelacaoScatter from "./components/CorrelacaoScatter";
 import ComparativoArtistasSelecionavel from "./components/ComparativoArtistas";
-import MetricasPage from "./components/MetricasPage";
 
 
 const PRIMARY_PURPLE = '#7E57C2';
@@ -93,7 +94,6 @@ function App() {
             <Router>
             <Sidebar />
 
-            {/* Conteúdo das Rotas */}
             <SoundUpContainer>
                 <Routes>
                     <Route path="/" element={<PaginaInicial />} />
@@ -102,7 +102,7 @@ function App() {
                     <Route path="/preferencias" element={<PreferenciasPage />} />
                     <Route path="/consultas" element={<PreferenciasPage />} />
                     <Route path="/metricas" element={<MetricasPage />} />
-                    <Route path="/estatisticas" element={<GraficosPage />} />
+                    <Route path="/estatisticas" element={<EstatisticasPage />} />
                     <Route path="/graficos" element={<GraficosPage />} />
 
                     <Route path="/playlists" element={<PlaylistList />} />
