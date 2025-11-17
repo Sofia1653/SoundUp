@@ -84,4 +84,10 @@ public class UsuarioRepository {
         String sql = "DELETE FROM usuarios WHERE id = ?";
         return jdbcTemplate.update(sql, id);
     }
+
+    public long count() {
+        String sql = "SELECT COUNT(*) FROM usuarios";
+        Long count = jdbcTemplate.queryForObject(sql, Long.class);
+        return (count != null) ? count : 0;
+    }
 }

@@ -103,4 +103,16 @@ public class MusicaRepository {
         String sql = "UPDATE musicas SET id_album = NULL WHERE id_album = ?";
         return jdbcTemplate.update(sql, id_album);
     }
+
+    public long count() {
+        String sql = "SELECT COUNT(*) FROM musicas";
+        Long count = jdbcTemplate.queryForObject(sql, Long.class);
+        return (count != null) ? count : 0;
+    }
+
+    public double avgDuracao() {
+        String sql = "SELECT AVG(duracao) FROM musicas";
+        Double avg = jdbcTemplate.queryForObject(sql, Double.class);
+        return (avg != null) ? avg : 0.0;
+    }
 }
