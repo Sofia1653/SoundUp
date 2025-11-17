@@ -11,16 +11,18 @@ import {
     Card,
     CardContent
 } from "@mui/material";
-
-// Importar os componentes da segunda página
-import UsuarioList from "./components/UsuarioList";
-import ArtistaList from "./components/ArtistaList";
-import MusicaList from "./components/MusicaList";
-import PreferenciasPage from "./components/PreferenciasPage";
 import Consultas from "./components/Consultas";
-import GraficosPage from "./components/GraficosPage";
-import PlaylistList from "./components/PlaylistList";
+import Sidebar from "./components/Sidebar";
+import SoundUpContainer from "./components/SoundUpContainer";
+import MusicaList from "./components/MusicaList";
+import ArtistaList from "./components/ArtistaList";
 import AlbumList from "./components/AlbumList";
+import PlaylistList from "./components/PlaylistList";
+import UsuarioList from "./components/UsuarioList";
+import PreferenciasPage from "./components/PreferenciasPage";
+import GraficosPage from "./components/GraficosPage";
+import PaginaInicial from "./components/PaginaInicial";
+import Catalogo from "./components/Catalogo";
 
 import MusicasPorAlbumChart from "./components/MusicasPorAlbumGraf";
 import TendenciaDuracaoAnual from "./components/TendenciaDuracaoAnual";
@@ -31,7 +33,6 @@ import CorrelacaoScatter from "./components/CorrelacaoScatter";
 import ComparativoArtistasSelecionavel from "./components/ComparativoArtistas";
 
 
-// Cores e Tema (estilo da primeira página)
 const PRIMARY_PURPLE = '#7E57C2';
 const SECONDARY_GREEN = '#1DB954';
 const BACKGROUND_DEFAULT = '#121212';
@@ -84,126 +85,33 @@ const darkTheme = createTheme({
     },
 });
 
-// Componente para a página principal
-const Dashboard = () => (
-    <Box sx={{
-        bgcolor: BACKGROUND_DEFAULT,
-        minHeight: 'calc(100vh - 89px)',
-        py: 4
-    }}>
-        <Container maxWidth="lg">
-            <Typography
-                variant="h4"
-                color="white"
-                sx={{
-                    mb: 4,
-                    textAlign: 'center',
-                    fontWeight: 'bold'
-                }}
-            >
-                🎯 Dashboard Principal
-            </Typography>
-            <Box sx={{
-                display: 'grid',
-                gap: 3,
-                gridTemplateColumns: '1fr'
-            }}>
-                <UsuarioList />
-                <ArtistaList />
-                <AlbumList />
-                <MusicaList />
-                <PlaylistList />
-                <Consultas />
-
-                <MusicasPorAlbumChart />
-                <TendenciaDuracaoAnual />
-                <DistribuicaoPorPais />
-                <Top5ArtistasBarra />
-                <CorrelacaoScatter />
-                <ComparativoArtistasSelecionavel />
-
-            </Box>
-        </Container>
-    </Box>
-);
-
 function App() {
     return (
         <ThemeProvider theme={darkTheme}>
             <CssBaseline />
             <Router>
-                {/* Header Fixo com Navegação */}
-                <Box
-                    component="header"
-                    sx={{
-                        bgcolor: PAPER_BACKGROUND,
-                        py: 2,
-                        borderBottom: `1px solid ${PRIMARY_PURPLE}`,
-                        position: 'sticky',
-                        top: 0,
-                        zIndex: 1000
-                    }}
-                >
-                    <Container maxWidth="lg" sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <Typography variant="h5" component="div" sx={{ fontWeight: 'bold', color: PRIMARY_PURPLE }}>
-                            🎵 SoundUp
-                        </Typography>
-                        <Box component="nav" sx={{ display: 'flex', gap: 3 }}>
-                            <Button
-                                component={RouterLink}
-                                to="/"
-                                sx={{
-                                    color: 'white',
-                                    textDecoration: 'none',
-                                    fontWeight: 'bold',
-                                    '&:hover': {
-                                        color: PRIMARY_PURPLE,
-                                        backgroundColor: 'rgba(126, 87, 194, 0.1)'
-                                    }
-                                }}
-                            >
-                                🏠 Página Inicial
-                            </Button>
-                            <Button
-                                component={RouterLink}
-                                to="/preferencias"
-                                sx={{
-                                    color: 'white',
-                                    textDecoration: 'none',
-                                    fontWeight: 'bold',
-                                    '&:hover': {
-                                        color: PRIMARY_PURPLE,
-                                        backgroundColor: 'rgba(126, 87, 194, 0.1)'
-                                    }
-                                }}
-                            >
-                                📊 Preferências Musicais
-                            </Button>
-                            <Button
-                                component={RouterLink}
-                                to="/graficos"
-                                sx={{
-                                    color: 'white',
-                                    textDecoration: 'none',
-                                    fontWeight: 'bold',
-                                    '&:hover': {
-                                        color: PRIMARY_PURPLE,
-                                        backgroundColor: 'rgba(126, 87, 194, 0.1)'
-                                    }
-                                }}
-                            >
-                                📈 Gráficos
-                            </Button>
-                        </Box>
-                    </Container>
-                </Box>
-                {/* Conteúdo das Rotas */}
+            <Sidebar />
+
+            {/* Conteúdo das Rotas */}
+            <SoundUpContainer>
                 <Routes>
-                    <Route path="/" element={<Dashboard />} />
+                    <Route path="/" element={<PaginaInicial />} />
+                    <Route path="/catalogo" element={<Catalogo />} />
+                    <Route path="/musicas" element={<MusicaList />} />
                     <Route path="/preferencias" element={<PreferenciasPage />} />
+                    <Route path="/consultas" element={<PreferenciasPage />} />
+                    <Route path="/metricas" element={<GraficosPage />} />
+                    <Route path="/estatisticas" element={<GraficosPage />} />
                     <Route path="/graficos" element={<GraficosPage />} />
+
+                    <Route path="/playlists" element={<PlaylistList />} />
+                    <Route path="/musicas" element={<ArtistaList />} />
+                    <Route path="/albuns" element={<AlbumList />} />
+                    <Route path="/artistas" element={<ArtistaList />} />
+                    <Route path="/usuarios" element={<UsuarioList />} />
                 </Routes>
-            </Router>
+            </SoundUpContainer>
+        </Router>
         </ThemeProvider>
     );
 }
