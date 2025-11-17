@@ -15,7 +15,7 @@ ChartJS.register(
 );
 
 // O novo endpoint que criamos
-const ENDPOINT = "/api/musicas/estatisticas/duracao/tendencia-anual";
+const ENDPOINT = "http://localhost:8080/api/musicas/estatisticas/duracao/tendencia-anual";
 
 const TendenciaDuracaoAnual = () => {
     const [chartData, setChartData] = useState(null);
