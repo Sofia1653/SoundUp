@@ -50,7 +50,7 @@ public class DashboardService {
 
         double mediaOuvintes = artistaRepository.avgOuvintes();
         double mediaDuracao = musicaRepository.avgDuracao();
-        double mediaMusicasPlaylist = playlistRepository.avgMusicasPorPlaylist(); // NOVO
+        double mediaMusicasPlaylist = playlistRepository.avgMusicasPorPlaylist();
 
         return new DashboardStatsDTO(
                 totalUsuarios,
@@ -61,7 +61,7 @@ public class DashboardService {
                 pctPublicas,
                 mediaOuvintes,
                 mediaDuracao,
-                mediaMusicasPlaylist // NOVO
+                mediaMusicasPlaylist
         );
     }
 }

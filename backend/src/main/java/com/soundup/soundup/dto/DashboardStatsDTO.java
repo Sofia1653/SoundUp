@@ -24,10 +24,9 @@ public class DashboardStatsDTO {
         this.pctPlaylistsPublicas = pctPlaylistsPublicas;
         this.mediaOuvintesArtista = mediaOuvintesArtista;
         this.mediaDuracaoMusica = mediaDuracaoMusica;
-        this.mediaMusicasPorPlaylist = mediaMusicasPorPlaylist; // NOVO
+        this.mediaMusicasPorPlaylist = mediaMusicasPorPlaylist;
     }
 
-    // Getters
     public long getTotalUsuarios() { return totalUsuarios; }
     public long getTotalMusicas() { return totalMusicas; }
     public long getTotalAlbuns() { return totalAlbuns; }
