@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Typography, Box, Grid, Card, CardContent, CircularProgress, Paper, Fade } from '@mui/material';
+import { Container, Typography, Box, Grid, Card, CardContent, CircularProgress, Paper, Slide } from '@mui/material';
 import { Doughnut, Bar } from 'react-chartjs-2';
 import {
     Chart as ChartJS,
@@ -37,11 +37,6 @@ const cardStyle = {
     p: 2, 
     borderRadius: '16px', 
     background: 'linear-gradient(145deg, #2a2a2a, #1a1a1a)', 
-    transition: 'transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out',
-    '&:hover': {
-        transform: 'translateY(-5px)', 
-        boxShadow: '7px 7px 14px #0a0a0a, -7px -7px 14px #333333',
-    },
 };
 
 const TotalStatCard = React.forwardRef(({ title, value, icon: IconComponent, color, subtext }, ref) => (
@@ -172,7 +167,7 @@ const BarChartCard = React.forwardRef(({ title, label1, value1, label2, value2, 
 const MetricasPage = () => {
     const [stats, setStats] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [cardsVisible, setCardsVisible] = useState(Array(8).fill(false)); // 8 cards
+    const [cardsVisible, setCardsVisible] = useState(Array(8).fill(false)); 
 
     const formatTime = (seconds) => {
         if (!seconds || seconds === 0) return "0:00";
@@ -188,9 +183,12 @@ const MetricasPage = () => {
         return num.toLocaleString();
     };
 
+
     useEffect(() => {
         const fetchStats = async () => {
             try {
+                await new Promise(resolve => setTimeout(resolve, 300)); 
+                
                 const response = await fetch('http://localhost:8080/api/stats');
                 if (!response.ok) throw new Error('Falha ao buscar dados');
                 const data = await response.json();
@@ -213,7 +211,7 @@ const MetricasPage = () => {
                         newVisibility[index] = true;
                         return newVisibility;
                     });
-                }, 200 * index); 
+                }, 300 * index); 
             });
         }
     }, [loading, stats]); 
@@ -235,7 +233,7 @@ const MetricasPage = () => {
     }
 
     return (
-        <Box sx={{ bgcolor: '#121212', minHeight: '100vh', py: 4, overflow: 'hidden' }}>
+        <Box sx={{ bgcolor: '#121212', minHeight: '100vh', py: 4, overflowX: 'hidden' }}>
             <Container maxWidth="xl">
                 <Typography
                     variant="h4"
@@ -247,38 +245,38 @@ const MetricasPage = () => {
 
                 <Grid container spacing={3}>
                     <Grid item xs={12} sm={4} md={4}>
-                        <Fade in={cardsVisible[0]} timeout={500}> 
+                        <Slide direction="up" in={cardsVisible[0]} timeout={500}> 
                             <TotalStatCard 
                                 title="Usuários Ativos" 
                                 value={formatNumber(stats.totalUsuarios)}
                                 icon={GroupIcon}
                                 color="#1DB954" 
                             />
-                        </Fade>
+                        </Slide>
                     </Grid>
                     <Grid item xs={12} sm={4} md={4}>
-                         <Fade in={cardsVisible[1]} timeout={500}> 
+                         <Slide direction="up" in={cardsVisible[1]} timeout={500}> 
                             <TotalStatCard 
                                 title="Catálogo de Músicas" 
                                 value={formatNumber(stats.totalMusicas)}
                                 icon={LibraryMusicIcon}
                                 color="#7E57C2" 
                             />
-                        </Fade>
+                        </Slide>
                     </Grid>
                     <Grid item xs={12} sm={4} md={4}>
-                         <Fade in={cardsVisible[2]} timeout={500}>
+                         <Slide direction="up" in={cardsVisible[2]} timeout={500}>
                             <TotalStatCard 
                                 title="Total de Álbuns" 
                                 value={formatNumber(stats.totalAlbuns)}
                                 icon={AlbumIcon}
                                 color="#FFA000" 
                             />
-                        </Fade>
+                        </Slide>
                     </Grid>
 
                     <Grid item xs={12} md={8}>
-                         <Fade in={cardsVisible[3]} timeout={500}> 
+                         <Slide direction="up" in={cardsVisible[3]} timeout={500}> 
                             <BarChartCard
                                 title="Artista em Destaque vs. Média"
                                 label1={stats.topArtista || 'N/A'}
@@ -287,20 +285,20 @@ const MetricasPage = () => {
                                 value2={stats.mediaOuvintesArtista}
                                 color="#EC407A" 
                             />
-                        </Fade>
+                        </Slide>
                     </Grid>
                     <Grid item xs={12} md={4}>
-                         <Fade in={cardsVisible[4]} timeout={500}> 
+                         <Slide direction="up" in={cardsVisible[4]} timeout={500}> 
                             <GaugeCard
                                 title="Playlists Públicas"
                                 value={stats.pctPlaylistsPublicas}
                                 color="#9CCC65" 
                             />
-                        </Fade>
+                        </Slide>
                     </Grid>
                     
                     <Grid item xs={12} sm={6} md={4}>
-                         <Fade in={cardsVisible[5]} timeout={500}> 
+                         <Slide direction="up" in={cardsVisible[5]} timeout={500}> 
                              <BarChartCard
                                 title="Músicas por Playlist"
                                 label1="Média Atual"
@@ -309,10 +307,10 @@ const MetricasPage = () => {
                                 value2={8} 
                                 color="#00BCD4" 
                             />
-                        </Fade>
+                        </Slide>
                     </Grid>
                     <Grid item xs={12} sm={6} md={4}>
-                         <Fade in={cardsVisible[6]} timeout={500}> 
+                         <Slide direction="up" in={cardsVisible[6]} timeout={500}> 
                             <TotalStatCard 
                                 title="Duração Média" 
                                 value={formatTime(stats.mediaDuracaoMusica)}
@@ -320,10 +318,10 @@ const MetricasPage = () => {
                                 color="#FFEE58" 
                                 subtext="Por faixa"
                             />
-                        </Fade>
+                        </Slide>
                     </Grid>
                     <Grid item xs={12} sm={12} md={4}>
-                         <Fade in={cardsVisible[7]} timeout={500}> 
+                         <Slide direction="up" in={cardsVisible[7]} timeout={500}> 
                             <TotalStatCard 
                                 title="Artista Mais Popular" 
                                 value={stats.topArtista || 'Nenhum'}
@@ -331,7 +329,7 @@ const MetricasPage = () => {
                                 color="#FF9800" 
                                 subtext={`${formatNumber(stats.topArtistaOuvintes)} Ouvintes`}
                             />
-                        </Fade>
+                        </Slide>
                     </Grid>
 
                 </Grid>
