@@ -1,11 +1,13 @@
 package com.soundup.soundup.service;
 
+import com.soundup.soundup.dto.DuracaoBoxplotDTO;
 import com.soundup.soundup.dto.MusicasPorAlbumDTO;
 import com.soundup.soundup.model.Musica;
 import com.soundup.soundup.model.Artista;
 import com.soundup.soundup.repository.MusicaRepository;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import com.soundup.soundup.dto.DuracaoMediaPorAnoDTO;
 
 @Service
 public class MusicaService {
@@ -97,4 +99,40 @@ public class MusicaService {
         return musicaRepository.getMusicasPorAlbum();
     }
 
+    public DuracaoBoxplotDTO getBoxplotDuracao() {
+        List<Musica> musicas = musicaRepository.findAll();
+
+        List<Integer> duracoes = musicas.stream()
+                .map(Musica::getDuracao)
+                .sorted()
+                .toList();
+
+        if (duracoes.isEmpty()) {
+            return new DuracaoBoxplotDTO(0, 0, 0, 0, 0);
+        }
+
+        int n = duracoes.size();
+
+        int min = duracoes.get(0);
+        int max = duracoes.get(n - 1);
+
+        // mediana
+        int mediana = (n % 2 == 0)
+                ? (duracoes.get(n/2 - 1) + duracoes.get(n/2)) / 2
+                : duracoes.get(n/2);
+
+        // Q1 = mediana da metade inferior
+        List<Integer> lower = duracoes.subList(0, n / 2);
+        List<Integer> upper = (n % 2 == 0)
+                ? duracoes.subList(n/2, n)
+                : duracoes.subList(n/2 + 1, n);
+
+        int q1 = lower.get(lower.size() / 2);
+        int q3 = upper.get(upper.size() / 2);
+
+        return new DuracaoBoxplotDTO(min, q1, mediana, q3, max);
+    }
+    public List<DuracaoMediaPorAnoDTO> getDuracaoMediaPorAno() {
+        return musicaRepository.getDuracaoMediaPorAno();
+    }
 }

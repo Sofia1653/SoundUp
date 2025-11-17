@@ -71,4 +71,10 @@ public class AlbumRepository {
         String sql = "DELETE FROM albuns WHERE id_album = ?";
         return jdbcTemplate.update(sql, id);
     }
+
+    public long count() {
+        String sql = "SELECT COUNT(*) FROM albuns";
+        Long count = jdbcTemplate.queryForObject(sql, Long.class);
+        return (count != null) ? count : 0;
+    }
 }

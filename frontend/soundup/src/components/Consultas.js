@@ -2,10 +2,14 @@
 import React, { useState } from "react";
 import ConsultasTemplate from "./templates/ConsultasTemplate";
 import {
-  musicasPorDuracaoEPais,
-  rankingArtistas,
-  contagemMusicasPorEstado,
-  rankingPaises
+    musicasPorDuracaoEPais,
+    rankingArtistas,
+    contagemMusicasPorEstado,
+    rankingPaises,
+    duracaoPorAlbum,
+    artistasIndependentes,
+    colaboracoesPorArtista,
+    musicaEGenero
 } from "../services/consultaService";
 
 export default function Consultas() {
@@ -34,6 +38,20 @@ export default function Consultas() {
         case "ranking-paises":
           data = await rankingPaises();
           break;
+
+        case "duracao-por-album":
+          data = await duracaoPorAlbum();
+          break;
+        case "artistas-independentes":
+          data = await artistasIndependentes();
+          break;
+        case "colaboracoes-por-artista":
+          data = await colaboracoesPorArtista();
+          break;
+        case "musica-e-genero":
+          data = await musicaEGenero();
+          break;
+
         default:
           data = [];
       }

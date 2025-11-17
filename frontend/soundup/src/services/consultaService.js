@@ -44,3 +44,53 @@ export const rankingPaises = async () => {
     return [];
   }
 };
+
+export const duracaoPorAlbum = async () => {
+    const res = await fetch(`${API_BASE}/duracao-por-album`);
+    if (!res.ok) throw new Error("Erro ao buscar duração por álbum");
+    try {
+        return await res.json();
+    } catch {
+        return [];
+    }
+};
+
+export const artistasIndependentes = async () => {
+    const res = await fetch(`${API_BASE}/independentes`);
+    if (!res.ok) throw new Error("Erro ao buscar artistas independentes");
+    try {
+        return await res.json();
+    } catch {
+        return [];
+    }
+};
+
+export const colaboracoesPorArtista = async () => {
+    const res = await fetch(`${API_BASE}/colaboracoes-por-artista`);
+    if (!res.ok) throw new Error("Erro ao buscar colaboracoes por artista");
+    try {
+        return await res.json();
+    } catch {
+        return [];
+    }
+};
+
+export const musicaEGenero = async () => {
+    const res = await fetch(`${API_BASE}/musica-e-genero`);
+    if (!res.ok) throw new Error("Erro ao buscar musica e genero");
+    try {
+        return await res.json();
+    } catch {
+        return [];
+    }
+};
+
+export const getCatalogo = async () => {
+    const res = await fetch(`${API_BASE}/catalogo-detalhado-musicas`);
+    if (!res.ok) throw new Error("Erro ao buscar catalogo");
+    try {
+        return await res.json();
+    } catch {
+        return [];
+    }
+};

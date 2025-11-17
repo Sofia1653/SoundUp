@@ -79,8 +79,34 @@ public class PlaylistRepository {
                 id
         );
     }
-
+  
     public void delete(int id) {
-        jdbcTemplate.update("DELETE FROM Playlist WHERE id=?", id);
+        jdbcTemplate.update("DELETE FROM Playlist WHERE id=?", id
+        );
+    }
+
+    // métodos pro dashboard
+    public long count() {
+        String sql = "SELECT COUNT(*) FROM Playlist";
+        Long count = jdbcTemplate.queryForObject(sql, Long.class);
+        return (count != null) ? count : 0;
+    }
+
+    public long countByVisibilidade(String visibilidade) {
+        String sql = "SELECT COUNT(*) FROM Playlist WHERE visibilidade = ?";
+        Long count = jdbcTemplate.queryForObject(sql, Long.class, visibilidade);
+        return (count != null) ? count : 0;
+    }
+
+    public double avgMusicasPorPlaylist() {
+        String sql = "SELECT AVG(total_musicas) " +
+                "FROM ( " +
+                "    SELECT COUNT(id_musica) as total_musicas " +
+                "    FROM Possui " +
+                "    GROUP BY id_playlist " +
+                ") as contagem_playlist";
+
+        Double avg = jdbcTemplate.queryForObject(sql, Double.class);
+        return (avg != null) ? avg : 0.0;
     }
 }
