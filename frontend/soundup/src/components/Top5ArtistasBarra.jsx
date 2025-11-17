@@ -33,7 +33,7 @@ const Top5ArtistasBarra = () => {
                 const ouvintes = topArtists.map(artist => artist.quantOuvintes);
 
                 // 2. Definir cores para o gráfico
-                const colors = ['#36A2EB', '#FF6384', '#FFCE56', '#4BC0C0', '#9966FF']; // Cores distintas para cada barra
+                const colors = ['#9C27B0',  '#7E57C2', '#5E35B1', '#4527A0', '#311B92'];
 
                 setChartData({
                     labels: labels,
