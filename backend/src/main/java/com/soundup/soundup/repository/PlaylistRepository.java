@@ -85,6 +85,14 @@ public class PlaylistRepository {
         );
     }
 
+    // função 2
+    public int countMusicasInPlaylist(int idPlaylist) {
+        String sql = "SELECT QuantMusicasPlaylist(?)";
+        Integer count = jdbcTemplate.queryForObject(sql, Integer.class, idPlaylist);
+
+        return (count != null) ? count : 0;
+    }
+
     // métodos pro dashboard
     public long count() {
         String sql = "SELECT COUNT(*) FROM Playlist";

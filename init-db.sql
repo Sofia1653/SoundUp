@@ -419,3 +419,21 @@ SELECT COUNT(*) INTO qtd FROM Lanca WHERE id_artista = idArt;
 RETURN qtd;
 END //
 DELIMITER ;
+
+DELIMITER //
+
+CREATE FUNCTION QuantMusicasPlaylist(idPlay INT)
+    RETURNS INT
+    DETERMINISTIC
+BEGIN
+    DECLARE qtd INT;
+
+    SELECT COUNT(*)
+    INTO qtd
+    FROM Possui
+    WHERE id_playlist = idPlay;
+
+    RETURN qtd;
+END //
+
+DELIMITER ;

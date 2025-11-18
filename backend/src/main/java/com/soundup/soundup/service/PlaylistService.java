@@ -34,4 +34,8 @@ public class PlaylistService {
     public void deletar(int id) {
         repo.delete(id);
     }
+
+    public int countMusicasInPlaylist(int idPlaylist) {
+        return repo.countMusicasInPlaylist(idPlaylist);
+    }
 }

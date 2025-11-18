@@ -48,4 +48,10 @@ public class PlaylistController {
         service.deletar(id);
         return ResponseEntity.ok("Playlist deletada");
     }
+
+    @GetMapping("/{idPlaylist}/musicas/count")
+    public ResponseEntity<Integer> countMusicasInPlaylist(@PathVariable int idPlaylist) {
+        int total = service.countMusicasInPlaylist(idPlaylist);
+        return ResponseEntity.ok(total);
+    }
 }
