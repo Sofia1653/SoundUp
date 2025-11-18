@@ -19,7 +19,7 @@ public class PossuiRepository {
      */
     public void addMusicaToPlaylist(int idPlaylist, int idMusica) {
         // Assume que a tabela de ligação se chama 'possui' e tem as colunas id_playlist e id_musica.
-        String sql = "INSERT INTO possui (id_playlist, id_musica) VALUES (?, ?)";
+        String sql = "INSERT INTO Possui (id_playlist, id_musica) VALUES (?, ?)";
 
         // Use try-catch ou verifique duplicatas se necessário, mas o básico é o INSERT
         try {

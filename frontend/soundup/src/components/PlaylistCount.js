@@ -47,7 +47,7 @@ export default function PlaylistCount() {
         <Box sx={{ mt: 3, p: 3, borderRadius: "12px" }}>
 
             <Typography variant="h5" sx={{ mb: 3, color: "#fff", fontWeight: "bold" }}>
-                Consultar quantidade de músicas na Playlist 🎵
+                Consultar quantidade de músicas na Playlist
             </Typography>
 
             <FormControl fullWidth sx={{ mb: 3, ...inputStyles }}>

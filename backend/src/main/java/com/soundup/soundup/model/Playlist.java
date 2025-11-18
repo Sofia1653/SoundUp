@@ -26,6 +26,16 @@ public class Playlist {
         this.musicas = new ArrayList<>();
     }
 
+    private List<Integer> musicasIds; // Deve bater com o nome do campo no JSON
+
+    public List<Integer> getMusicasIds() {
+        return musicasIds;
+    }
+
+    public void setMusicasIds(List<Integer> musicasIds) {
+        this.musicasIds = musicasIds;
+    }
+
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
 

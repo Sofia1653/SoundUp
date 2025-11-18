@@ -61,16 +61,24 @@ public class PlaylistService {
     public Playlist criar(Playlist playlist) {
         int idGerado = repo.save(playlist);
         playlist.setId(idGerado);
-        if (playlist.getMusicas() != null && !playlist.getMusicas().isEmpty()) {
-            for (Musica musica : playlist.getMusicas()) {
-                possuiRepository.addMusicaToPlaylist(idGerado, musica.getId());
+
+        if (playlist.getMusicasIds() != null && !playlist.getMusicasIds().isEmpty()) {
+            for (Integer idMusica : playlist.getMusicasIds()) { // Itera sobre a lista de Integer
+                possuiRepository.addMusicaToPlaylist(idGerado, idMusica); // Passa o ID diretamente
             }
         }
+
         return buscarPorId(idGerado);
     }
 
     public void atualizar(int id, Playlist playlist) {
         repo.update(id, playlist);
+
+        if (playlist.getMusicasIds() != null && !playlist.getMusicasIds().isEmpty()) {
+            for (Integer idMusica : playlist.getMusicasIds()) {
+                possuiRepository.addMusicaToPlaylist(id, idMusica);
+            }
+        }
     }
 
     public void deletar(int id) {
