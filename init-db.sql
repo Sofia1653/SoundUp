@@ -303,7 +303,7 @@ INSERT INTO Genero (nome) VALUES
 ('Metal'),
 ('Alternativo');
 
-INSERT INTO musicas (id_album, nome, duracao) VALUES
+INSERT INTO musicas (id_album, nome, duracao) VALUES 
     (1,'Pipoco',180),
     (2,'Hear Me Now',210),
     (3,'Rain on Me',200),
@@ -333,19 +333,7 @@ INSERT INTO musicas (id_album, nome, duracao) VALUES
     (27,'Kyoto',180),
     (28,'Os Anjos Cantam',180),
     (29,'Primeiros Erros',240),
-    (30,'Faz Parte do Meu Show',180),
-    (11,'Ivy',250),
-    (6,'Monkey Wrench',230),
-    (14,'Paranoid Android',380),
-    (6, 'Doll',230),
-    (3,'Stupid Love',215),
-    (3,'Summer Boy',215),
-    (3,'Love Game',215),
-    (21,'B.Y.O.B',255),
-    (3,'Poker Face',215),
-    (3,'Judas',215),
-    (3,'Abracadabra',215),
-    (6, 'Hey Johnny Park!',230);
+    (30,'Faz Parte do Meu Show',180);
 
 INSERT INTO Tem (id_musica, id_genero) VALUES
 (1,1),
