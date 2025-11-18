@@ -25,6 +25,7 @@ import PaginaInicial from "./components/PaginaInicial";
 import Catalogo from "./components/Catalogo";
 import MetricasPage from "./components/MetricasPage";
 import EstatisticasPage from "./components/EstatisticasPage";
+import ConsultasPage from "./components/ConsultasPage";
 
 import MusicasPorAlbumChart from "./components/MusicasPorAlbumGraf";
 import TendenciaDuracaoAnual from "./components/TendenciaDuracaoAnual";
@@ -100,7 +101,9 @@ function App() {
                     <Route path="/catalogo" element={<Catalogo />} />
                     <Route path="/musicas" element={<MusicaList />} />
                     <Route path="/preferencias" element={<PreferenciasPage />} />
-                    <Route path="/consultas" element={<PreferenciasPage />} />
+                    <Route path="/consultas" element={<Consultas />} />
+                    <Route path="/consultas" element={<Consultas />} />
+
                     <Route path="/metricas" element={<MetricasPage />} />
                     <Route path="/estatisticas" element={<EstatisticasPage />} />
                     <Route path="/graficos" element={<GraficosPage />} />
