@@ -54,3 +54,16 @@ export const getPossui = async (playlistId) => {
     const data = await response.json();
     return data.content || data;
 };
+
+export const getQuantidadeMusicasPlaylist = async (idPlaylist) => {
+    if (!idPlaylist) return 0;
+
+    const response = await fetch(`${API_BASE}/playlist/${idPlaylist}/musicas/count`);
+
+    if (!response.ok) {
+        console.error(`Falha ao contar músicas na playlist ${idPlaylist}`);
+        throw new Error(`Falha ao contar músicas na playlist ${idPlaylist}`);
+    }
+
+    return response.json();
+};
