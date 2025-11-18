@@ -18,7 +18,7 @@ import {
 export default function Consultas() {
     const [consultaSelecionada, setConsultaSelecionada] = useState("musicas");
     const [duracao, setDuracao] = useState(180);
-    const [pais, setPais] = useState("Brasil");
+    const [pais, setPais] = useState("Brazil");
     const [estado, setEstado] = useState("SP");
     const [loading, setLoading] = useState(false);
     const [resultado, setResultado] = useState([]);
@@ -27,7 +27,6 @@ export default function Consultas() {
         setLoading(true);
         try {
             let data = [];
-
             switch (consultaSelecionada) {
                 case "musicas":
                     data = await musicasPorDuracaoEPais(duracao, pais);
