@@ -384,3 +384,14 @@ SELECT COUNT(*) as total_lancamentos FROM Lanca;
 SELECT COUNT(*) as total_preferencias FROM Preferencias;
 SELECT '========================================' as '';
 SELECT '' as '';
+
+DELIMITER //
+CREATE FUNCTION QuantMusicasArtista(idArt INT)
+    RETURNS INT
+    DETERMINISTIC
+BEGIN
+    DECLARE qtd INT;
+SELECT COUNT(*) INTO qtd FROM Lanca WHERE id_artista = idArt;
+RETURN qtd;
+END //
+DELIMITER ;

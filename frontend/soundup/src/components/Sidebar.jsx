@@ -75,6 +75,10 @@ export default function Sidebar() {
                         <ListItemIcon><HiOutlinePresentationChartBar color="white" size={20} /></ListItemIcon>
                         <ListItemText primary="Gráficos" />
                     </ListItemButton>
+                    <ListItemButton component={Link} to="/count">
+                        <ListItemIcon><HiOutlinePresentationChartBar color="white" size={20} /></ListItemIcon>
+                        <ListItemText primary="Quantidade de Músicas" />
+                    </ListItemButton>
                 </List>
 
                 {/* SESSÕES */}

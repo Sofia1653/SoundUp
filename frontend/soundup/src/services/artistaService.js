@@ -48,3 +48,14 @@ export async function deleteArtista(id) {
   if (!res.ok) throw new Error("Erro ao deletar artista");
   return res.text(); // Spring retorna vazio normalmente
 }
+
+export async function getQuantidadeMusicas(idArtista) {
+  const res = await fetch(`${API_URL}/${idArtista}/musicas/count`);
+
+  if (!res.ok) {
+    console.error("Erro ao buscar quantidade de músicas");
+    throw new Error("Erro ao buscar quantidade de músicas");
+  }
+
+  return res.json();
+}
