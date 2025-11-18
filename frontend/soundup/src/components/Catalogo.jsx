@@ -42,7 +42,6 @@ export default function Catalogo() {
 
             {/* LISTA */}
             <CatalogoTemplate data={catalogo} />
-            <MusicasCount/>
         </Box>
     );
 }
