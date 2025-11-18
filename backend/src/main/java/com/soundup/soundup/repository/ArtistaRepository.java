@@ -117,10 +117,10 @@ public class ArtistaRepository {
     }
 
     public int countMusicasLancadas(int idArtista) {
-        String sql = "SELECT QuantMusicasArtista";
+        String sql = "SELECT QuantMusicasArtista(?)";
         return jdbcTemplate.queryForObject(sql, Integer.class, idArtista);
     }
-  
+
     public List<ComparativoArtistaDTO> getMetricasComparativas() {
         String sql =
                 "SELECT " +
