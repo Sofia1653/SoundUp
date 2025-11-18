@@ -1,5 +1,6 @@
 package com.soundup.soundup.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Playlist {
@@ -9,17 +10,20 @@ public class Playlist {
     private String visibilidade;
     private String nome;
 
-    // Lista de IDs das músicas (carregada via JDBC)
-    private List<Integer> musicasIds;
+    //private List<Integer> musicasIds;
+    private List<Musica> musicas;
 
-    public Playlist() {}
+    public Playlist() {
+        this.musicas = new ArrayList<>();
+    }
 
-    public Playlist(int id, long idOuvinte, String visibilidade, String nome, List<Integer> musicasIds) {
+    public Playlist(int id, long idOuvinte, String visibilidade, String nome) {
         this.id = id;
         this.idOuvinte = idOuvinte;
         this.visibilidade = visibilidade;
         this.nome = nome;
-        this.musicasIds = musicasIds;
+        //this.musicasIds = musicasIds;
+        this.musicas = new ArrayList<>();
     }
 
     public int getId() { return id; }
@@ -34,6 +38,9 @@ public class Playlist {
     public String getNome() { return nome; }
     public void setNome(String nome) { this.nome = nome; }
 
-    public List<Integer> getMusicasIds() { return musicasIds; }
-    public void setMusicasIds(List<Integer> musicasIds) { this.musicasIds = musicasIds; }
+    //public List<Integer> getMusicasIds() { return musicasIds; }
+    //public void setMusicasIds(List<Integer> musicasIds) { this.musicasIds = musicasIds; }
+
+    public List<Musica> getMusicas() { return musicas; }
+    public void setMusicas(List<Musica> musicas) { this.musicas = musicas; }
 }
