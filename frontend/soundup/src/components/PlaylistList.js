@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Box, Typography } from "@mui/material";
-import { getPlaylists, deletePlaylist } from "../services/playlistService"; // Funções de serviço
+import { getPlaylists, deletePlaylist } from "../services/playlistService";
 import PlaylistForm from "./PlaylistForm";
 import PlaylistListTemplate from "./templates/PlaylistListTemplate";
+import banner from "../banner/playlists.png";
 
 export default function PlaylistList() {
     const [playlists, setPlaylists] = useState([]);
@@ -11,7 +12,6 @@ export default function PlaylistList() {
     const fetchPlaylists = () => {
         getPlaylists()
             .then(data => {
-                // Lógica de manipulação de dados igual à de MusicaList
                 if (Array.isArray(data)) setPlaylists(data);
                 else if (data?.content) setPlaylists(data.content);
                 else setPlaylists([]);
@@ -32,8 +32,7 @@ export default function PlaylistList() {
         });
     };
 
-    const handleCreatedOrUpdated = (playlistAtualizada) => {
-        // Para simplificar, sempre busca a lista atualizada após salvar
+    const handleCreatedOrUpdated = () => {
         fetchPlaylists();
         setEditingPlaylist(null);
     };
@@ -47,32 +46,39 @@ export default function PlaylistList() {
     };
 
     return (
-        React.createElement(Box, { sx: { p: 3 } }, [
-            React.createElement(
-                Typography,
-                { key: "titulo", variant: "h4", component: "h1", gutterBottom: true },
-                "Gerenciar Playlists"
-            ),
-            React.createElement(
-                Box,
-                { key: "form", sx: { mb: 4 } },
-                React.createElement(PlaylistForm, {
-                    onCreated: handleCreatedOrUpdated,
-                    editingPlaylist,
-                    onCancelEdit: handleCancelEdit
-                })
-            ),
-            React.createElement(
-                Typography,
-                { key: "lista-titulo", variant: "h5", component: "h2", gutterBottom: true },
-                "Lista de Playlists"
-            ),
-            React.createElement(PlaylistListTemplate, {
-                key: "lista",
-                playlists,
-                handleDelete,
-                handleEditClick
-            })
-        ])
+        <Box>
+            {/* BANNER */}
+            <img
+                src={banner}
+                alt="Logo"
+                style={{
+                    borderRadius: "20px",
+                    width: "100%",
+                    maxHeight: "300px",
+                    marginBottom: "20px"
+                }}
+            />
+
+            {/* TÍTULO DINÂMICO */}
+            <Typography variant="h5" component="h2" gutterBottom>
+                {editingPlaylist ? "Editar Playlist" : "Criar Playlist"}
+            </Typography>
+
+            {/* FORMULÁRIO */}
+            <Box sx={{ mb: 4 }}>
+                <PlaylistForm
+                    onCreated={handleCreatedOrUpdated}
+                    editingPlaylist={editingPlaylist}
+                    onCancelEdit={handleCancelEdit}
+                />
+            </Box>
+
+            {/* LISTA */}
+            <PlaylistListTemplate
+                playlists={playlists}
+                handleDelete={handleDelete}
+                handleEditClick={handleEditClick}
+            />
+        </Box>
     );
 }

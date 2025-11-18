@@ -3,6 +3,7 @@ import { Box, Typography } from "@mui/material";
 import { getAlbuns, deleteAlbum } from "../services/albumService";
 import AlbumForm from "./AlbumForm";
 import AlbumListTemplate from "./templates/AlbumListTemplate";
+import banner from "../banner/albuns.png";
 
 export default function AlbumList() {
     const [albuns, setAlbuns] = useState([]);
@@ -44,34 +45,41 @@ export default function AlbumList() {
         setEditingAlbum(null);
     };
 
-    return React.createElement(Box, { sx: { p: 3 } }, [
-        React.createElement(Typography, {
-            key: "titulo",
-            variant: "h4",
-            component: "h1",
-            gutterBottom: true
-        }, "Gerenciar Álbuns"),
+    return (
+        <Box>
 
-        React.createElement(Box, { key: "form", sx: { mb: 4 } },
-            React.createElement(AlbumForm, {
-                onCreated: handleCreatedOrUpdated,
-                editingAlbum,
-                onCancelEdit: handleCancelEdit
-            })
-        ),
+            {/* BANNER */}
+            <img
+                src={banner}
+                alt="Logo"
+                style={{
+                    borderRadius: "20px",
+                    width: "100%",
+                    maxHeight: "300px",
+                    marginBottom: "20px"
+                }}
+            />
 
-        React.createElement(Typography, {
-            key: "lista-titulo",
-            variant: "h5",
-            component: "h2",
-            gutterBottom: true
-        }, "Lista de Álbuns"),
+            {/* TÍTULO DINÂMICO */}
+            <Typography variant="h5" component="h2" gutterBottom>
+                {editingAlbum ? "Editar Álbum" : "Criar Álbum"}
+            </Typography>
 
-        React.createElement(AlbumListTemplate, {
-            key: "lista",
-            albuns,
-            handleDelete,
-            handleEditClick
-        })
-    ]);
+            {/* FORMULÁRIO DE ÁLBUM */}
+            <Box sx={{ mb: 4 }}>
+                <AlbumForm
+                    onCreated={handleCreatedOrUpdated}
+                    editingAlbum={editingAlbum}
+                    onCancelEdit={handleCancelEdit}
+                />
+            </Box>
+
+            {/* LISTA DE ÁLBUNS */}
+            <AlbumListTemplate
+                albuns={albuns}
+                handleDelete={handleDelete}
+                handleEditClick={handleEditClick}
+            />
+        </Box>
+    );
 }

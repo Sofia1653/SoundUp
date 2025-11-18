@@ -1,8 +1,6 @@
 import React from "react";
-import {
-    Table, TableBody, TableCell, TableContainer,
-    TableHead, TableRow, Paper, Button, Box, Typography
-} from "@mui/material";
+import { Box, Typography, IconButton } from "@mui/material";
+import { FiEdit, FiTrash } from "react-icons/fi";
 
 export default function PlaylistListTemplate({ playlists, handleDelete, handleEditClick }) {
 
@@ -17,83 +15,119 @@ export default function PlaylistListTemplate({ playlists, handleDelete, handleEd
     }
 
     return (
-        <TableContainer component={Paper} sx={{
-            mt: 2,
-            borderRadius: "20px",
-            boxShadow: "0 4px 15px rgba(0, 0, 0, 0.5)",
-            backgroundColor: "#1E1E1E",
-        }}>
-            <Table>
-                <TableHead>
-                    <TableRow sx={{ backgroundColor: "#1E1E1E" }}>
-                        <TableCell sx={{ fontWeight: "bold" }}>Nome</TableCell>
-                        {/* MUDANÇA 1: Cabeçalho alterado para ID do Ouvinte */}
-                        <TableCell sx={{ fontWeight: "bold" }}>ID Ouvinte</TableCell>
-                        {/* Adicionei a Visibilidade de volta, se necessário */}
-                        <TableCell sx={{ fontWeight: "bold" }}>Visibilidade</TableCell>
-                        <TableCell sx={{ fontWeight: "bold" }} align="center">Ações</TableCell>
-                    </TableRow>
-                </TableHead>
+        <Box sx={{ width: "100%", mt: 2 }}>
 
-                <TableBody>
-                    {playlists.map(p => (
-                        <TableRow
-                            key={p.id}
+            {/* TÍTULO */}
+            <Typography
+                variant="h6"
+                sx={{ mb: 2, fontWeight: "bold", color: "#fff" }}
+            >
+                Lista de Playlists
+            </Typography>
+
+            {/* HEADER */}
+            <Box
+                sx={{
+                    display: "grid",
+                    gridTemplateColumns: "60px 2fr 1fr 1fr 150px",
+                    padding: "10px 15px",
+                    color: "#a1a1a1",
+                    fontSize: "14px"
+                }}
+            >
+                <span>#</span>
+                <span>Nome</span>
+                <span>ID Ouvinte</span>
+                <span>Visibilidade</span>
+                <span style={{ textAlign: "center" }}>Ações</span>
+            </Box>
+
+            {/* LISTA COM SCROLL */}
+            <Box
+                sx={{
+                    maxHeight: "460px",
+                    overflowY: "auto",
+                    scrollbarWidth: "none",
+                    "&::-webkit-scrollbar": { display: "none" },
+                    pr: 1
+                }}
+            >
+                {playlists.map((p, index) => (
+                    <Box
+                        key={p.id}
+                        sx={{
+                            width: "100%",
+                            display: "grid",
+                            gridTemplateColumns: "60px 2fr 1fr 1fr 150px",
+                            alignItems: "center",
+                            padding: "10px 15px",
+                            borderRadius: "8px",
+                            cursor: "pointer",
+                            transition: "0.2s",
+                            "&:hover": {
+                                backgroundColor: "#1f1f1f"
+                            }
+                        }}
+                    >
+                        {/* Número */}
+                        <Typography sx={{ color: "#bbb" }}>{index + 1}</Typography>
+
+                        {/* Nome */}
+                        <Typography sx={{ color: "#fff", fontWeight: 500 }}>
+                            {p.nome || "-"}
+                        </Typography>
+
+                        {/* ID Ouvinte */}
+                        <Typography sx={{ color: "#ccc" }}>
+                            {p.idOuvinte || "-"}
+                        </Typography>
+
+                        {/* Visibilidade */}
+                        <Typography sx={{ color: "#ccc" }}>
+                            {p.visibilidade
+                                ? p.visibilidade.charAt(0).toUpperCase() + p.visibilidade.slice(1)
+                                : "-"}
+                        </Typography>
+
+                        {/* Ações */}
+                        <Box
                             sx={{
-                                "&:hover": {
-                                    backgroundColor: "rgba(126, 87, 194, 0.2)",
-                                    cursor: "pointer"
-                                }
+                                display: "flex",
+                                gap: 1,
+                                justifyContent: "center"
                             }}
                         >
-                            <TableCell>
-                                <Typography variant="body2" fontWeight="medium">
-                                    {p.nome || "-"}
-                                </Typography>
-                            </TableCell>
+                            {/* EDITAR */}
+                            <IconButton
+                                onClick={() => handleEditClick(p)}
+                                sx={{
+                                    color: "#ffffff",
+                                    padding: "6px",
+                                    "&:hover": {
+                                        backgroundColor: "rgba(255,255,255,0.08)"
+                                    }
+                                }}
+                            >
+                                <FiEdit size={18} />
+                            </IconButton>
 
-                            {/* MUDANÇA 2: Exibe o ID do ouvinte (p.id_ouvinte) */}
-                            <TableCell>
-                                <Typography variant="body2">
-                                    {/* Supondo que o ID do ouvinte esteja em p.id_ouvinte */}
-                                    {p.idOuvinte}
-                                </Typography>
-                            </TableCell>
-
-                            {/* Célula para a Visibilidade */}
-                            <TableCell>
-                                <Typography variant="body2">
-                                    {/* Supondo que a visibilidade esteja em p.visibilidade */}
-                                    {p.visibilidade ? (p.visibilidade.charAt(0).toUpperCase() + p.visibilidade.slice(1)) : "-"}
-                                </Typography>
-                            </TableCell>
-
-                            <TableCell align="center">
-                                <Box sx={{ display: "flex", gap: 1, justifyContent: "center" }}>
-                                    <Button
-                                        variant="outlined"
-                                        size="small"
-                                        onClick={() => handleEditClick(p)}
-                                        sx={{ minWidth: "70px" }}
-                                    >
-                                        Editar
-                                    </Button>
-
-                                    <Button
-                                        variant="outlined"
-                                        color="error"
-                                        size="small"
-                                        onClick={() => handleDelete(p.id)}
-                                        sx={{ minWidth: "70px" }}
-                                    >
-                                        Excluir
-                                    </Button>
-                                </Box>
-                            </TableCell>
-                        </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
-        </TableContainer>
+                            {/* DELETAR */}
+                            <IconButton
+                                onClick={() => handleDelete(p.id)}
+                                sx={{
+                                    color: "#ff5555",
+                                    padding: "6px",
+                                    "&:hover": {
+                                        backgroundColor: "rgba(255,85,85,0.15)"
+                                    }
+                                }}
+                            >
+                                <FiTrash size={18} />
+                            </IconButton>
+                        </Box>
+                    </Box>
+                ))}
+            </Box>
+        </Box>
     );
 }
