@@ -103,12 +103,10 @@ function App() {
                     <Route path="/musicas" element={<MusicaList />} />
                     <Route path="/preferencias" element={<PreferenciasPage />} />
                     <Route path="/consultas" element={<Consultas />} />
-                    <Route path="/consultas" element={<Consultas />} />
 
                     <Route path="/metricas" element={<MetricasPage />} />
                     <Route path="/estatisticas" element={<EstatisticasPage />} />
                     <Route path="/graficos" element={<GraficosPage />} />
-                    <Route path="/count" element={<MusicasCount />} />
 
                     <Route path="/playlists" element={<PlaylistList />} />
                     <Route path="/musicas" element={<ArtistaList />} />

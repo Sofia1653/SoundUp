@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Box } from "@mui/material"; // Importando Box para envolver o conteúdo
 import ConsultasTemplate from "./templates/ConsultasTemplate";
 import banner from "../banner/consultas.png";
+import MusicasCount from "./MusicasCount";
 
 import {
     musicasPorDuracaoEPais,
@@ -81,6 +82,7 @@ export default function Consultas() {
                 }}
             />
             {/* FIM DO BANNER */}
+            <MusicasCount/>
 
             <ConsultasTemplate
                 consultaSelecionada={consultaSelecionada}

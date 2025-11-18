@@ -1,7 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { getQuantidadeMusicas, getArtistas } from "../services/artistaService";
 import MusicasCountTemplate from "./MusicasCountTemplate";
-import { Box, MenuItem, Select, Typography } from "@mui/material";
+import {
+    Box,
+    MenuItem,
+    Select,
+    Typography,
+    FormControl,
+    InputLabel
+} from "@mui/material";
 
 export default function MusicasCount() {
     const [idArtista, setIdArtista] = useState("");
@@ -20,31 +27,44 @@ export default function MusicasCount() {
             .catch(() => setQtd(0));
     }, [idArtista]);
 
+    const inputStyles = {
+        "& .MuiOutlinedInput-root": {
+            color: "#fff",
+            borderRadius: "8px",
+            "& fieldset": { borderColor: "#444" },
+            "&:hover fieldset": { borderColor: "#7E57C2" }
+        },
+        "& .MuiInputLabel-root": {
+            color: "#ccc"
+        }
+    };
+
     return (
-        <Box sx={{ padding: "20px", color: "#fff" }}>
-            <Typography variant="h5" sx={{ mb: 3 }}>Consultar músicas lançadas</Typography>
+        <Box sx={{ mt: 3, p: 3, borderRadius: "12px" }}>
 
-            <Select
-                value={idArtista}
-                onChange={(e) => setIdArtista(e.target.value)}
-                displayEmpty
-                sx={{
-                    mb: 3,
-                    backgroundColor: "#1f1f1f",
-                    color: "#fff",
-                    padding: "5px 10px",
-                    width: "300px"
-                }}
-            >
-                <MenuItem value="" disabled>Selecione um artista</MenuItem>
+            <Typography variant="h5" sx={{ mb: 3, color: "#fff", fontWeight: "bold" }}>
+                Consultar músicas lançadas
+            </Typography>
 
-                {artistas.map((a) => (
-                    <MenuItem key={a.id} value={a.id}>
-                        {a.nome}
-                    </MenuItem>
-                ))}
-            </Select>
+            {/* SELECT PADRONIZADO */}
+            <FormControl fullWidth sx={{ mb: 3, ...inputStyles }}>
+                <InputLabel id="artista-label">Selecione um artista</InputLabel>
 
+                <Select
+                    labelId="artista-label"
+                    value={idArtista}
+                    label="Selecione um artista"
+                    onChange={(e) => setIdArtista(e.target.value)}
+                >
+                    {artistas.map((a) => (
+                        <MenuItem key={a.id} value={a.id}>
+                            {a.nome}
+                        </MenuItem>
+                    ))}
+                </Select>
+            </FormControl>
+
+            {/* RESULTADO */}
             {idArtista && <MusicasCountTemplate quantidade={qtd} />}
         </Box>
     );

@@ -4,6 +4,7 @@ import { getCatalogo } from "../services/consultaService";
 import CatalogoTemplate from "./CatalogoTemplate";
 import banner from "../banner/catalogo.png";
 import { Box } from "@mui/material";
+import MusicasCount from "./MusicasCount";
 
 export default function Catalogo() {
     const [catalogo, setCatalogo] = useState([]);
@@ -41,6 +42,7 @@ export default function Catalogo() {
 
             {/* LISTA */}
             <CatalogoTemplate data={catalogo} />
+            <MusicasCount/>
         </Box>
     );
 }
