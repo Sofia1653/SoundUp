@@ -15,6 +15,7 @@ import {
     colaboracoesPorArtista,
     musicaEGenero
 } from "../services/consultaService";
+import PlaylistCount from "./PlaylistCount";
 
 export default function Consultas() {
     const [consultaSelecionada, setConsultaSelecionada] = useState("musicas");
@@ -83,6 +84,7 @@ export default function Consultas() {
             />
             {/* FIM DO BANNER */}
             <MusicasCount/>
+            <PlaylistCount/>
 
             <ConsultasTemplate
                 consultaSelecionada={consultaSelecionada}
