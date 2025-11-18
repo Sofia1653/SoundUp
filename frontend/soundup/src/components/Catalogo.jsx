@@ -2,6 +2,8 @@
 import React, { useEffect, useState } from "react";
 import { getCatalogo } from "../services/consultaService";
 import CatalogoTemplate from "./CatalogoTemplate";
+import banner from "../banner/catalogo.png";
+import { Box } from "@mui/material";
 
 export default function Catalogo() {
     const [catalogo, setCatalogo] = useState([]);
@@ -23,5 +25,22 @@ export default function Catalogo() {
         fetchCatalogo();
     }, []);
 
-    return <CatalogoTemplate data={catalogo} />;
+    return (
+        <Box>
+            {/* BANNER IDENTICO AO MODELO */}
+            <img
+                src={banner}
+                alt="Logo"
+                style={{
+                    borderRadius: "20px",
+                    width: "100%",
+                    maxHeight: "300px",
+                    marginBottom: "20px"
+                }}
+            />
+
+            {/* LISTA */}
+            <CatalogoTemplate data={catalogo} />
+        </Box>
+    );
 }

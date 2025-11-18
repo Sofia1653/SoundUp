@@ -232,6 +232,30 @@ INSERT INTO Colabora (id_artistaPrincipal, id_artistaConvidado) VALUES
     (11,5),(12,14),(13,15),(14,16),(15,17),(16,1),(17,2),(18,19),(19,20),(20,21),
     (21,22),(22,23),(23,24),(24,25),(25,26),(26,27),(27,28),(28,29),(29,30), (30,1);
 
+INSERT INTO usuarios (nome, pais, estado, cidade, email, senha, quantSeguidores, telefone) VALUES
+('Tame Impala', 'Australia', 'WA', 'Perth', 'tameimpala@example.com', 'pw3131', 18000000, '611199000031'),
+('Arctic Monkeys', 'UK', 'ENG', 'Sheffield', 'arcticmonkeys@example.com', 'pw3232', 22000000, '441199000032'),
+('The Strokes', 'USA', 'NY', 'New York', 'thestrokes@example.com', 'pw3333x', 14000000, '121299000033'),
+('Mitski', 'Japan', 'Tokyo', 'Tokyo', 'mitski@example.com', 'pw3434', 9000000, '811199000034'),
+('Joji', 'Japan', 'Osaka', 'Osaka', 'joji@example.com', 'pw3535', 7000000, '811199000035'),
+('Imagine Dragons', 'USA', 'NV', 'Las Vegas', 'imaginedragons@example.com', 'pw3636', 25000000, '121299000036'),
+('The Killers', 'USA', 'NV', 'Las Vegas', 'thekillers@example.com', 'pw3737', 17000000, '121299000037'),
+('Paramore', 'USA', 'TN', 'Franklin', 'paramore@example.com', 'pw3838', 12000000, '121299000038'),
+('Cigarettes After Sex', 'USA', 'TX', 'El Paso', 'cas@example.com', 'pw3939', 8000000, '121299000039'),
+('Coldplay', 'UK', 'ENG', 'London', 'coldplay@example.com', 'pw4040', 30000000, '441199000040');
+
+INSERT INTO artistas (id_artista, quant_ouvintes) VALUES
+(31, 18000000),
+(32, 22000000),
+(33, 14000000),
+(34, 9000000),
+(35, 7000000),
+(36, 25000000),
+(37, 17000000),
+(38, 12000000),
+(39, 8000000),
+(40, 30000000);
+
 INSERT INTO albuns (nome, duracao, ano) VALUES
     ('Album Pipoco',180,2022),
     ('Album Hear Me Now',210,2017),

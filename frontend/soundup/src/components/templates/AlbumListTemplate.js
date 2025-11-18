@@ -1,73 +1,124 @@
 import React from "react";
-import {
-    Table, TableBody, TableCell, TableContainer,
-    TableHead, TableRow, Paper, Button, Box, Typography
-} from "@mui/material";
+import { Box, Typography, IconButton } from "@mui/material";
+import { FiEdit, FiTrash } from "react-icons/fi";
 
 export default function AlbumListTemplate({ albuns, handleDelete, handleEditClick }) {
 
     if (!albuns || albuns.length === 0) {
-        return React.createElement(Box, { sx: { textAlign: "center", py: 4 } },
-            React.createElement(Typography, { variant: "body1", color: "text.secondary" },
-                "Nenhum álbum encontrado"
-            )
+        return (
+            <Box sx={{ textAlign: "center", py: 4 }}>
+                <Typography variant="body1" color="text.secondary">
+                    Nenhum álbum encontrado
+                </Typography>
+            </Box>
         );
     }
 
-    return React.createElement(
-        TableContainer,
-        {
-            component: Paper,
-            sx: {
-                mt: 2,
-                borderRadius: "20px",
-                boxShadow: "0 4px 15px rgba(0, 0, 0, 0.5)",
-                backgroundColor: "#1E1E1E"
-            }
-        },
-        React.createElement(Table, null, [
-            React.createElement(TableHead, { key: "thead" },
-                React.createElement(TableRow, { sx: { backgroundColor: "#1E1E1E" } }, [
-                    React.createElement(TableCell, { key: "nome", sx: { fontWeight: "bold" } }, "Nome"),
-                    React.createElement(TableCell, { key: "ano", sx: { fontWeight: "bold" } }, "Ano"),
-                    React.createElement(TableCell, { key: "acoes", sx: { fontWeight: "bold" }, align: "center" }, "Ações"),
-                ])
-            ),
+    return (
+        <Box sx={{ width: "100%", mt: 2 }}>
+            {/* TÍTULO */}
+            <Typography
+                variant="h6"
+                sx={{ mb: 2, fontWeight: "bold", color: "#fff" }}
+            >
+                Lista de Álbuns
+            </Typography>
 
-            React.createElement(TableBody, { key: "tbody" },
-                albuns.map(a =>
-                    React.createElement(TableRow, {
-                        key: a.id,
-                        sx: {
+            {/* HEADER */}
+            <Box
+                sx={{
+                    display: "grid",
+                    gridTemplateColumns: "60px 1fr 1fr 150px",
+                    padding: "10px 15px",
+                    color: "#a1a1a1",
+                    fontSize: "14px"
+                }}
+            >
+                <span>#</span>
+                <span>Nome</span>
+                <span>Ano</span>
+                <span style={{ textAlign: "center" }}>Ações</span>
+            </Box>
+
+            {/* LISTA COM SCROLL */}
+            <Box
+                sx={{
+                    maxHeight: "460px",
+                    overflowY: "auto",
+                    scrollbarWidth: "none",
+                    "&::-webkit-scrollbar": { display: "none" },
+                    pr: 1
+                }}
+            >
+                {albuns.map((a, index) => (
+                    <Box
+                        key={a.id}
+                        sx={{
+                            width: "100%",
+                            display: "grid",
+                            gridTemplateColumns: "60px 1fr 1fr 150px",
+                            alignItems: "center",
+                            padding: "10px 15px",
+                            borderRadius: "8px",
+                            cursor: "pointer",
+                            transition: "0.2s",
                             "&:hover": {
-                                backgroundColor: "rgba(126, 87, 194, 0.2)",
-                                cursor: "pointer"
+                                backgroundColor: "#1f1f1f"
                             }
-                        }
-                    }, [
-                        React.createElement(TableCell, { key: "nome" }, a.nome),
-                        React.createElement(TableCell, { key: "ano" }, a.ano),
-                        React.createElement(TableCell, { key: "acoes", align: "center" },
-                            React.createElement(Box, { sx: { display: "flex", gap: 1, justifyContent: "center" } }, [
-                                React.createElement(Button, {
-                                    key: "editar",
-                                    variant: "outlined",
-                                    size: "small",
-                                    onClick: () => handleEditClick(a)
-                                }, "Editar"),
+                        }}
+                    >
+                        {/* Número */}
+                        <Typography sx={{ color: "#bbb" }}>{index + 1}</Typography>
 
-                                React.createElement(Button, {
-                                    key: "excluir",
-                                    variant: "outlined",
-                                    color: "error",
-                                    size: "small",
-                                    onClick: () => handleDelete(a.id)
-                                }, "Excluir")
-                            ])
-                        )
-                    ])
-                )
-            )
-        ])
+                        {/* Nome */}
+                        <Typography sx={{ color: "#fff", fontWeight: 500 }}>
+                            {a.nome}
+                        </Typography>
+
+                        {/* Ano */}
+                        <Typography sx={{ color: "#ccc" }}>
+                            {a.ano || "–"}
+                        </Typography>
+
+                        {/* Ações */}
+                        <Box
+                            sx={{
+                                display: "flex",
+                                gap: 1,
+                                justifyContent: "center"
+                            }}
+                        >
+                            {/* EDITAR */}
+                            <IconButton
+                                onClick={() => handleEditClick(a)}
+                                sx={{
+                                    color: "#ffffff",
+                                    padding: "6px",
+                                    "&:hover": {
+                                        backgroundColor: "rgba(255,255,255,0.08)"
+                                    }
+                                }}
+                            >
+                                <FiEdit size={18} />
+                            </IconButton>
+
+                            {/* DELETAR */}
+                            <IconButton
+                                onClick={() => handleDelete(a.id)}
+                                sx={{
+                                    color: "#ff5555",
+                                    padding: "6px",
+                                    "&:hover": {
+                                        backgroundColor: "rgba(255,85,85,0.15)"
+                                    }
+                                }}
+                            >
+                                <FiTrash size={18} />
+                            </IconButton>
+                        </Box>
+                    </Box>
+                ))}
+            </Box>
+        </Box>
     );
 }

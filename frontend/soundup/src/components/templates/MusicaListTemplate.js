@@ -1,13 +1,12 @@
 import React from "react";
-import {
-    Table, TableBody, TableCell, TableContainer,
-    TableHead, TableRow, Paper, Button, Box, Typography, Chip
-} from "@mui/material";
+import { Box, Typography, IconButton, Chip } from "@mui/material";
+import { FiEdit, FiTrash } from "react-icons/fi";
 
 export default function MusicaListTemplate({ musicas, handleDelete, handleEditClick }) {
+
     if (!musicas || musicas.length === 0) {
         return (
-            <Box sx={{ textAlign: 'center', py: 4 }}>
+            <Box sx={{ textAlign: "center", py: 4 }}>
                 <Typography variant="body1" color="text.secondary">
                     Nenhuma música encontrada
                 </Typography>
@@ -16,96 +15,138 @@ export default function MusicaListTemplate({ musicas, handleDelete, handleEditCl
     }
 
     const formatDuration = (seconds) => {
-        if (!seconds) return '-';
+        if (!seconds) return "-";
         const minutes = Math.floor(seconds / 60);
-        const remainingSeconds = seconds % 60;
-        return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+        const remaining = seconds % 60;
+        return `${minutes}:${remaining.toString().padStart(2, "0")}`;
     };
 
     return (
-        <TableContainer component={Paper} sx={{
-            mt: 2,
-            borderRadius: '20px',
-            boxShadow: '0 4px 15px rgba(0, 0, 0, 0.5)',
-            backgroundColor: '#1E1E1E'
-        }}>
-            <Table>
-                <TableHead>
-                    <TableRow sx={{ backgroundColor: '#1E1E1E' }}>
-                        <TableCell sx={{ fontWeight: 'bold' }}>Nome</TableCell>
-                        <TableCell sx={{ fontWeight: 'bold' }}>Duração</TableCell>
-                        <TableCell sx={{ fontWeight: 'bold' }}>Artistas</TableCell>
-                        <TableCell sx={{ fontWeight: 'bold' }} align="center">Ações</TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {musicas.map(m => (
-                        <TableRow
-                            key={m.id}
-                            sx={{
-                                '&:hover': {
-                                    backgroundColor: 'rgba(126, 87, 194, 0.2)', // 20% do roxo principal
-                                    cursor: 'pointer' // Opcional: para dar feedback visual de que o item é interativo
-                                }
-                            }}
-                        >
-                            <TableCell>
-                                <Typography variant="body2" fontWeight="medium">
-                                    {m.nome || '-'}
-                                </Typography>
-                            </TableCell>
-                            <TableCell>
-                                <Typography variant="body2">
-                                    {formatDuration(m.duracao)}
-                                </Typography>
-                                <Typography variant="caption" color="text.secondary">
-                                    ({m.duracao}s)
-                                </Typography>
-                            </TableCell>
-                            <TableCell>
-                                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                                    {m.artistas && m.artistas.length > 0 ? (
-                                        m.artistas.map((artista, index) => (
-                                            <Chip
-                                                key={index}
-                                                label={artista.nome}
-                                                size="small"
-                                                color="primary"
-                                                variant="outlined"
-                                            />
-                                        ))
-                                    ) : (
-                                        <Typography variant="body2" color="text.secondary">
-                                            Nenhum artista
-                                        </Typography>
-                                    )}
-                                </Box>
-                            </TableCell>
-                            <TableCell align="center">
-                                <Box sx={{ display: 'flex', gap: 1, justifyContent: 'center' }}>
-                                    <Button
-                                        variant="outlined"
+        <Box sx={{ width: "100%", mt: 2 }}>
+
+            {/* TÍTULO */}
+            <Typography
+                variant="h6"
+                sx={{ mb: 2, fontWeight: "bold", color: "#fff" }}
+            >
+                Lista de Músicas
+            </Typography>
+
+            {/* HEADER */}
+            <Box
+                sx={{
+                    display: "grid",
+                    gridTemplateColumns: "60px 2fr 1fr 2fr 120px",
+                    padding: "10px 15px",
+                    color: "#a1a1a1",
+                    fontSize: "14px"
+                }}
+            >
+                <span>#</span>
+                <span>Nome</span>
+                <span>Duração</span>
+                <span>Artistas</span>
+                <span style={{ textAlign: "center" }}>Ações</span>
+            </Box>
+
+            {/* LISTA COM SCROLL */}
+            <Box
+                sx={{
+                    maxHeight: "460px",
+                    overflowY: "auto",
+                    scrollbarWidth: "none",
+                    "&::-webkit-scrollbar": { display: "none" },
+                    pr: 1
+                }}
+            >
+                {musicas.map((m, index) => (
+                    <Box
+                        key={m.id}
+                        sx={{
+                            width: "100%",
+                            display: "grid",
+                            gridTemplateColumns: "60px 2fr 1fr 2fr 120px",
+                            alignItems: "center",
+                            padding: "10px 15px",
+                            borderRadius: "8px",
+                            cursor: "pointer",
+                            transition: "0.2s",
+                            "&:hover": {
+                                backgroundColor: "#1f1f1f"
+                            }
+                        }}
+                    >
+                        {/* Número */}
+                        <Typography sx={{ color: "#bbb" }}>{index + 1}</Typography>
+
+                        {/* Nome */}
+                        <Typography sx={{ color: "#fff", fontWeight: 500 }}>
+                            {m.nome || "-"}
+                        </Typography>
+
+                        {/* Duração */}
+                        <Typography sx={{ color: "#ccc" }}>
+                            {formatDuration(m.duracao)}{" "}
+                            <Typography
+                                component="span"
+                                variant="caption"
+                                sx={{ color: "#777" }}
+                            >
+                                ({m.duracao}s)
+                            </Typography>
+                        </Typography>
+
+                        {/* Artistas */}
+                        <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+                            {m.artistas?.length ? (
+                                m.artistas.map((art, i) => (
+                                    <Chip
+                                        key={i}
+                                        label={art.nome}
                                         size="small"
-                                        onClick={() => handleEditClick(m)}
-                                        sx={{ minWidth: '70px' }}
-                                    >
-                                        Editar
-                                    </Button>
-                                    <Button
+                                        color="primary"
                                         variant="outlined"
-                                        color="error"
-                                        size="small"
-                                        onClick={() => handleDelete(m.id)}
-                                        sx={{ minWidth: '70px' }}
-                                    >
-                                        Excluir
-                                    </Button>
-                                </Box>
-                            </TableCell>
-                        </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
-        </TableContainer>
+                                        sx={{ fontSize: "11px" }}
+                                    />
+                                ))
+                            ) : (
+                                <Typography sx={{ color: "#777" }}>Nenhum artista</Typography>
+                            )}
+                        </Box>
+
+                        {/* AÇÕES */}
+                        <Box sx={{ display: "flex", gap: 1, justifyContent: "center" }}>
+                            {/* EDITAR */}
+                            <IconButton
+                                onClick={() => handleEditClick(m)}
+                                sx={{
+                                    color: "#ffffff",
+                                    padding: "6px",
+                                    "&:hover": {
+                                        backgroundColor: "rgba(255,255,255,0.08)"
+                                    }
+                                }}
+                            >
+                                <FiEdit size={18} />
+                            </IconButton>
+
+                            {/* DELETAR */}
+                            <IconButton
+                                onClick={() => handleDelete(m.id)}
+                                sx={{
+                                    color: "#ff5555",
+                                    padding: "6px",
+                                    "&:hover": {
+                                        backgroundColor: "rgba(255,85,85,0.15)"
+                                    }
+                                }}
+                            >
+                                <FiTrash size={18} />
+                            </IconButton>
+                        </Box>
+                    </Box>
+                ))}
+            </Box>
+        </Box>
     );
 }

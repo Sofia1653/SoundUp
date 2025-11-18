@@ -4,16 +4,12 @@ import { Box, Typography } from "@mui/material";
 export default function CatalogoTemplate({ data }) {
     return (
         <Box sx={{ width: "100%" }}>
-            {/* TÍTULO */}
-            <Typography variant="h6" sx={{ mb: 2, fontWeight: "bold", color: "#fff" }}>
-                Catálogo de Músicas
-            </Typography>
 
             {/* HEADER */}
             <Box
                 sx={{
                     display: "grid",
-                    gridTemplateColumns: "60px 1fr 1fr 1fr 1fr 80px", // 6 colunas
+                    gridTemplateColumns: "60px 1fr 1fr 1fr 1fr 80px",
                     padding: "10px 15px",
                     color: "#a1a1a1",
                     fontSize: "14px"
@@ -49,16 +45,35 @@ export default function CatalogoTemplate({ data }) {
                             borderRadius: "8px",
                             cursor: "pointer",
                             transition: "0.2s",
-                            "&:hover": { backgroundColor: "#1f1f1f" }
+                            "&:hover": {
+                                backgroundColor: "#1f1f1f"
+                            }
                         }}
                     >
-                        <Typography sx={{ color: "#bbb" }}>{index + 1}</Typography>
-                        <Typography sx={{ color: "#fff", fontWeight: 500 }}>{item.nomeMusica}</Typography>
-                        <Typography sx={{ color: "#ccc" }}>{item.nomeArtista || "–"}</Typography>
-                        <Typography sx={{ color: "#ccc" }}>{item.nomeAlbum || "–"}</Typography>
-                        <Typography sx={{ color: "#ccc" }}>{item.nomeGenero || "–"}</Typography>
+                        <Typography sx={{ color: "#bbb" }}>
+                            {index + 1}
+                        </Typography>
+
+                        <Typography sx={{ color: "#fff", fontWeight: 500 }}>
+                            {item.nomeMusica}
+                        </Typography>
+
                         <Typography sx={{ color: "#ccc" }}>
-                            {item.duracaoSegundos ? formatarDuracao(item.duracaoSegundos) : "--:--"}
+                            {item.nomeArtista || "–"}
+                        </Typography>
+
+                        <Typography sx={{ color: "#ccc" }}>
+                            {item.nomeAlbum || "–"}
+                        </Typography>
+
+                        <Typography sx={{ color: "#ccc" }}>
+                            {item.nomeGenero || "–"}
+                        </Typography>
+
+                        <Typography sx={{ color: "#ccc" }}>
+                            {item.duracaoSegundos
+                                ? formatarDuracao(item.duracaoSegundos)
+                                : "--:--"}
                         </Typography>
                     </Box>
                 ))}

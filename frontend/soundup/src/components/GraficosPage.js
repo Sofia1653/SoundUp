@@ -7,9 +7,11 @@ import {
     Card,
     CardMedia
 } from '@mui/material';
+// Importando o banner para consistência de layout
+import banner from "../banner/graficos.png";
 
 // Array com os nomes dos arquivos das imagens
-const relatoriosImagens = [ // Nome do array alterado
+const relatoriosImagens = [
     'grafico1.jpeg',
     'grafico2.jpeg',
     'grafico3.jpeg',
@@ -28,27 +30,34 @@ const relatoriosImagens = [ // Nome do array alterado
 
 const GraficosPage = () => {
     return (
-        <Box sx={{ bgcolor: '#121212', minHeight: 'calc(100vh - 89px)', py: 4 }}>
-            <Container maxWidth="lg">
-                <Typography
-                    variant="h4"
-                    color="white"
-                    sx={{
-                        mb: 4,
-                        textAlign: 'center',
-                        fontWeight: 'bold'
-                    }}
-                >
-                    Nossos Gráficos
-                </Typography>
+        <Box>
+            {/* BANNER ADICIONADO AQUI */}
+            <img
+                src={banner}
+                alt="Banner de Gráficos"
+                style={{
+                    borderRadius: "20px",
+                    width: "100%",
+                    maxHeight: "300px",
+                    marginBottom: "20px"
+                }}
+            />
+            {/* O conteúdo da página será envolto em um Box/Container para o restante do layout */}
+
+            <Container maxWidth="lg" sx={{ py: 2 }}>
+
+                {/* GRID DE GRÁFICOS */}
                 <Grid container spacing={4} justifyContent="center">
-                    {relatoriosImagens.map((imagem, index) => ( // Usando o novo nome do array
+                    {relatoriosImagens.map((imagem, index) => (
                         <Grid item xs={12} sm={6} md={4} key={index}>
                             <Card sx={{
                                 height: '100%',
                                 display: 'flex',
                                 flexDirection: 'column',
-                                boxShadow: '0 4px 15px rgba(0, 0, 0, 0.5)'
+                                // Mantendo o estilo de sombra/card
+                                boxShadow: '0 4px 15px rgba(0, 0, 0, 0.5)',
+                                backgroundColor: '#1E1E1E', // Dando um fundo mais escuro para o card, similar ao padrão da lista
+                                borderRadius: '8px'
                             }}>
                                 <CardMedia
                                     component="img"

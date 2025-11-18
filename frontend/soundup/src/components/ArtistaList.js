@@ -1,74 +1,87 @@
 import React, { useEffect, useState } from "react";
-import { Box, Typography } from "@mui/material"; // Updated imports
+import { Box, Typography } from "@mui/material";
 import { getArtistas, deleteArtista } from "../services/artistaService";
 import ArtistaForm from "./ArtistaForm";
 import ArtistaListTemplate from "./templates/ArtistaListTemplate";
+import banner from "../banner/artistas.png";
 
 export default function ArtistaList() {
-  const [artistas, setArtistas] = useState([]);
-  const [editingArtista, setEditingArtista] = useState(null);
+    const [artistas, setArtistas] = useState([]);
+    const [editingArtista, setEditingArtista] = useState(null);
 
-  const fetchArtistas = () => {
-    getArtistas()
-      .then(data => {
-        if (Array.isArray(data)) {
-          setArtistas(data);
-        } else if (data && data.content) {
-          setArtistas(data.content);
-        } else {
-          setArtistas([]);
-        }
-      })
-      .catch(err => {
-        console.error("Erro ao buscar artistas:", err);
-        setArtistas([]);
-      });
-  };
+    const fetchArtistas = () => {
+        getArtistas()
+            .then(data => {
+                if (Array.isArray(data)) {
+                    setArtistas(data);
+                } else if (data && data.content) {
+                    setArtistas(data.content);
+                } else {
+                    setArtistas([]);
+                }
+            })
+            .catch(err => {
+                console.error("Erro ao buscar artistas:", err);
+                setArtistas([]);
+            });
+    };
 
-  useEffect(() => {
-    fetchArtistas();
-  }, []);
+    useEffect(() => {
+        fetchArtistas();
+    }, []);
 
-  const handleDelete = (id) => {
-    deleteArtista(id).then(fetchArtistas);
-  };
+    const handleDelete = (id) => {
+        deleteArtista(id).then(fetchArtistas);
+    };
 
-  const handleCreatedOrUpdated = () => {
-    fetchArtistas();
-    setEditingArtista(null);
-  };
+    const handleCreatedOrUpdated = () => {
+        fetchArtistas();
+        setEditingArtista(null);
+    };
 
-  const handleEditClick = (artista) => {
-    setEditingArtista(artista);
-  };
+    const handleEditClick = (artista) => {
+        setEditingArtista(artista);
+    };
 
-  const handleCancelEdit = () => {
-    setEditingArtista(null);
-  };
+    const handleCancelEdit = () => {
+        setEditingArtista(null);
+    };
 
-  return (
-    <Box sx={{ p: 3 }}>
-      <Typography variant="h4" component="h1" gutterBottom>
-        Gerenciar Artistas
-      </Typography>
-      
-      <Box sx={{ mb: 4 }}>
-        <ArtistaForm
-          onCreated={handleCreatedOrUpdated}
-          editingArtista={editingArtista}
-          onCancelEdit={handleCancelEdit}
-        />
-      </Box>
+    return (
+        <Box>
+            {/* BANNER */}
+            <img
+                src={banner} // Certifique-se de que o caminho 'banner' esteja correto
+                alt="Banner Artista"
+                style={{
+                    borderRadius: "20px",
+                    width: "100%",
+                    maxHeight: "300px",
+                    marginBottom: "20px"
+                }}
+            />
 
-      <Typography variant="h5" component="h2" gutterBottom>
-        Lista de Artistas
-      </Typography>
-      
-      <ArtistaListTemplate
-        artistas={artistas}
-        handleDelete={handleDelete}
-        handleEditClick={handleEditClick}
-      />
-    </Box>
-  );
+            {/* TÍTULO DINÂMICO */}
+            <Typography variant="h5" component="h2" gutterBottom>
+                {editingArtista ? "Editar Artista" : "Criar Artista"}
+            </Typography>
+
+            {/* FORMULÁRIO DE ARTISTA */}
+            <Box sx={{ mb: 4 }}>
+                <ArtistaForm
+                    onCreated={handleCreatedOrUpdated}
+                    editingArtista={editingArtista}
+                    onCancelEdit={handleCancelEdit}
+                />
+            </Box>
+
+            {/* LISTA DE ARTISTAS */}
+            {/* Removi o título extra "Lista de Artistas" daqui, pois ele já está no template */}
+            <ArtistaListTemplate
+                artistas={artistas}
+                handleDelete={handleDelete}
+                handleEditClick={handleEditClick}
+            />
+        </Box>
+    );
 }
