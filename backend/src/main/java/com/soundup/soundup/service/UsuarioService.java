@@ -1,5 +1,6 @@
 package com.soundup.soundup.service;
 
+import com.soundup.soundup.dto.ContagemPorPaisDTO;
 import com.soundup.soundup.model.Artista;
 import com.soundup.soundup.model.Usuario;
 import com.soundup.soundup.repository.UsuarioRepository;
@@ -38,5 +39,9 @@ public class UsuarioService {
 
     public void deleteUsuario(int id) {
         UsuarioRepository.delete(id);
+    }
+
+    public List<ContagemPorPaisDTO> getContagemUsuariosPorPais() {
+        return UsuarioRepository.getContagemUsuariosPorPais();
     }
 }
