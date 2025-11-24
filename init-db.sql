@@ -437,3 +437,137 @@ BEGIN
 END //
 
 DELIMITER ;
+
+DELIMITER $$
+CREATE TRIGGER trg_atualiza_duracao_album_insert
+AFTER INSERT ON Pertence
+FOR EACH ROW
+BEGIN
+    UPDATE Album al
+    SET al.duracao = (
+        SELECT SUM(m.duracao)
+        FROM Pertence p
+        JOIN Musica m ON p.id_musica = m.id
+        WHERE p.id_album = NEW.id_album
+    )
+    WHERE al.id = NEW.id_album;
+END$$
+DELIMITER ;
+
+DELIMITER //
+CREATE TRIGGER verifica_lancamento
+BEFORE INSERT ON Lanca
+FOR EACH ROW
+BEGIN
+    IF (SELECT COUNT(*) FROM Lanca
+        WHERE id_artista = NEW.id_artista
+          AND id_musica = NEW.id_musica) > 0 THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Este artista já lançou essa música.';
+    END IF;
+END //
+DELIMITER ;
+
+DELIMITER $$
+
+CREATE PROCEDURE AtualizarSeguidoresArtista(
+    IN p_id_artista INT,
+    IN p_novos_seguidores INT
+)
+BEGIN
+    DECLARE v_seguidores_atuais INT;
+
+    IF NOT EXISTS (SELECT 1 FROM Artista WHERE id_artista = p_id_artista) THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Artista não encontrado';
+    END IF;
+
+    SELECT quant_seguidores INTO v_seguidores_atuais
+    FROM Usuario
+    WHERE id = p_id_artista;
+
+    UPDATE Usuario
+    SET quant_seguidores = p_novos_seguidores
+    WHERE id = p_id_artista;
+
+    SELECT CONCAT('Seguidores atualizados de ', v_seguidores_atuais, ' para ', p_novos_seguidores) AS Resultado;
+END$$
+
+DELIMITER ;
+
+DELIMITER $
+
+CREATE PROCEDURE AtualizarOuvintesArtistas()
+BEGIN
+    DECLARE v_id_artista INT;
+    DECLARE v_nome_artista VARCHAR(80);
+    DECLARE v_ouvintes_atuais INT;
+    DECLARE v_ouvintes_unicos INT;
+    DECLARE v_total_reproducoes INT;
+    DECLARE v_finalizado INT DEFAULT 0;
+    DECLARE v_alteracoes INT DEFAULT 0;
+
+    DECLARE cursor_artistas CURSOR FOR
+        SELECT a.id_artista, u.nome, a.quant_ouvintes
+        FROM Artista a
+        INNER JOIN Usuario u ON a.id_artista = u.id
+        ORDER BY a.id_artista;
+
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET v_finalizado = 1;
+
+    CREATE TEMPORARY TABLE IF NOT EXISTS temp_relatorio_ouvintes (
+        id_artista INT,
+        nome_artista VARCHAR(80),
+        ouvintes_antigos INT,
+        ouvintes_novos INT,
+        total_reproducoes INT,
+        status VARCHAR(50)
+    );
+
+    OPEN cursor_artistas;
+
+    loop_artistas: LOOP
+        FETCH cursor_artistas INTO v_id_artista, v_nome_artista, v_ouvintes_atuais;
+
+        IF v_finalizado = 1 THEN
+            LEAVE loop_artistas;
+        END IF;
+
+        SELECT COUNT(DISTINCT r.id_ouvinte) INTO v_ouvintes_unicos
+        FROM Reproducao r
+        INNER JOIN Lanca l ON r.id_musica = l.id_musica
+        WHERE l.id_artista = v_id_artista;
+
+        SELECT COUNT(*) INTO v_total_reproducoes
+        FROM Reproducao r
+        INNER JOIN Lanca l ON r.id_musica = l.id_musica
+        WHERE l.id_artista = v_id_artista;
+
+        IF v_ouvintes_unicos > 0 THEN
+            UPDATE Artista
+            SET quant_ouvintes = v_ouvintes_unicos
+            WHERE id_artista = v_id_artista;
+
+            INSERT INTO temp_relatorio_ouvintes
+            VALUES (v_id_artista, v_nome_artista, v_ouvintes_atuais,
+                    v_ouvintes_unicos, v_total_reproducoes, 'ATUALIZADO');
+
+            SET v_alteracoes = v_alteracoes + 1;
+        ELSE
+            INSERT INTO temp_relatorio_ouvintes
+            VALUES (v_id_artista, v_nome_artista, v_ouvintes_atuais,
+                    0, 0, 'SEM REPRODUCOES');
+        END IF;
+
+    END LOOP loop_artistas;
+
+    CLOSE cursor_artistas;
+
+    SELECT CONCAT('Total de artistas processados: ', v_alteracoes) AS Resumo;
+
+    SELECT * FROM temp_relatorio_ouvintes ORDER BY total_reproducoes DESC;
+
+    DROP TEMPORARY TABLE IF EXISTS temp_relatorio_ouvintes;
+
+END$
+
+DELIMITER ;
